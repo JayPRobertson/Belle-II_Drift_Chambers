@@ -53,7 +53,7 @@ G4Material* DetectorConstruction::CreateMaterialFromJson(G4NistManager* nist, js
     
     mixName += materialName;
     
-    G4double elementDensity = materialData["density"].get<G4double>();
+    G4double elementDensity = materialData["density_mg/cm3"].get<G4double>();
     G4double gasPercent = materialData["percent"].get<G4double>();
     
     G4Material* curMaterial = new G4Material(materialName, 
@@ -101,11 +101,20 @@ void DetectorConstruction::DefineMaterials(){
   } else {
     fEndplateMaterial = CreateMaterialFromJson(nist, mixture);
   }
+  
+  mixture = jsonData["layers"]["wire_info"]["sense_wires"]["mixture"];
+  fSenseWireMaterial = CreateMaterialFromJson(nist, mixture);
+  
+  mixture = jsonData["layers"]["wire_info"]["ground_wires"]["mixture"];
+  fGroundWireMaterial = CreateMaterialFromJson(nist, mixture);
+  
+  
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
   ReadGeometryFile();
   DefineMaterials();
+  G4NistManager* nist = G4NistManager::Instance();
   
   // _____________________ Define Constants _______________________ //
   
@@ -119,39 +128,49 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   
   std::vector<G4int> numSublayers;
   std::vector<G4double> outerRadii;
-  json dimensions = jsonData["layers"]["super_layers"];
+  std::vector<G4int> numSenseWires;
+  json dimensions = jsonData["super_layers"];
   
   for (int i=0; i < numSuperlayers; i++){
     json curLayer = dimensions["layer"+std::to_string(i)];
     G4int curSublayers = curLayer["num_sublayers"].get<G4int>();
-    G4double curOuterRadius = curLayer["outer_radius"].get<G4double>() *cm;
+    G4double curOuterRadius = curLayer["outer_radius_cm"].get<G4double>() *cm;
+    G4int curSenseWires = curLayer["num_sublayer_sense_wires"].get<G4int>();
     
     numSublayers.push_back(curSublayers);
     outerRadii.push_back(curOuterRadius);
+    numSenseWires.push_back(curSenseWires);
   }
   
   dimensions = jsonData["gas_volume"]["dimensions"];
-  G4double length = dimensions["full_length"].get<G4double>() *cm;
-  G4double rInner = dimensions["radius_inner"].get<G4double>() *cm;
+  G4double length = dimensions["full_length_cm"].get<G4double>() *cm;
+  G4double rInner = dimensions["radius_inner_cm"].get<G4double>() *cm;
   G4double rOuter = outerRadii.back(); 
                               
   G4double worldLength = 1.5 * length;
   
   // Cone cutouts
-  G4double longAngle = dimensions["long_cone_cutout"]["angle"].get<G4double>() * deg;
-  G4double shortAngle = dimensions["short_cone_cutout"]["angle"].get<G4double>() * deg;
-  G4double longR = dimensions["long_cone_cutout"]["radius"].get<G4double>() * cm;
-  G4double shortR = dimensions["short_cone_cutout"]["radius"].get<G4double>() * cm;
+  G4double longAngle = dimensions["long_cone_cutout"]["angle_deg"].get<G4double>() * deg;
+  G4double shortAngle = dimensions["short_cone_cutout"]["angle_deg"].get<G4double>() * deg;
+  G4double longR = dimensions["long_cone_cutout"]["radius_cm"].get<G4double>() * cm;
+  G4double shortR = dimensions["short_cone_cutout"]["radius_cm"].get<G4double>() * cm;
   G4double pDzLong = (longR / std::tan(longAngle)) / 2;
   G4double pDzShort = (shortR / std::tan(shortAngle)) / 2;
   
   // Shell volume
   dimensions = jsonData["shell_volume"]["dimensions"];
-  G4double thicknessShell = dimensions["thickness"].get<G4double>() * cm;
+  G4double thicknessShell = dimensions["thickness_cm"].get<G4double>() * cm;
   
   // Endplates volume
   dimensions = jsonData["endplates_volume"]["dimensions"];
-  G4double thicknessEndplate = dimensions["thickness"].get<G4double>() * cm;
+  G4double thicknessEndplate = dimensions["thickness_cm"].get<G4double>() * cm;
+  
+  // Wire volume
+  dimensions = jsonData["layers"]["wire_info"];
+  G4double senseRadius = dimensions["sense_wires"]["radius_mm"].get<G4double>() *mm;
+  G4double groundRadius = dimensions["ground_wires"]["radius_mm"].get<G4double>() *mm;
+  G4double senseVolume = CLHEP::pi * senseRadius*senseRadius * length;
+  G4double groundVolume = CLHEP::pi * senseRadius*senseRadius * length;
 
   // _____________________ Define World Size _______________________ //
   
@@ -223,20 +242,23 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     }
     
     curSublayer++;
+    G4int curNumSublayers = numSublayers[curSuperlayer];
     
     // End if volume too thick, radius too large, or exceeded num of superlayers
     if (thickness > z3  || r2 > rOuter
                         || (curSuperlayer == numSuperlayers-1 
-                                && curSublayer == numSublayers[curSuperlayer])){
+                                && curSublayer == curNumSublayers)){
         break;
     }
     
     // Switch superlayers                      
-    if (curSublayer == numSublayers[curSuperlayer]){
-      curSuperlayer++;
-      curSublayer = 0;
+    if (curSublayer == curNumSublayers) {
+        if (curSuperlayer + 1 >= numSuperlayers) break;
+
+        curSuperlayer++;
+        curSublayer = 0;
       
-      curSpacing = (outerRadii[curSuperlayer]-outerRadii[curSuperlayer-1])/numSublayers[curSuperlayer];
+      curSpacing = (outerRadii[curSuperlayer]-outerRadii[curSuperlayer-1])/curNumSublayers;
       
       if (!isSwitched){
         curThickness = curSpacing/std::tan(longAngle);
@@ -245,12 +267,38 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       }
       
     }
+    
                             
                             
     layerFile << r1 << "," << r2 << "\n";
     
     G4Tubs* cylRing = new G4Tubs("CylRing", r1, r2, thickness, startAngle, spanAngle);
-    G4LogicalVolume* cylRingLog = new G4LogicalVolume(cylRing, fGasMaterial, "CylRingLog");
+    
+    // Get number of wires in the sublayer
+    G4int senseWiresPerLayer = numSenseWires[curSuperlayer];
+    G4int groundWiresPerLayer = 3*senseWiresPerLayer + 2*senseWiresPerLayer;
+    G4double totalSenseVolume = senseVolume * senseWiresPerLayer;
+    G4double totalGroundVolume = groundVolume * groundWiresPerLayer;
+    
+    // Calculate the percentage of the volume of each wire type
+    G4double cylRingVolume = cylRing->GetCubicVolume();
+    G4double sensePercent = totalSenseVolume / cylRingVolume;
+    G4double groundPercent = totalGroundVolume / cylRingVolume;
+    G4double gasPercent = 1.0 - sensePercent - groundPercent;
+    
+    // Get the density of each sublayer material
+    G4double senseDensity = fSenseWireMaterial->GetDensity();
+    G4double groundDensity = fGroundWireMaterial->GetDensity();
+    G4double gasDensity = fGasMaterial->GetDensity();
+    
+    // Create a material combining the gas and wire material proportionally
+    G4double densityMix =  sensePercent*senseDensity + groundPercent*groundDensity + gasPercent*gasDensity;
+    G4Material* materialMix = new G4Material("GasMix" + std::to_string(i), densityMix, 3);
+    materialMix->AddMaterial(fSenseWireMaterial, sensePercent);
+    materialMix->AddMaterial(fGroundWireMaterial, groundPercent);
+    materialMix->AddMaterial(fGasMaterial, gasPercent);
+    
+    G4LogicalVolume* cylRingLog = new G4LogicalVolume(cylRing, materialMix, "CylRingLog");
     
     cylRingLog->SetVisAttributes(gasVisAtt);
     
@@ -321,7 +369,7 @@ DetectorConstruction::~DetectorConstruction(){}
 
 void DetectorConstruction::ConstructSDandField(){
   
-  json bFieldData = jsonData["magnetic_field"];
+  json bFieldData = jsonData["magnetic_field_teslas"];
 
   // Create constant magentic field
   G4double x = bFieldData["x"].get<G4double>() * tesla;
