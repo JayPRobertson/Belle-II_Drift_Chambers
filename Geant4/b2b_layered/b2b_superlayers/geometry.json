@@ -60,6 +60,7 @@
   "layers": {
     "num_of_superlayers": 9,
     "wire_info": {
+      "use_wire_materials": true,
       "sense_wires": {
         "radius_mm": 0.03,
         "mixture": {

@@ -171,6 +171,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4double groundRadius = dimensions["ground_wires"]["radius_mm"].get<G4double>() *mm;
   G4double senseVolume = CLHEP::pi * senseRadius*senseRadius * length;
   G4double groundVolume = CLHEP::pi * senseRadius*senseRadius * length;
+  
+  bool useWireMaterials = dimensions["use_wire_materials"].get<bool>();
 
   // _____________________ Define World Size _______________________ //
   
@@ -273,32 +275,37 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     layerFile << r1 << "," << r2 << "\n";
     
     G4Tubs* cylRing = new G4Tubs("CylRing", r1, r2, thickness, startAngle, spanAngle);
+    G4LogicalVolume* cylRingLog;
     
-    // Get number of wires in the sublayer
-    G4int senseWiresPerLayer = numSenseWires[curSuperlayer];
-    G4int groundWiresPerLayer = 3*senseWiresPerLayer + 2*senseWiresPerLayer;
-    G4double totalSenseVolume = senseVolume * senseWiresPerLayer;
-    G4double totalGroundVolume = groundVolume * groundWiresPerLayer;
-    
-    // Calculate the percentage of the volume of each wire type
-    G4double cylRingVolume = cylRing->GetCubicVolume();
-    G4double sensePercent = totalSenseVolume / cylRingVolume;
-    G4double groundPercent = totalGroundVolume / cylRingVolume;
-    G4double gasPercent = 1.0 - sensePercent - groundPercent;
-    
-    // Get the density of each sublayer material
-    G4double senseDensity = fSenseWireMaterial->GetDensity();
-    G4double groundDensity = fGroundWireMaterial->GetDensity();
-    G4double gasDensity = fGasMaterial->GetDensity();
-    
-    // Create a material combining the gas and wire material proportionally
-    G4double densityMix =  sensePercent*senseDensity + groundPercent*groundDensity + gasPercent*gasDensity;
-    G4Material* materialMix = new G4Material("GasMix" + std::to_string(i), densityMix, 3);
-    materialMix->AddMaterial(fSenseWireMaterial, sensePercent);
-    materialMix->AddMaterial(fGroundWireMaterial, groundPercent);
-    materialMix->AddMaterial(fGasMaterial, gasPercent);
-    
-    G4LogicalVolume* cylRingLog = new G4LogicalVolume(cylRing, materialMix, "CylRingLog");
+    if (useWireMaterials){
+      // Get number of wires in the sublayer
+      G4int senseWiresPerLayer = numSenseWires[curSuperlayer];
+      G4int groundWiresPerLayer = 3*senseWiresPerLayer + 2*senseWiresPerLayer;
+      G4double totalSenseVolume = senseVolume * senseWiresPerLayer;
+      G4double totalGroundVolume = groundVolume * groundWiresPerLayer;
+      
+      // Calculate the percentage of the volume of each wire type
+      G4double cylRingVolume = cylRing->GetCubicVolume();
+      G4double sensePercent = totalSenseVolume / cylRingVolume;
+      G4double groundPercent = totalGroundVolume / cylRingVolume;
+      G4double gasPercent = 1.0 - sensePercent - groundPercent;
+      
+      // Get the density of each sublayer material
+      G4double senseDensity = fSenseWireMaterial->GetDensity();
+      G4double groundDensity = fGroundWireMaterial->GetDensity();
+      G4double gasDensity = fGasMaterial->GetDensity();
+      
+      // Create a material combining the gas and wire material proportionally
+      G4double densityMix =  sensePercent*senseDensity + groundPercent*groundDensity + gasPercent*gasDensity;
+      G4Material* materialMix = new G4Material("GasMix" + std::to_string(i), densityMix, 3);
+      materialMix->AddMaterial(fSenseWireMaterial, sensePercent);
+      materialMix->AddMaterial(fGroundWireMaterial, groundPercent);
+      materialMix->AddMaterial(fGasMaterial, gasPercent);
+      
+      cylRingLog = new G4LogicalVolume(cylRing, materialMix, "CylRingLog");
+    }else{
+      cylRingLog = new G4LogicalVolume(cylRing, fGasMaterial, "CylRingLog");
+    }
     
     cylRingLog->SetVisAttributes(gasVisAtt);
     
