@@ -17,6 +17,7 @@
 #include "G4SDManager.hh"
 #include "G4AutoDelete.hh"
 #include "TrackerSD.hh"
+#include "G4UserLimits.hh"
 
 #include <iostream>
 #include <cmath>
@@ -198,6 +199,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   auto trackerSD = new B2::TrackerSD("B2/gasSD", "TrackerHitsCollection");
   G4SDManager::GetSDMpointer()->AddNewDetector(trackerSD);
   
+  // Set step size
+  G4double maxStep = 0.1 * mm;
+  fStepLimit = new G4UserLimits(maxStep);
+  
   std::ofstream layerFile("layer_radius.csv", std::ios_base::app);
   
   // Large number to prevent early termination
@@ -308,6 +313,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     }
     
     cylRingLog->SetVisAttributes(gasVisAtt);
+    cylRingLog->SetUserLimits(fStepLimit);
     
     new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), cylRingLog, "GasLayerRing", worldLV, false, i, false);
     
@@ -360,11 +366,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VisAttributes* worldVisAtts = new G4VisAttributes(G4Color(1.0, 1.0, 1.0, 0.2)); 
   worldVisAtts->SetVisibility(false);
   worldLV->SetVisAttributes(worldVisAtts);
+  
+  volumeLength = length;
+  volumeROuter = rOuter;
+  volumeRInner = rInner;
 
   return worldPV;
 }
 
-void DetectorConstruction::SetMaxStep(G4double maxStep){}
+void DetectorConstruction::SetMaxStep(G4double maxStep){
+  if ((fStepLimit) && (maxStep > 0.)) fStepLimit->SetMaxAllowedStep(maxStep);
+}
 
 void DetectorConstruction::SetTargetMaterial(G4String materialName){}
 
@@ -372,7 +384,7 @@ void DetectorConstruction::SetChamberMaterial(G4String materialName){}
 
 DetectorConstruction::DetectorConstruction(){}
 
-DetectorConstruction::~DetectorConstruction(){}
+DetectorConstruction::~DetectorConstruction(){  delete fStepLimit; }
 
 void DetectorConstruction::ConstructSDandField(){
   

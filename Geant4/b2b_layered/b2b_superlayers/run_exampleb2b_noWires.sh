@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILEPATH="$HOME/Desktop/Belle II/Python/csv/layered"
+FILEPATH="$HOME/Desktop/Belle II/Python/csv/superlayers"
 
 rm -f event_action_data.csv layered_edep_data.csv layer_radius.csv init_step_data.csv entry_exit_data.csv
 
@@ -17,8 +17,7 @@ echo "energies,initx,inity,initz,tot_dist,dEdx,beta_gamma" > init_step_data.csv
 make
 ./exampleB2b
 
-cp event_action_data_layered.csv "$FILEPATH/"
-cp layered_edep_data.csv "$FILEPATH/"
-cp layer_radius.csv "$FILEPATH/"
-cp init_step_data.csv "$FILEPATH/"
-cp entry_exit_data.csv "$FILEPATH/"
+cp event_action_data_layered.csv "$FILEPATH/event_action_data_layered_nowires.csv"
+cp layered_edep_data.csv "$FILEPATH/layered_edep_data_nowires.csv"
+cp init_step_data.csv "$FILEPATH/init_step_data_nowires.csv"
+cp entry_exit_data.csv "$FILEPATH/entry_exit_data_nowires.csv"

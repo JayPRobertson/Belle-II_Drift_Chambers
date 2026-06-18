@@ -44,21 +44,26 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     fParticleGun->SetParticleMomentumDirection(direction);
     fParticleGun->GeneratePrimaryVertex(event);
+    
 
     G4ThreeVector entry;
     G4ThreeVector exit;
 
     G4double rOuter = 109.6 *cm; 
     G4double rInner = 16.0 *cm;  
-    G4double length = 241.69 *cm; 
-
-    G4double pMag = fParticleGun->GetParticleEnergy();
-    G4ThreeVector momentum = pMag * direction;
+    G4double length = 241.69 *cm;
+    
     G4double muMass = G4MuonMinus::Definition()->GetPDGMass();
+    G4ThreeVector currentPos = fParticleGun->GetParticlePosition();
 
-    G4double charge = -1.0 * CLHEP::eplus;
+    G4double kineticE = fParticleGun->GetParticleEnergy();
+    G4double totalE = kineticE + muMass;
+    G4double pMag = std::sqrt(totalE*totalE - muMass*muMass);
+    G4ThreeVector momentum = pMag*direction;
+    
+    G4double charge = fParticleGun->GetParticleDefinition()->GetPDGCharge()/CLHEP::eplus;
 
-    HelixApproach helix(G4ThreeVector(0,0,0), momentum, G4ThreeVector(0,0,1.5*tesla), muMass, charge);
+    HelixApproach helix(currentPos, momentum, G4ThreeVector(0,0,1.5*tesla), muMass, charge);
 
     helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
 

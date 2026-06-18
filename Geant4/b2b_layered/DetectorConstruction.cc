@@ -17,6 +17,7 @@
 #include "G4SDManager.hh"
 #include "G4AutoDelete.hh"
 #include "TrackerSD.hh"
+#include "G4UserLimits.hh"
 
 #include <iostream>
 #include <cmath>
@@ -161,6 +162,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VisAttributes* shellVisAtt = new G4VisAttributes(G4Colour::Blue());
   G4VisAttributes* gasVisAtt = new G4VisAttributes(G4Colour::White());
   
+  // Set step size
+  G4double maxStep = 0.1 * mm;
+  fStepLimit = new G4UserLimits(maxStep);
+  
   const int maxI = 2000;
   const G4double z3 = length/2;
   const G4double z1 = z3 - ((longR-rInner) /std::tan(longAngle));
@@ -207,6 +212,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     G4LogicalVolume* cylRingLog = new G4LogicalVolume(cylRing, fGasMaterial, "CylRingLog");
     
     cylRingLog->SetVisAttributes(gasVisAtt);
+    cylRingLog->SetUserLimits(fStepLimit);
     
     new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), cylRingLog, "GasLayerRing", worldLV, false, i, false);
     
@@ -256,11 +262,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VisAttributes* worldVisAtts = new G4VisAttributes(G4Color(1.0, 1.0, 1.0, 0.2)); 
   worldVisAtts->SetVisibility(false);
   worldLV->SetVisAttributes(worldVisAtts);
+  
+  volumeLength = length;
+  volumeROuter = rOuter;
+  volumeRInner = rInner;
 
   return worldPV;
 }
 
-void DetectorConstruction::SetMaxStep(G4double maxStep){}
+void DetectorConstruction::SetMaxStep(G4double maxStep){
+  if ((fStepLimit) && (maxStep > 0.)) fStepLimit->SetMaxAllowedStep(maxStep);
+}
 
 void DetectorConstruction::SetTargetMaterial(G4String materialName){}
 
@@ -268,7 +280,7 @@ void DetectorConstruction::SetChamberMaterial(G4String materialName){}
 
 DetectorConstruction::DetectorConstruction(){}
 
-DetectorConstruction::~DetectorConstruction(){}
+DetectorConstruction::~DetectorConstruction(){  delete fStepLimit; }
 
 void DetectorConstruction::ConstructSDandField(){
   

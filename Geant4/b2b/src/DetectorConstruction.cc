@@ -21,6 +21,7 @@
 #include "G4SDManager.hh"
 #include "G4AutoDelete.hh"
 #include "TrackerSD.hh"
+#include "G4UserLimits.hh"
 
 #include <string>
 
@@ -170,11 +171,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VisAttributes* worldVisAtts = new G4VisAttributes(G4Color(1.0, 1.0, 1.0, 0.2)); 
   worldVisAtts->SetVisibility(false);
   worldLV->SetVisAttributes(worldVisAtts);
+  
+  // Set step size
+  G4double maxStep = 0.1 * mm;
+  fStepLimit = new G4UserLimits(maxStep);
+  cylLog->SetUserLimits(fStepLimit);
 
   return worldPV;
 }
 
-void DetectorConstruction::SetMaxStep(G4double maxStep){}
+void DetectorConstruction::SetMaxStep(G4double maxStep){
+  if ((fStepLimit) && (maxStep > 0.)) fStepLimit->SetMaxAllowedStep(maxStep);
+}
 
 void DetectorConstruction::SetTargetMaterial(G4String materialName){}
 
@@ -182,7 +190,7 @@ void DetectorConstruction::SetChamberMaterial(G4String materialName){}
 
 DetectorConstruction::DetectorConstruction(){}
 
-DetectorConstruction::~DetectorConstruction(){}
+DetectorConstruction::~DetectorConstruction(){ delete fStepLimit; }
 
 void DetectorConstruction::ConstructSDandField(){
  

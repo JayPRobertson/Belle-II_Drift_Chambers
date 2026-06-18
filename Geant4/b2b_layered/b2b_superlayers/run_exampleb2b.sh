@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILEPATH="$HOME/Desktop/Belle II/Python/csv/layered"
+FILEPATH="$HOME/Desktop/Belle II/Python/csv/superlayers"
 
 rm -f event_action_data.csv layered_edep_data.csv layer_radius.csv init_step_data.csv entry_exit_data.csv
 

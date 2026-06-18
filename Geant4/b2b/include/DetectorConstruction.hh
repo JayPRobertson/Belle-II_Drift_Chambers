@@ -40,6 +40,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     static G4ThreadLocal G4GlobalMagFieldMessenger* fMagFieldMessenger;
 
     DetectorMessenger* fMessenger = nullptr; 
+    G4UserLimits* fStepLimit = nullptr;
 
     G4bool fCheckOverlaps = true; 
 };

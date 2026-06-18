@@ -18,10 +18,23 @@
 #include "G4EmCalculator.hh"
 #include "G4ParticleTable.hh"
 
+#include "G4Track.hh"
+#include "G4VProcess.hh"
+
 SteppingAction::SteppingAction(B2::EventAction* eventAction)
  : fEventAction(eventAction){}
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep){
+  G4Track* track = aStep->GetTrack();
+  
+  // Don't record data if particle is a delta ray
+  const G4VProcess* creatorProcess = track->GetCreatorProcess();
+  if (creatorProcess) {
+    G4String procName = creatorProcess->GetProcessName();
+    if (procName == "eIoni" || procName == "muIoni") {
+      return;
+    }
+  }
 
   G4StepPoint* preStepPoint  = aStep->GetPreStepPoint();
   G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
@@ -54,7 +67,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep){
       G4ParticleDefinition* particleDef = G4ParticleTable::GetParticleTable()->FindParticle("mu-");
       
       G4double beta = preStepPoint->GetBeta();
-      G4double restMass = aStep->GetTrack()->GetDefinition()->GetPDGMass();
+      G4double restMass = track->GetDefinition()->GetPDGMass();
       G4double gamma = 1.0 + (energy / restMass);
       
       G4EmCalculator emCalculator;

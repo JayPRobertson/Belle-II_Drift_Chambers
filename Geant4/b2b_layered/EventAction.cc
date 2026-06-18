@@ -22,6 +22,8 @@ void EventAction::BeginOfEventAction(const G4Event*) {
         fTrackerHCID = G4SDManager::GetSDMpointer()->GetCollectionID("TrackerHitsCollection");
   }
   
+  fTrackedDistance = 0.0;
+  
   // Reset tracking variables
   prePosX = "";
   prePosY = "";

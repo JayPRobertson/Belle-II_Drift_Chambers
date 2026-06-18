@@ -5,8 +5,6 @@
 #include "globals.hh"
 #include "G4ThreeVector.hh"
 
-//#include <string>
-
 class G4Event;
 
 namespace B2{
@@ -19,6 +17,24 @@ class EventAction : public G4UserEventAction{
     void BeginOfEventAction(const G4Event*) override;
 
     void EndOfEventAction(const G4Event*) override;
+    
+    void AddTrackedDistance(G4double distance) { fTrackedDistance += distance; }
+    G4double GetTrackedDistance() const { return fTrackedDistance; }
+    
+    void SetPredictedEntry(const G4ThreeVector& v) { fPredEntry = v; }
+    void SetPredictedExit(const G4ThreeVector& v) { fPredExit  = v;  }
+
+    void SetActualEntry(const G4ThreeVector& v) { fActEntry = v; }
+    void SetActualExit(const G4ThreeVector& v) { fActExit  = v; }
+
+    G4ThreeVector GetPredictedEntry() const { return fPredEntry; }
+    G4ThreeVector GetPredictedExit()  const { return fPredExit; }
+
+    G4ThreeVector GetActualEntry() const { return fActEntry; }
+    G4ThreeVector GetActualExit()  const { return fActExit; }
+    
+    void SetInitMomentum(const G4ThreeVector& p) { initMomentum  = p; }
+    G4ThreeVector GetInitMomentum()  const { return initMomentum; }
 
     void AddTrackedEdep(G4double edep) { fTrackedEdep += edep; }
     void ResetTrackedEdep() {fTrackedEdep = 0.0;}
@@ -57,6 +73,7 @@ class EventAction : public G4UserEventAction{
     std::string GetTotEdep(){ return totEdep; }
 
 private:
+    G4double fTrackedDistance = 0.0;
     G4double fTrackedEdep = 0.0;    
     G4int curIndex = 0;
     
@@ -71,6 +88,14 @@ private:
     std::string postPosZ = "";
     
     std::string totEdep = "";
+
+    G4ThreeVector fPredEntry;
+    G4ThreeVector fPredExit;
+
+    G4ThreeVector fActEntry;
+    G4ThreeVector fActExit;
+    
+    G4ThreeVector initMomentum;
 };
 
 }  // namespace B2

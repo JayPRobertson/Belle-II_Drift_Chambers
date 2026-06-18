@@ -41,6 +41,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetCheckOverlaps(G4bool);
     
     G4ThreeVector GetMagneticField() const { return magneticField; }
+    G4double GetLength() const { return volumeLength; }
+    G4double GetROuter() const { return volumeROuter; }
+    G4double GetRInner() const { return volumeRInner; }
 
   private:
     void DefineMaterials();
@@ -59,8 +62,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4ThreeVector magneticField;
 
     DetectorMessenger* fMessenger = nullptr; 
+    G4UserLimits* fStepLimit = nullptr;
 
     G4bool fCheckOverlaps = true; 
+    
+    G4double volumeLength;
+    G4double volumeROuter;
+    G4double volumeRInner;
 };
 
 }  // namespace B2b

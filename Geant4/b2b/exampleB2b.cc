@@ -9,7 +9,6 @@
 #include "G4UIExecutive.hh"
 #include "G4UImanager.hh"
 
-
 int main(int argc, char** argv){
   // Detect interactive mode (if no arguments) and define UI session
   G4UIExecutive* ui = nullptr;
@@ -58,5 +57,4 @@ int main(int argc, char** argv){
   
   return 0;
 }
-
 

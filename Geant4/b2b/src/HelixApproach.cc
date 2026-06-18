@@ -22,15 +22,20 @@ HelixApproach::HelixApproach(
     G4double beta = p / std::sqrt(p*p + mass*mass);
     G4double speed = beta*c_light;
     G4double B = magneticField.mag();
+    
 
     G4ThreeVector dir = RotateToFieldAxis(momentum.unit());
 
     fVparallel = speed*dir.z();
     fVperp = speed*dir.perp();
-
-    fOmega = charge*B*c_light/(gamma*mass);
-
-    fRadius = gamma*mass*fVperp/(charge*B*c_light);
+    
+    if(B < 1e-20*tesla){
+        fOmega = 0.;
+        fRadius = DBL_MAX;
+    }else{
+        fOmega = charge*B*c_light/(gamma*mass);
+        fRadius = gamma*mass*fVperp/(charge*B*c_light);
+    }
 
     fAlpha = std::atan2(-dir.x(), dir.y());
 
@@ -85,6 +90,10 @@ G4ThreeVector HelixApproach::Velocity(G4double t) const {
              fVparallel));
 }
 
+G4ThreeVector HelixApproach::Direction(G4double t) const {
+    return Velocity(t).unit();
+}
+
 
 bool HelixApproach::InGas(
     const G4ThreeVector& p, G4double innerRadius, G4double outerRadius, G4double halfLength) const {
@@ -96,49 +105,33 @@ bool HelixApproach::InGas(
             std::abs(p.z()) <= halfLength);
 }
 
+G4double HelixApproach::TimeAtCylinderRadius(G4double radius) const{
+    if(radius > 2.0*std::abs(fRadius)) return -1.0;
+
+    return 2.0*std::asin( radius/(2.0*std::abs(fRadius))) / std::abs(fOmega);
+}
+
 
 void HelixApproach::FindGasVolumeCrossings(
     G4double innerRadius,
     G4double outerRadius,
     G4double halfLength,
     G4ThreeVector& entryPoint,
-    G4ThreeVector& exitPoint) const {
-        
-    G4double dt = 1e-14*second;
+    G4ThreeVector& exitPoint) const
+{
+    entryPoint = G4ThreeVector();
+    exitPoint  = G4ThreeVector();
 
-    bool foundEntry = false;
-    G4ThreeVector p;
-    int entryIndex = -1;
-    
-    for(int i = 0; i < 200000000; i++){
-        p = Position(i * dt);
-        if(InGas(p, innerRadius, outerRadius, halfLength)){
-            entryPoint = p;
-            entryIndex = i;
-            foundEntry = true;
-            break;
-        }
-    }
-    
-    if(!foundEntry){
-        entryPoint = G4ThreeVector(0,0,0);
-        exitPoint = G4ThreeVector(0,0,0);
-        return;
-    }
-    
-    bool foundExit = false;
-    for(int i = entryIndex; i < 200000000; i++){
-        p = Position(i * dt);
-        if(!InGas(p, innerRadius, outerRadius, halfLength)){
-            exitPoint = p;
-            foundExit = true;
-            break;
-        }
-    }
-    
-    if (!foundExit) {
-        exitPoint = G4ThreeVector(0,0,0);
-    }
+    G4double tEntry = TimeAtCylinderRadius(innerRadius);
+    G4double tExit = TimeAtCylinderRadius(outerRadius);
+
+    if(tEntry < 0 || tExit < 0) return;
+
+    G4ThreeVector pEntry = Position(tEntry);
+    G4ThreeVector pExit  = Position(tExit);
+
+    entryPoint = pEntry;
+    exitPoint = pExit;
 }
 
 

@@ -12,6 +12,8 @@ This code accepts a file called `geometry.json`, which describes the geometry of
 
 ## Output
 
+- `entry_exit_data.csv` - the actual and expected point of entry and exit from the gas layers; for calculating multiple scattering
 - `event_action_data_layered.csv` - hit energy and hit positions
+- `init_step_data.csv` - initial energy and position, and dEdx over gas layer volumes
 - `layered_edep_data.csv` - energy deposition within layers
 - `layer_radius.csv` - inner and outer radius of each gas layer
