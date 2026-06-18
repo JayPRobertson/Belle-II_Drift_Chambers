@@ -29,6 +29,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     G4VPhysicalVolume* postVol = postStepPoint->GetPhysicalVolume();
     
     G4Track* track = aStep->GetTrack();
+    G4ThreeVector entryPos = preStepPoint->GetPosition();
   
     // Don't record data if particle is a delta ray
     const G4VProcess* creatorProcess = track->GetCreatorProcess();
@@ -53,16 +54,23 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
             fEventAction->SetTotEdep(); 
 
             // Initialize tracking for new layer
-            G4ThreeVector entryPos = preStepPoint->GetPosition();
-            fEventAction->SetPrePos(entryPos);
-            fEventAction->SetPreStep(entryPos);
             fEventAction->SetCurIndex(volumeID);
             fEventAction->ResetTrackedEdep();
+            
+            // If was in gas and staying in gas
+            if (fEventAction->GetGasStatus()){
+                fEventAction->SetPrePos(entryPos);
+                fEventAction->SetPostPos(entryPos);
+                
+            // If entering gas
+            }else{
+                fEventAction->SetPrePos(entryPos);
+                fEventAction->SetGasStatus(true);
+            }
         }
         
         // Store positions and total energy of layer for this beam
         fEventAction->AddTrackedEdep(aStep->GetTotalEnergyDeposit());
-        fEventAction->SetPostPos(postStepPoint->GetPosition());
     }
     
     // Get point particle enters gas volume
@@ -74,6 +82,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     
     if(preVol->GetName() == "GasLayerRing" &&
      postVol->GetName() != "GasLayerRing"){
+         
+      fEventAction->SetPostPos(entryPos);
       
       //_______________ Calculate Mean Energy Loss __________________
       

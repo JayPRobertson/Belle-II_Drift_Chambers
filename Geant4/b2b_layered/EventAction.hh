@@ -43,11 +43,6 @@ class EventAction : public G4UserEventAction{
     void SetCurIndex(G4double index) { curIndex = index; }
     G4int GetCurIndex() const { return curIndex; }
     
-    void SetPreStep(G4ThreeVector preStepPosition) { 
-        preStep = preStepPosition;
-    }
-    G4ThreeVector GetPreStep() { return preStep; }
-    
     void SetPrePos(G4ThreeVector prePos) { 
         prePosX += std::to_string(prePos.x()) + "|";
         prePosY += std::to_string(prePos.y()) + "|";
@@ -71,13 +66,15 @@ class EventAction : public G4UserEventAction{
     }
     
     std::string GetTotEdep(){ return totEdep; }
+    
+    
+    bool GetGasStatus() { return enteredGas; }
+    void SetGasStatus(bool status) { enteredGas = status; }
 
 private:
     G4double fTrackedDistance = 0.0;
     G4double fTrackedEdep = 0.0;    
     G4int curIndex = 0;
-    
-    G4ThreeVector preStep;
     
     std::string prePosX = "";
     std::string prePosY = "";
@@ -96,6 +93,8 @@ private:
     G4ThreeVector fActExit;
     
     G4ThreeVector initMomentum;
+    
+    bool enteredGas = false;
 };
 
 }  // namespace B2

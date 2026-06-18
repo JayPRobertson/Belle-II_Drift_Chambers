@@ -38,6 +38,8 @@ void EventAction::BeginOfEventAction(const G4Event*) {
   fTrackedEdep = 0.0;
   curIndex = -1;
   
+  enteredGas = false;
+  
 }
 
 void EventAction::EndOfEventAction(const G4Event* event){
@@ -105,6 +107,8 @@ void EventAction::EndOfEventAction(const G4Event* event){
   std::string prePos = GetPrePos();
   std::string postPos = GetPostPos();
   std::string totEdep = GetTotEdep();
+  
+  //G4cout << "prePos = " << prePos.substr(0, 10) << ", postPost = " << postPos.substr(0, 10) << G4endl;
   
   layerFile << index << prePos << postPos << totEdep << "\n";
   

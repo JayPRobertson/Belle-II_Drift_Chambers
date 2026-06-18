@@ -26,13 +26,14 @@ SteppingAction::SteppingAction(B2::EventAction* eventAction)
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep){
   G4Track* track = aStep->GetTrack();
+  bool isMuon = true;
   
   // Don't record data if particle is a delta ray
   const G4VProcess* creatorProcess = track->GetCreatorProcess();
   if (creatorProcess) {
     G4String procName = creatorProcess->GetProcessName();
     if (procName == "eIoni" || procName == "muIoni") {
-      return;
+      isMuon = false;
     }
   }
 
@@ -46,13 +47,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep){
   if(!preVol || !postVol) return;
 
    // Add step length to total distance
-  if(preVol->GetName() == "CylinderPhys"){
+  if(preVol->GetName() == "CylinderPhys" && isMuon){
     fEventAction->AddTrackedDistance(aStep->GetStepLength());
   }
 
   // Get point particle enters gas volume
   if(preVol->GetName() != "CylinderPhys" &&
-     postVol->GetName() == "CylinderPhys"){
+     postVol->GetName() == "CylinderPhys" && isMuon){
 
       fEventAction->SetActualEntry(postStepPoint->GetPosition());
   }
@@ -87,6 +88,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep){
   
                
       stepFile.close();
+      
+      if (!isMuon) return;
       
       //____________ Get Entry and Exit Points to GasMix ____________ 
       
