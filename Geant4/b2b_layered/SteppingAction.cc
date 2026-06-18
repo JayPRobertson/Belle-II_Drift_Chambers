@@ -18,6 +18,8 @@
 #include "G4EmCalculator.hh"
 #include "G4ParticleTable.hh"
 
+#include "DetectorConstruction.hh"
+
 SteppingAction::SteppingAction(B2::EventAction* eventAction)
  : fEventAction(eventAction){}
 
@@ -30,14 +32,15 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     
     G4Track* track = aStep->GetTrack();
     G4ThreeVector entryPos = preStepPoint->GetPosition();
+    
+    const G4RunManager* runManager = G4RunManager::GetRunManager();
+    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
   
     // Don't record data if particle is a delta ray
     const G4VProcess* creatorProcess = track->GetCreatorProcess();
     if (creatorProcess) {
       G4String procName = creatorProcess->GetProcessName();
-      if (procName == "eIoni" || procName == "muIoni") {
-        return;
-      }
+      if (procName.substr(procName.length() - 4) == "Ioni") return;
     }
 
     // Verify particle is inside the volume
@@ -89,7 +92,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
       
       G4double energy = preStepPoint->GetKineticEnergy();
       G4Material* material = preStepPoint->GetMaterial();
-      G4ParticleDefinition* particleDef = G4ParticleTable::GetParticleTable()->FindParticle("mu-");
+      G4ParticleDefinition* particleDef = G4ParticleTable::GetParticleTable()->FindParticle(detectorConstruction->GetParticleType());
       
       G4double beta = preStepPoint->GetBeta();
       G4double restMass = track->GetDefinition()->GetPDGMass();

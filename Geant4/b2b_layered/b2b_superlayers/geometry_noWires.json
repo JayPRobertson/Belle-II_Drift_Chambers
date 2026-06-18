@@ -140,5 +140,9 @@
       "outer_radius_cm": 111.14,
       "num_sublayer_sense_wires": 384
     }
-  }
+  },
+  "particle": {
+      "particle_type":"mu-",
+      "energy_GeV":2.0
+   }
 }

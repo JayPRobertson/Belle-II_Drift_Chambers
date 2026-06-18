@@ -382,7 +382,18 @@ void DetectorConstruction::SetTargetMaterial(G4String materialName){}
 
 void DetectorConstruction::SetChamberMaterial(G4String materialName){}
 
-DetectorConstruction::DetectorConstruction(){}
+DetectorConstruction::DetectorConstruction(){
+  ReadGeometryFile(); 
+  
+  // Particle information
+  particleType = jsonData["particle"]["particle_type"];
+  particleEnergy = jsonData["particle"]["energy_GeV"].get<G4double>();
+  ReadGeometryFile(); 
+  
+  // Particle information
+  particleType = jsonData["particle"]["particle_type"];
+  particleEnergy = jsonData["particle"]["energy_GeV"].get<G4double>();
+  }
 
 DetectorConstruction::~DetectorConstruction(){  delete fStepLimit; }
 

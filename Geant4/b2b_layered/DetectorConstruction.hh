@@ -44,7 +44,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double GetLength() const { return volumeLength; }
     G4double GetROuter() const { return volumeROuter; }
     G4double GetRInner() const { return volumeRInner; }
-    
+    std::string GetParticleType() const { return particleType; }
+    G4double GetParticleEnergy() const { return particleEnergy; }
 
   private:
     void DefineMaterials();
@@ -68,6 +69,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double volumeLength;
     G4double volumeROuter;
     G4double volumeRInner;
+    
+    std::string particleType = "EMPTY";
+    G4double particleEnergy;   //[GeV]
 };
 
 }  // namespace B2b
