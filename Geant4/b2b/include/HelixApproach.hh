@@ -26,11 +26,6 @@ private:
     G4ThreeVector RotateToFieldAxis(const G4ThreeVector& v) const;
     G4ThreeVector RotateFromFieldAxis(const G4ThreeVector& v) const;
 
-    bool InGas(const G4ThreeVector& p,
-               G4double innerRadius,
-               G4double outerRadius,
-               G4double halfLength) const;
-
     G4ThreeVector fInitialPosition;
     G4ThreeVector fFieldAxis;
 
@@ -41,4 +36,5 @@ private:
     G4double fOmega = 0.0;
     G4double fRadius = 0.0;
     G4double fAlpha = 0.0;
+    G4double fSpeed = 0.0;
 };
