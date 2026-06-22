@@ -216,7 +216,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   // Current superlayer information
   int curSuperlayer = 0;
   int curSublayer = 0;
+  
   G4double curSpacing = (outerRadii[0]-rInner)/numSublayers[0];
+  G4double prevSpacing = curSpacing;
   G4double curThickness = curSpacing/std::tan(longAngle);
   
   bool isSwitched = false;
@@ -226,8 +228,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   for (int i = 0; i < maxI; i++) {
     G4double r2;
     
+    r1 += prevSpacing;
+    prevSpacing = curSpacing;
+    
     if (thickness < z2 && thickness + curThickness < z2){
-      r1 += curSpacing;
       r2 = r1 + curSpacing;
       
       thickness += curThickness;
@@ -236,13 +240,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       
       // Boundary between cone cutouts
       if (!isSwitched){
-        r1 += curSpacing;
         curThickness = curSpacing/std::tan(shortAngle);
         isSwitched = true;
-      } else {
-        r1 += curSpacing;
       }
-      
       r2 = r1 + curSpacing;
       
       thickness += curThickness;
@@ -251,7 +251,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     curSublayer++;
     G4int curNumSublayers = numSublayers[curSuperlayer];
     
-    // End if volume too thick, radius too large, or exceeded num of superlayers
+    // End if volume too thick, radius too large, or exceeded num superlayers
     if (thickness > z3  || r2 > rOuter
                         || (curSuperlayer == numSuperlayers-1 
                                 && curSublayer == curNumSublayers)){
