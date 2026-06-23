@@ -189,6 +189,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       r1 += 0.5 * cm;
       r2 = r1 + 0.5 * cm;
       thickness += thick1;
+      
     } else {
       if (!isSwitched){
         G4cout << "thickness = " << thickness << G4endl;
@@ -201,9 +202,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       thickness += thick2;
     }
     
-    if (r2 > rOuter || thickness > z3){
-      break;
-    }
+    if (r2 > rOuter || thickness > z3) break;
     
     layerFile << r1 << "," << r2 << "\n";
     

@@ -222,60 +222,43 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4double curThickness = curSpacing/std::tan(longAngle);
   
   bool isSwitched = false;
-  G4double r1 = rInner - curSpacing;
+  G4double r1;
+  G4double r2 = rInner;
   G4double thickness = z1;
   
   for (int i = 0; i < maxI; i++) {
-    G4double r2;
+    r1 = r2;
+    r2 += curSpacing;
     
-    r1 += prevSpacing;
-    prevSpacing = curSpacing;
-    
-    if (thickness < z2 && thickness + curThickness < z2){
-      r2 = r1 + curSpacing;
-      
-      thickness += curThickness;
-    
-    } else {
-      
-      // Boundary between cone cutouts
-      if (!isSwitched){
-        curThickness = curSpacing/std::tan(shortAngle);
-        isSwitched = true;
-      }
-      r2 = r1 + curSpacing;
-      
-      thickness += curThickness;
+    // Update at boundary between cone cutouts
+    if (!(thickness < z2 && thickness + curThickness < z2) && !isSwitched){
+      curThickness = curSpacing/std::tan(shortAngle);
+      isSwitched = true;
     }
+    
+    thickness += curThickness;
     
     curSublayer++;
     G4int curNumSublayers = numSublayers[curSuperlayer];
     
-    // End if volume too thick, radius too large, or exceeded num superlayers
-    if (thickness > z3  || r2 > rOuter
-                        || (curSuperlayer == numSuperlayers-1 
-                                && curSublayer == curNumSublayers)){
-        break;
-    }
+    // End if exceeded num superlayers
+    if (curSuperlayer+1 == numSuperlayers
+              && curSublayer == curNumSublayers) break;
     
     // Switch superlayers                      
     if (curSublayer == curNumSublayers) {
-        if (curSuperlayer + 1 >= numSuperlayers) break;
-
         curSuperlayer++;
         curSublayer = 0;
       
-      curSpacing = (outerRadii[curSuperlayer]-outerRadii[curSuperlayer-1])/curNumSublayers;
+        curSpacing = (outerRadii[curSuperlayer]-r2)/curNumSublayers;
       
-      if (!isSwitched){
-        curThickness = curSpacing/std::tan(longAngle);
-      }else{
-        curThickness = curSpacing/std::tan(shortAngle);
-      }
+        if (!isSwitched){
+          curThickness = curSpacing/std::tan(longAngle);
+        }else{
+          curThickness = curSpacing/std::tan(shortAngle);
+        }
       
-    }
-    
-                            
+    }                       
                             
     layerFile << r1 << "," << r2 << "\n";
     
@@ -335,7 +318,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   layerFile.close();
   
   // Create aluminum shell objects
-  G4Tubs* outShellS = new G4Tubs("outShellS", r1+curThickness, r1+curThickness+thicknessShell, thickness, startAngle, spanAngle);
+  G4Tubs* outShellS = new G4Tubs("outShellS", r2, r2+thicknessShell, thickness, startAngle, spanAngle);
   G4Tubs* inShellS = new G4Tubs("inShellS", rInner-thicknessShell, rInner, z1, startAngle, spanAngle);
   
   // Place volume with material in world

@@ -24,30 +24,36 @@ SteppingAction::SteppingAction(B2::EventAction* eventAction)
  : fEventAction(eventAction){}
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep) {
+    
+    //_________ Checking if particle is delta ray _________
+    
+    const G4RunManager* runManager = G4RunManager::GetRunManager();
+    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
+    
+    G4Track* track = aStep->GetTrack();
+    bool isMuon = true;
+  
+    const G4VProcess* creatorProcess = track->GetCreatorProcess();
+    if (creatorProcess) {
+      G4String procName = creatorProcess->GetProcessName();
+      if (procName.substr(procName.length() - 4) == "Ioni") isMuon = false; 
+    }
+    
+    //_____________ Collect stepping data ______________
+    
     G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
     G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
     
     G4VPhysicalVolume* preVol = preStepPoint->GetPhysicalVolume();
     G4VPhysicalVolume* postVol = postStepPoint->GetPhysicalVolume();
     
-    G4Track* track = aStep->GetTrack();
     G4ThreeVector entryPos = preStepPoint->GetPosition();
     
-    const G4RunManager* runManager = G4RunManager::GetRunManager();
-    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
-  
-    // Don't record data if particle is a delta ray
-    const G4VProcess* creatorProcess = track->GetCreatorProcess();
-    if (creatorProcess) {
-      G4String procName = creatorProcess->GetProcessName();
-      if (procName.substr(procName.length() - 4) == "Ioni") return;
-    }
-
     // Verify particle is inside the volume
     if (!preVol || !postVol) return;
 
     // Process only if the particle is currently inside a gas layer
-    if (preVol->GetName() == "GasLayerRing") {
+    if (preVol->GetName() == "GasLayerRing" && isMuon) {
         fEventAction->AddTrackedDistance(aStep->GetStepLength());
         G4int volumeID = preVol->GetCopyNo();
         G4int curIndex = fEventAction->GetCurIndex();
@@ -78,7 +84,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     
     // Get point particle enters gas volume
     if(preVol->GetName() != "GasLayerRing" &&
-        postVol->GetName() == "GasLayerRing"){
+        postVol->GetName() == "GasLayerRing" && isMuon){
 
         fEventAction->SetActualEntry(postStepPoint->GetPosition());
     }
@@ -117,6 +123,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
       stepFile.close();
       
       //____________ Get Entry and Exit Points to GasMix ____________ 
+      
+      if (!isMuon) return;
       
       G4ThreeVector fPredEntry = fEventAction->GetPredictedEntry();
       G4ThreeVector fPredExit  = fEventAction->GetPredictedExit();
