@@ -318,7 +318,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   layerFile.close();
   
   // Create aluminum shell objects
-  G4Tubs* outShellS = new G4Tubs("outShellS", r2, r2+thicknessShell, thickness, startAngle, spanAngle);
+  G4Tubs* outShellS = new G4Tubs("outShellS", r1, r1+thicknessShell, thickness, startAngle, spanAngle);
   G4Tubs* inShellS = new G4Tubs("inShellS", rInner-thicknessShell, rInner, z1, startAngle, spanAngle);
   
   // Place volume with material in world
