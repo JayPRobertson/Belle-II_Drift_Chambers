@@ -2,6 +2,13 @@
 
 Files for a basic drift chamber geometry built using a modified example in [v11.4.1 of Geant4](https://github.com/Geant4/geant4/tree/v11.4.1). It is based off of the [2010 Belle II Technical Design Report](https://docs.belle2.org/files/4270/BELLE2-REPORT-2016-001/1/BELLE2-REPORT-2016-001.pdf) (pp. 202–208).
 
+## Directory Descriptions
+`b2b` - A basic drift chamber geometry. Does not include wires, gas layers, or the ability to provide a geometry. Ouputs data as csv files.
+
+`b2b_layered` - A more advanced drift chamber geometry. Includes gas mixture as a set of layers rather than a solid volume. Includes an option to read in a more detailed geometry from a json file. Outputs data as csv files.
+
+`b2b_root` - A basic drift chamber geometry. Does not include wires, gas layers, or the ability to provide a geometry. Ouputs data as a root file.
+
 ## Running Files
 This geometry was built using the [B2b example](https://github.com/Geant4/geant4/tree/v11.4.1/examples/basic/B2/B2b) provided by Geant4 as a framework. Rather than adjusting the makefiles and namespace, it runs off of the b2b files with adjusted src, .mac, and exampleB2b.cc files. As such, this modified geometry can be easily run if the `geant4/examples/basic/B2/b2b` directory is replaced with the contents of the provided b2b file.
 
