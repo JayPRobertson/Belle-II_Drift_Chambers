@@ -10,23 +10,23 @@ HelixApproach::HelixApproach(
     G4double mass,
     G4double charge) : fInitialPosition(position) {
         
-    G4double B = magneticField.mag();
-    G4double q = charge * eplus * -1; 
-    G4double p = momentum.mag();
+    G4double B = magneticField.mag();   // magentic field strength
+    G4double q = charge * eplus * -1;   // particle charge
+    G4double p = momentum.mag();        // magnitude of momentum
     
-    G4double energy = std::sqrt(p*p + mass*mass);
-    G4double beta = p / energy;
-    fSpeed = beta * c_light;
+    G4double energy = std::sqrt(p*p + mass*mass);   // initial energy
+    G4double beta = p / energy;                     // particle speed as fraction of light speed
+    fSpeed = beta * c_light;                        // particle speed
 
-    fFieldAxis = magneticField.unit();
-    G4ThreeVector dir = RotateToFieldAxis(momentum.unit());
+    fFieldAxis = magneticField.unit();                          // axis of the magnetic field
+    G4ThreeVector dir = RotateToFieldAxis(momentum.unit());     // momentum direction 
 
-    fVparallel = fSpeed * dir.z();
-    fVperp = fSpeed * dir.rho();
+    fVparallel = fSpeed * dir.z();  // particle velocity parallel to B field
+    fVperp = fSpeed * dir.rho();    // particle velocity perpendicular to B field
     
-    fOmega = (q * B * c_light * c_light) / energy;
-    fRadius = (p * dir.rho()) / (std::abs(q) * B*c_light);
-    fAlpha = std::atan2(-dir.x(), dir.y());
+    fOmega = (q * B * c_light * c_light) / energy;           // cyclotron angular frequency of particle
+    fRadius = (p * dir.rho()) / (std::abs(q) * B*c_light);   // cyclotron radius
+    fAlpha = std::atan2(-dir.x(), dir.y());                  // cyclotron azimuthal angle
 
     fHelixCentre = G4ThreeVector(
         -fRadius * std::cos(fAlpha),
@@ -34,7 +34,7 @@ HelixApproach::HelixApproach(
         0.0);
 }
 
-
+// Rotates vector to magnetic field frame
 G4ThreeVector HelixApproach::RotateToFieldAxis(const G4ThreeVector& v) const {
     G4double ux = fFieldAxis.x();
     G4double uy = fFieldAxis.y();
@@ -49,6 +49,7 @@ G4ThreeVector HelixApproach::RotateToFieldAxis(const G4ThreeVector& v) const {
         ux*v.x() + uy*v.y() + uz*v.z());
 }
 
+// Rotates vector to lab frame
 G4ThreeVector HelixApproach::RotateFromFieldAxis(const G4ThreeVector& v) const {
     G4double ux = fFieldAxis.x();
     G4double uy = fFieldAxis.y();
@@ -63,6 +64,7 @@ G4ThreeVector HelixApproach::RotateFromFieldAxis(const G4ThreeVector& v) const {
         -rho*v.x() + uz*v.z());
 }
 
+// Gets particle position at time t if travelling in helix
 G4ThreeVector HelixApproach::Position(G4double t) const {
     G4ThreeVector shift(
         fRadius*std::cos(fOmega*t + fAlpha),
@@ -72,6 +74,7 @@ G4ThreeVector HelixApproach::Position(G4double t) const {
     return fInitialPosition + RotateFromFieldAxis(fHelixCentre + shift);
 }
 
+// Gets particle velocity at time t if travelling in helix
 G4ThreeVector HelixApproach::Velocity(G4double t) const {
     return RotateFromFieldAxis(
         G4ThreeVector(
@@ -80,6 +83,7 @@ G4ThreeVector HelixApproach::Velocity(G4double t) const {
              fVparallel));
 }
 
+// Gets particle direction at time t if travelling in helix
 G4ThreeVector HelixApproach::Direction(G4double t) const {
      return RotateFromFieldAxis(
         G4ThreeVector(
@@ -88,7 +92,7 @@ G4ThreeVector HelixApproach::Direction(G4double t) const {
              fVparallel/fSpeed));
 }
 
-
+// Gets the time a particle travelling in a helix would reach a position on the radius of a cylinder
 G4double HelixApproach::TimeAtCylinderRadius(G4double radius) const {
     G4ThreeVector position = Position(0.0);
     G4ThreeVector velocity = Velocity(0.0);
@@ -144,6 +148,7 @@ G4double HelixApproach::TimeAtCylinderRadius(G4double radius) const {
     return tpos;
 }
 
+// Gets theoretical positions a particle enters and exits the gas volume
 void HelixApproach::FindGasVolumeCrossings(
     G4double innerRadius,
     G4double outerRadius,
@@ -157,6 +162,7 @@ void HelixApproach::FindGasVolumeCrossings(
     G4double tEntry = TimeAtCylinderRadius(innerRadius);
     G4double tExit = TimeAtCylinderRadius(outerRadius);
 
+    // Exit if time is negative
     if(tEntry < 0 || tExit < 0) return;
 
     G4ThreeVector pEntry = Position(tEntry);

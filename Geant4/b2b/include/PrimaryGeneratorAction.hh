@@ -6,7 +6,7 @@
 class G4ParticleGun;
 class G4Event;
 
-namespace B2{
+namespace B2 {
 
 class EventAction;
 
@@ -20,8 +20,8 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction{
         G4ParticleGun* GetParticleGun() { return fParticleGun; }
     
     private:
-        G4ParticleGun* fParticleGun = nullptr;  // G4 particle gun 
-        EventAction* fEventAction = nullptr;
+        G4ParticleGun* fParticleGun = nullptr;
+        EventAction* fEventAction = nullptr;  
     
 };
 

@@ -30,6 +30,8 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEvent
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     
+  // ___ Generate a track starting at the origin going in a random direction ___ //
+
     G4double cosTheta = 2.0*G4UniformRand() - 1.0;
     G4double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
 
@@ -44,11 +46,13 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     fParticleGun->SetParticleMomentumDirection(direction);
     fParticleGun->GeneratePrimaryVertex(event);
-    
+
+    // ___ Get theoretical positions particle enters and exits the gas volume ___ //
 
     G4ThreeVector entry;
     G4ThreeVector exit;
 
+    // Gas volume dimensions
     G4double rOuter = 109.6 *cm; 
     G4double rInner = 16.0 *cm;  
     G4double length = 241.69 *cm;
@@ -64,7 +68,6 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     G4double charge = fParticleGun->GetParticleDefinition()->GetPDGCharge()/CLHEP::eplus;
 
     HelixApproach helix(currentPos, momentum, G4ThreeVector(0,0,1.5*tesla), muMass, charge);
-
     helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
 
     fEventAction->SetPredictedEntry(entry);

@@ -22,11 +22,12 @@ void EventAction::BeginOfEventAction(const G4Event*) {
         fTrackerHCID = G4SDManager::GetSDMpointer()->GetCollectionID("TrackerHitsCollection");
   }
 
-  fTrackedDistance = 0.0;
-  
+  fTrackedDistance = 0.0; // reset total track length when new track created
 }
 
 void EventAction::EndOfEventAction(const G4Event* event){
+
+  // ___________________ Write out event data _______________________ //
   
   // Open csv file to write out data
   std::ofstream eventsFile("event_action_data.csv", std::ios_base::app);

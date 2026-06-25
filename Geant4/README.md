@@ -1,6 +1,6 @@
 # Geant4 Drift Chamber
 
-Files for a basic drift chamber geometry built using a modified example in [v11.4.1 of Geant4](https://github.com/Geant4/geant4/tree/v11.4.1). It is based off of the [2010 Belle II Technical Design Report](https://docs.belle2.org/files/4270/BELLE2-REPORT-2016-001/1/BELLE2-REPORT-2016-001.pdf) (pp. 205–208).
+Files for a basic drift chamber geometry built using a modified example in [v11.4.1 of Geant4](https://github.com/Geant4/geant4/tree/v11.4.1). It is based off of the [2010 Belle II Technical Design Report](https://docs.belle2.org/files/4270/BELLE2-REPORT-2016-001/1/BELLE2-REPORT-2016-001.pdf) (pp. 202–208).
 
 ## Running Files
 This geometry was built using the [B2b example](https://github.com/Geant4/geant4/tree/v11.4.1/examples/basic/B2/B2b) provided by Geant4 as a framework. Rather than adjusting the makefiles and namespace, it runs off of the b2b files with adjusted src, .mac, and exampleB2b.cc files. As such, this modified geometry can be easily run if the `geant4/examples/basic/B2/b2b` directory is replaced with the contents of the provided b2b file.
@@ -28,3 +28,15 @@ Outputs three csv files of collected data. Filepath of output is set as `Python/
 
 ## Supplementary Material
 - [Analysis of collected data](https://github.com/JayPRobertson/Belle-II/blob/main/Python/geant4_data_analysis.ipynb)
+
+## Geant4 License and Disclaimer
+The following disclaimer was removed from all file headers, but its validity still holds for any use of the software found in this directory:
+
+```
+The Geant4 software is copyright of the Copyright Holders of the Geant4 Collaboration. It is provided under the terms and conditions of the Geant4 Software License,  included in the file LICENSE and available at http://cern.ch/geant4/license. These include a list of copyright holders.
+
+Neither the authors of this software system, nor their employing institutes, nor the agencies providing financial support for this work make any representation or warranty, express or implied, regarding this software system or assume any liability for its use. Please see the license in the file LICENSE and URL above for the full disclaimer and the limitation of liability.
+
+This code implementation is the result of the scientific and technical work of the GEANT4 collaboration. By using, copying, modifying or distributing the software (or any work based on the software) you agree to acknowledge its use in resulting scientific publications, and indicate your acceptance of all terms of the Geant4 Software license.
+```
+Learn more about the Geant4 license at:  http://cern.ch/geant4/license .

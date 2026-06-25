@@ -38,11 +38,11 @@ class EventAction : public G4UserEventAction{
     
 
 private:
-    G4double fTrackedDistance = 0.0;
+    G4double fTrackedDistance = 0.0; // Total length of track through gas chamber
 
     G4ThreeVector fPredEntry;
     G4ThreeVector fPredExit;
-
+    
     G4ThreeVector fActEntry;
     G4ThreeVector fActExit;
     

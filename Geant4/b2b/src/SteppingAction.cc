@@ -37,9 +37,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep){
     }
   }
 
+  // Positions of particle before and after step
   G4StepPoint* preStepPoint  = aStep->GetPreStepPoint();
   G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
 
+  // Volumes particle is in before and after step
   G4VPhysicalVolume* preVol  = preStepPoint->GetPhysicalVolume();
   G4VPhysicalVolume* postVol = postStepPoint->GetPhysicalVolume();
   
@@ -58,10 +60,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep){
       fEventAction->SetActualEntry(postStepPoint->GetPosition());
   }
 
+  // Update collected data when particle exits gas volume
   if(preVol->GetName() == "CylinderPhys" &&
      postVol->GetName() != "CylinderPhys"){
       
-      //_______________ Calculate Mean Energy Loss __________________
+      //_______________ Calculate mean energy loss __________________
       
       G4double energy = preStepPoint->GetKineticEnergy();
       G4Material* material = preStepPoint->GetMaterial();
@@ -91,7 +94,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep){
       
       if (!isMuon) return;
       
-      //____________ Get Entry and Exit Points to GasMix ____________ 
+      //____________ Get entry and exit points to gas volume ____________ 
       
       G4ThreeVector fPredEntry = fEventAction->GetPredictedEntry();
       G4ThreeVector fPredExit  = fEventAction->GetPredictedExit();

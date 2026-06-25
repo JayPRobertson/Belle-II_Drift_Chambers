@@ -12,13 +12,11 @@ class G4Material;
 class G4UserLimits;
 class G4GlobalMagFieldMessenger;
 
-namespace B2b
-{
+namespace B2b {
 
 class DetectorMessenger;
 
-class DetectorConstruction : public G4VUserDetectorConstruction
-{
+class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
     DetectorConstruction();
     ~DetectorConstruction() override;
@@ -39,10 +37,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
     static G4ThreadLocal G4GlobalMagFieldMessenger* fMagFieldMessenger;
 
-    DetectorMessenger* fMessenger = nullptr; 
-    G4UserLimits* fStepLimit = nullptr;
+    DetectorMessenger* fMessenger = nullptr;  // messenger
+    G4UserLimits* fStepLimit = nullptr; // pointer to user step limits
 
-    G4bool fCheckOverlaps = true; 
+    G4bool fCheckOverlaps = true; // option to activate checking of volumes overlaps
 };
 
 }  // namespace B2b

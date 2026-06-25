@@ -26,15 +26,15 @@ private:
     G4ThreeVector RotateToFieldAxis(const G4ThreeVector& v) const;
     G4ThreeVector RotateFromFieldAxis(const G4ThreeVector& v) const;
 
-    G4ThreeVector fInitialPosition;
-    G4ThreeVector fFieldAxis;
+    G4ThreeVector fInitialPosition; // particle starting position
+    G4ThreeVector fFieldAxis;       // axis of the magnetic field
 
     G4ThreeVector fHelixCentre;
 
-    G4double fVparallel = 0.0;
-    G4double fVperp = 0.0;
-    G4double fOmega = 0.0;
-    G4double fRadius = 0.0;
-    G4double fAlpha = 0.0;
-    G4double fSpeed = 0.0;
+    G4double fVparallel = 0.0;      // particle velocity parallel to B field
+    G4double fVperp = 0.0;          // particle velocity perpendicular to B field
+    G4double fOmega = 0.0;          // cyclotron angular frequency of particle
+    G4double fRadius = 0.0;         // cyclotron radius
+    G4double fAlpha = 0.0;          // cyclotron azimuthal angle
+    G4double fSpeed = 0.0;          // particle speed
 };

@@ -7,7 +7,7 @@
 class G4Step;
 
 namespace B2 {
-class EventAction;
+    class EventAction;
 }
 
 class SteppingAction: public G4UserSteppingAction {
