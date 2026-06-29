@@ -48,6 +48,18 @@ target_link_libraries(exampleB2b PRIVATE
     ROOT::MathCore
 )
 
+add_library(exampleB2blib SHARED exampleB2b.cc ${sources} ${headers} G__TrackedParticle.cxx)
+target_include_directories(exampleB2blib PRIVATE include)
+
+# Link both Geant4 and ROOT libraries explicitly to the target executable
+target_link_libraries(exampleB2blib PRIVATE 
+    ${Geant4_LIBRARIES} 
+    ROOT::Core 
+    ROOT::RIO 
+    ROOT::Tree 
+    ROOT::MathCore
+)
+
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory
 #
@@ -68,3 +80,4 @@ foreach(_script ${EXAMPLEB2B_SCRIPTS})
     COPYONLY
   )
 endforeach()
+

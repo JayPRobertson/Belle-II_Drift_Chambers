@@ -8,23 +8,29 @@
 #include "G4SystemOfUnits.hh"
 #include "globals.hh"
 #include "HelixApproach.hh"
-#include "G4MuonMinus.hh"
+#include "G4RunManager.hh"
 
 #include "Randomize.hh"
 #include <cmath>
+#include <string>
+#include <nlohmann/json.hpp>
 
 #include "EventAction.hh"
+#include "DetectorConstruction.hh"
 
 namespace B2{
   
 PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEventAction(eventAction){
   G4int nofParticles = 1;
   fParticleGun = new G4ParticleGun(nofParticles);
+  
+  const G4RunManager* runManager = G4RunManager::GetRunManager();
+  const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
 
-  G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle("mu-");
+  G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle(detectorConstruction->GetParticleType());
 
   fParticleGun->SetParticleDefinition(particleDefinition);
-  fParticleGun->SetParticleEnergy(2.0 *GeV);
+  fParticleGun->SetParticleEnergy(detectorConstruction->GetParticleEnergy() * GeV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0,0,0));
 } 
 
@@ -44,28 +50,34 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     fParticleGun->SetParticleMomentumDirection(direction);
     fParticleGun->GeneratePrimaryVertex(event);
-    
 
     G4ThreeVector entry;
     G4ThreeVector exit;
-
-    G4double rOuter = 109.6 *cm; 
-    G4double rInner = 16.0 *cm;  
-    G4double length = 241.69 *cm;
     
-    G4double muMass = G4MuonMinus::Definition()->GetPDGMass();
+    const G4RunManager* runManager = G4RunManager::GetRunManager();
+    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
+    
+    G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+    G4ParticleDefinition* particle = particleTable->FindParticle(detectorConstruction->GetParticleType());
+    G4double particleMass = particle->GetPDGMass() *MeV;
     G4ThreeVector currentPos = fParticleGun->GetParticlePosition();
 
     G4double energy = fParticleGun->GetParticleEnergy();
-    G4double pMag = std::sqrt(energy*energy - muMass*muMass);
+    G4double pMag = std::sqrt(energy*energy - particleMass*particleMass);
     G4ThreeVector momentum = pMag*direction;
+    
+    G4ThreeVector magneticField = detectorConstruction->GetMagneticField();
     
     G4double charge = fParticleGun->GetParticleDefinition()->GetPDGCharge()/CLHEP::eplus;
 
-    HelixApproach helix(currentPos, momentum, G4ThreeVector(0,0,1.5*tesla), muMass, charge);
+    HelixApproach helix( currentPos, momentum, magneticField, particleMass, charge);
+    
+    G4double length = detectorConstruction->GetLength(); 
+    G4double rInner = detectorConstruction->GetRInner();  
+    G4double rOuter = detectorConstruction->GetROuter();
 
     helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
-
+    
     fEventAction->SetPredictedEntry(entry);
     fEventAction->SetPredictedExit(exit);
     

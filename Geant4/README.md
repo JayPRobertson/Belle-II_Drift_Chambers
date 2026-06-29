@@ -33,6 +33,8 @@ Outputs three csv files of collected data. Filepath of output is set as `Python/
 - `event_action_data.csv` - hit energy and hit positions
 - `init_step_data.csv` - initial energy and position, and dEdx over volume
 
+The `b2b_layered` and `b2b_superlayers` geometries also output additional files specified in their directories. 
+
 ## Supplementary Material
 - [Analysis of collected data](https://github.com/JayPRobertson/Belle-II/blob/main/Python/geant4_data_analysis.ipynb)
 

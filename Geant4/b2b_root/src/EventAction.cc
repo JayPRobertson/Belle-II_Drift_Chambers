@@ -21,9 +21,27 @@ void EventAction::BeginOfEventAction(const G4Event*) {
   if (fTrackerHCID == -1) {
         fTrackerHCID = G4SDManager::GetSDMpointer()->GetCollectionID("TrackerHitsCollection");
   }
-
+  
   fTrackedDistance = 0.0;
+  
+  // Reset tracking variables
+  prePosX = "";
+  prePosY = "";
+  prePosZ = "";
+  
+  postPosX = "";
+  postPosY = "";
+  postPosZ = "";
+  
+  totEdep = "";
+  
+  fTrackedEdep = 0.0;
+  curIndex = -1;
   fParticleID++;
+  
+  enteredGas = false;
+  
+  
 }
 
 void EventAction::EndOfEventAction(const G4Event* event){
@@ -31,7 +49,7 @@ void EventAction::EndOfEventAction(const G4Event* event){
   // ___________________ Write out event data _______________________ //
   
   // Open csv file to write out data
-  std::ofstream eventsFile("event_action_data.csv", std::ios_base::app);
+  std::ofstream eventsFile("event_action_data_layered.csv", std::ios_base::app);
   
   // Get number of stored trajectories
   G4TrajectoryContainer* trajectoryContainer = event->GetTrajectoryContainer();
@@ -83,6 +101,23 @@ void EventAction::EndOfEventAction(const G4Event* event){
       eventsFile << "0,,,\n";
     }
   }
+  
+  // Close file
+  eventsFile.close(); 
+  
+  // _____________ Write out energy deposition data __________________ //
+  
+  std::ofstream layerFile("layered_edep_data.csv", std::ios_base::app);
+  
+  std::string index = std::to_string(eventID) + ",";
+  std::string prePos = GetPrePos();
+  std::string postPos = GetPostPos();
+  std::string totEdep = GetTotEdep();
+  
+  layerFile << index << prePos << postPos << totEdep << "\n";
+  
+  layerFile.close();
+
 }
 
 }  // namespace B2

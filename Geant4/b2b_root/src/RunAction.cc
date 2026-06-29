@@ -33,7 +33,7 @@ void readNTuple( const std::string fileName = "particle_and_track_data.root" ){
 
     for ( Long64_t i = 0; i < input_tree->GetEntries(); i++ ){
         input_tree->GetEntry( i );     
-        G4cout << "Particle:\n" 
+        G4cout << "Particle #" << i << ":\n"
                   << "======== \n" 
                   << "            Energy = " << particle->getEnergy() << "\n"
                   << "Summed energy loss = " << particle->getEnergyLoss() 
@@ -62,7 +62,7 @@ void readNTuple( const std::string fileName = "particle_and_track_data.root" ){
 void RunAction::EndOfRunAction(const G4Run*) {
   TrackNTupleSvc::instance().fillTree(); 
   TrackNTupleSvc::instance().fileClose();
-  readNTuple();
+  //readNTuple();
 }
 
 
