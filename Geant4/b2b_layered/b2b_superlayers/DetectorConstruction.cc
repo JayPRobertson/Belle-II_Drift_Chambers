@@ -298,7 +298,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     cylRingLog->SetVisAttributes(gasVisAtt);
     cylRingLog->SetUserLimits(fStepLimit);
     
-    new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), cylRingLog, "GasLayerRing", worldLV, false, i, false);
+    new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), cylRingLog, "GasLayerRing", worldLV, false, 20000+i, false);
     
     SetSensitiveDetector(cylRingLog, trackerSD);
     
@@ -310,8 +310,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       
       G4double pos = thickness + curThickness;
       
-      new G4PVPlacement(nullptr, G4ThreeVector(0, 0, pos), ringLog, "EndplateRing_Pos", worldLV, false, i, false);
-      new G4PVPlacement(nullptr, G4ThreeVector(0, 0, -pos), ringLog, "EndplateRing_Neg", worldLV, false, i, false);
+      new G4PVPlacement(nullptr, G4ThreeVector(0, 0, pos), ringLog, "EndplateRing_Pos", worldLV, false, 30000+i, false);
+      new G4PVPlacement(nullptr, G4ThreeVector(0, 0, -pos), ringLog, "EndplateRing_Neg", worldLV, false, 40000+i, false);
     }
   }
   

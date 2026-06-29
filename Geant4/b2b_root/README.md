@@ -1,13 +1,9 @@
 # Outputting data as a ROOT file
 
-## Running files
-After copying these files to the B2b directory of Geant4's examples, this program is run in identical manner to the one specified previously:
-```
-cd geant4/examples/basic/B2/b2b/build
-cmake ../
-chmod +x run_exampleb2b.sh
-./run_exampleb2b.sh
-```
+## Running Files
+This code is a supplemental to the main body of code in `b2b`. Replace select files in `b2b` directory with those in `b2b_layered` and run as normal. It uses the `b2b_superlayers` detector geometry, but outputs data differently. 
+
+For more information on running this geometry, see the README of the `b2b_layered/b2b_superlayers` directory.
 
 ## Output
 Outputs one ROOT file of collected data and one .so file. The ROOT file does not collect all the data that the csv files output by the `b2b` and `b2b_layered` examples do, but instead a more minimal version. Filepath of output is set as `Python/root/`and can be modified in `run_exampleb2b.sh`.

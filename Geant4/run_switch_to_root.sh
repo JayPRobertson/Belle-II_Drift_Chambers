@@ -1,8 +1,6 @@
 #!/bin/bash
 
-FILEPATH="$HOME/Desktop/Belle II/Geant4/b2b_layered"
-
-./run_switch_to_b2b.sh
+FILEPATH="$HOME/Desktop/Belle II/Geant4/b2b_root"
 
 cp "$FILEPATH"/*.cc ../src/
 cp "$FILEPATH"/*.hh ../include/

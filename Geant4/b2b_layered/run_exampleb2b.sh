@@ -2,7 +2,7 @@
 
 FILEPATH="$HOME/Desktop/Belle II/Python/csv/layered"
 
-rm -f event_action_data.csv layered_edep_data.csv layer_radius.csv init_step_data.csv entry_exit_data.csv
+rm *.csv
 
 echo "event_id,num_trajectory,num_hits,energies,hitx,hity,hitz" > event_action_data_layered.csv
 
@@ -17,8 +17,10 @@ echo "energies,initx,inity,initz,tot_dist,dEdx,beta_gamma" > init_step_data.csv
 make
 ./exampleB2b
 
-cp event_action_data_layered.csv "$FILEPATH/"
-cp layered_edep_data.csv "$FILEPATH/"
-cp layer_radius.csv "$FILEPATH/"
-cp init_step_data.csv "$FILEPATH/"
-cp entry_exit_data.csv "$FILEPATH/"
+mv event_action_data_layered.csv "$FILEPATH/"
+mv layered_edep_data.csv "$FILEPATH/"
+mv layer_radius.csv "$FILEPATH/"
+mv init_step_data.csv "$FILEPATH/"
+mv entry_exit_data.csv "$FILEPATH/"
+
+

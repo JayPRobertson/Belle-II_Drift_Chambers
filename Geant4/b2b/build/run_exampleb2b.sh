@@ -2,7 +2,7 @@
 
 FILEPATH="$HOME/Desktop/Belle II"
 
-rm -f event_action_data.csv init_step_data.csv entry_exit_data.csv
+rm *.csv
 
 echo "event_id,num_trajectory,num_hits,energies,hitx,hity,hitz" > event_action_data.csv
 
@@ -13,6 +13,6 @@ echo "energies,initx,inity,initz,tot_dist,dEdx,beta_gamma" > init_step_data.csv
 make
 ./exampleB2b
 
-cp event_action_data.csv "$FILEPATH/Python/csv/hits/"
-cp init_step_data.csv "$FILEPATH/Python/csv/hits/"
-cp entry_exit_data.csv "$FILEPATH/Python/csv/hits/"
+mv event_action_data.csv "$FILEPATH/Python/csv/hits/"
+mv init_step_data.csv "$FILEPATH/Python/csv/hits/"
+mv entry_exit_data.csv "$FILEPATH/Python/csv/hits/"

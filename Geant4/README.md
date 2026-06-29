@@ -23,7 +23,7 @@ chmod +x run_exampleb2b.sh
 
 Make sure to adjust the filepath in `run_exampleb2b.sh` before running.
 
-Two files, `run_switch_to_b2b.sh` and `run_switch_to_layered.sh`, have been included to help switch between the two detector geometries in `b2b` and `b2b_layered`.
+Three `run_switch_to_<geometry name>.sh` files have been provided to easily switch between the different b2b geometries in this directory. To use one, copy it to the `build` directory and run it using `./run_switch_to_<geometry name>.sh`
 
 ## Output
 
@@ -33,7 +33,7 @@ Outputs three csv files of collected data. Filepath of output is set as `Python/
 - `event_action_data.csv` - hit energy and hit positions
 - `init_step_data.csv` - initial energy and position, and dEdx over volume
 
-The `b2b_layered` and `b2b_superlayers` geometries also output additional files specified in their directories. 
+The `b2b_layered` and `b2b_superlayers` geometries also output additional files specified in their directories.
 
 ## Supplementary Material
 - [Analysis of collected data](https://github.com/JayPRobertson/Belle-II/blob/main/Python/geant4_data_analysis.ipynb)
