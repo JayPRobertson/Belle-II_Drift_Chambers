@@ -17,3 +17,5 @@ root particle_and_track_data.root
 gSystem->Load("libexampleB2blib.so");
 TBrowser b
 ```
+
+Sample data output can be found in `Python/root`.
