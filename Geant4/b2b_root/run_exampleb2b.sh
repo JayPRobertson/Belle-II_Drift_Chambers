@@ -2,12 +2,23 @@
 
 FILEPATH="$HOME/Desktop/Belle II/Python/root"
 
+# Command-line args
+FILENAME="$0"
+SEED="$1"
+
 make
-./exampleB2b
+
+if [ "$SEED" ]; then
+   echo "============ Random generator seed detected ============"
+   ./exampleB2b "$SEED" 
+else
+   ./exampleB2b
+fi
 
 mv particle_and_track_data.root "$FILEPATH/particle_and_track_data.root"
 
 ln -s libexampleB2blib.dylib libexampleB2blib.so
-mv libexampleB2blib.so "$FILEPATH/"
+cp libexampleB2blib.so "$FILEPATH/"
 
 rm *.csv
+rm *.so

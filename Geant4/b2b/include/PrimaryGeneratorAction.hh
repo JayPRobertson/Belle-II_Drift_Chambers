@@ -22,6 +22,7 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction{
     private:
         G4ParticleGun* fParticleGun = nullptr;
         EventAction* fEventAction = nullptr;  
+        int fPrimaryCount = 0;
     
 };
 

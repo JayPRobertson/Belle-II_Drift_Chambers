@@ -13,15 +13,23 @@ int main(int argc, char** argv){
   // Detect interactive mode (if no arguments) and define UI session
   G4UIExecutive* ui = nullptr;
   
-  if (argc == 1) {
-    ui = new G4UIExecutive(argc, argv);
-  }
+  ui = new G4UIExecutive(argc, argv);
   
   // Construct the default run manager
   auto runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::SerialOnly);
   
   // Set mandatory initialization classes
   runManager->SetUserInitialization(new B2b::DetectorConstruction());
+  
+  B2b::DetectorConstruction* detectorConstruction = dynamic_cast<B2b::DetectorConstruction*>(const_cast<G4VUserDetectorConstruction*>(runManager->GetUserDetectorConstruction()));
+  
+  G4cout << "Number of arguments = " << argc << G4endl;
+  
+  if (argc == 2 && detectorConstruction){
+    int seed = std::stoi(argv[1]);
+    G4cout << "Ran gen seed set as: " << seed << G4endl;
+    detectorConstruction->SetSeed(seed);
+  }
 
   auto physicsList = new FTFP_BERT;
   physicsList->RegisterPhysics(new G4StepLimiterPhysics());

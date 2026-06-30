@@ -23,6 +23,8 @@ chmod +x run_exampleb2b.sh
 
 Make sure to adjust the filepath in `run_exampleb2b.sh` before running.
 
+The initial momentum of the generated particles along each track are generated randomly. The seed for the random geenrator can be optionally set by passing it as a command line argument, e.g. `./run_exampleb2b.sh 12345`
+
 Three `run_switch_to_<geometry name>.sh` files have been provided to easily switch between the different b2b geometries in this directory. To use one, copy it to the `build` directory and run it using `./run_switch_to_<geometry name>.sh`
 
 ## Output

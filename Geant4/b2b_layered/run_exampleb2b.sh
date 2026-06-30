@@ -2,6 +2,10 @@
 
 FILEPATH="$HOME/Desktop/Belle II/Python/csv/layered"
 
+# Command-line args
+FILENAME="$0"
+SEED="$1"
+
 rm *.csv
 
 echo "event_id,num_trajectory,num_hits,energies,hitx,hity,hitz" > event_action_data_layered.csv
@@ -14,8 +18,12 @@ echo "initx_p,inity_p,initz_p,actx_ent,acty_ent,actz_ent,actx_exit,acty_exit,act
 
 echo "energies,initx,inity,initz,tot_dist,dEdx,beta_gamma" > init_step_data.csv
 
-make
-./exampleB2b
+if [ "$SEED" ]; then
+   echo "============ Random generator seed detected ============"
+   ./exampleB2b "$SEED" 
+else
+   ./exampleB2b
+fi
 
 mv event_action_data_layered.csv "$FILEPATH/"
 mv layered_edep_data.csv "$FILEPATH/"

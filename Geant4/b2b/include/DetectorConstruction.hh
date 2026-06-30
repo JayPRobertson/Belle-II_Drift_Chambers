@@ -30,6 +30,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     void SetChamberMaterial(G4String);
     void SetMaxStep(G4double);
     void SetCheckOverlaps(G4bool);
+    
+    void SetSeed(int seed) { fSeed = seed; }
+    int GetSeed() const { return fSeed; }
 
   private:
     void DefineMaterials();
@@ -41,6 +44,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4UserLimits* fStepLimit = nullptr; // pointer to user step limits
 
     G4bool fCheckOverlaps = true; // option to activate checking of volumes overlaps
+    
+    int fSeed = -1;
 };
 
 }  // namespace B2b

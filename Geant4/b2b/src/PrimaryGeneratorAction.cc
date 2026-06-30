@@ -9,11 +9,13 @@
 #include "globals.hh"
 #include "HelixApproach.hh"
 #include "G4MuonMinus.hh"
+#include "G4RunManager.hh"
 
 #include "Randomize.hh"
 #include <cmath>
 
 #include "EventAction.hh"
+#include "DetectorConstruction.hh"
 
 namespace B2{
   
@@ -29,6 +31,12 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEvent
 } 
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
+    const G4RunManager* runManager = G4RunManager::GetRunManager();
+    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
+  
+    int seed = detectorConstruction->GetSeed();
+    if (seed >= 0) G4Random::setTheSeed(seed + fPrimaryCount);
+    fPrimaryCount++;
     
   // ___ Generate a track starting at the origin going in a random direction ___ //
 

@@ -35,6 +35,12 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEvent
 } 
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
+    const G4RunManager* runManager = G4RunManager::GetRunManager();
+    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
+  
+    int seed = detectorConstruction->GetSeed();
+    if (seed >= 0) G4Random::setTheSeed(seed + fPrimaryCount);
+    fPrimaryCount++;
     
     G4double cosTheta = 2.0*G4UniformRand() - 1.0;
     G4double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
@@ -53,9 +59,6 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     G4ThreeVector entry;
     G4ThreeVector exit;
-    
-    const G4RunManager* runManager = G4RunManager::GetRunManager();
-    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
     
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition* particle = particleTable->FindParticle(detectorConstruction->GetParticleType());
