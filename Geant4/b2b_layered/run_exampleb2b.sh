@@ -18,6 +18,8 @@ echo "initx_p,inity_p,initz_p,actx_ent,acty_ent,actz_ent,actx_exit,acty_exit,act
 
 echo "energies,initx,inity,initz,tot_dist,dEdx,beta_gamma" > init_step_data.csv
 
+make
+
 if [ "$SEED" ]; then
    echo "============ Random generator seed detected ============"
    ./exampleB2b "$SEED" 

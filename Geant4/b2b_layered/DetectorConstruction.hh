@@ -47,7 +47,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     std::string GetParticleType() const { return particleType; }
     G4double GetParticleEnergy() const { return particleEnergy; }
     
-    void SetSeed(int seed) const { fSeed = seed; }
+    void SetSeed(int seed) { fSeed = seed; }
     int GetSeed() const { return fSeed; }
 
   private:
