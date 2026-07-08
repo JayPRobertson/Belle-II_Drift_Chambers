@@ -9,22 +9,24 @@ HelixApproach::HelixApproach(
     const G4ThreeVector& magneticField,
     G4double mass,
     G4double charge) : fInitialPosition(position) {
+    
+    fMomentum = momentum;
         
     G4double B = magneticField.mag();   // magentic field strength
     G4double q = charge * eplus * -1;   // particle charge
     G4double p = momentum.mag();        // magnitude of momentum
     
-    G4double energy = std::sqrt(p*p + mass*mass);   // initial energy
-    G4double beta = p / energy;                     // particle speed as fraction of light speed
-    fSpeed = beta * c_light;                        // particle speed
+    fEnergy = std::sqrt(p*p + mass*mass);   // initial energy
+    G4double beta = p / fEnergy;            // particle speed as fraction of light speed
+    fSpeed = beta * c_light;                // particle speed
 
-    fFieldAxis = magneticField.unit();                          // axis of the magnetic field
+    fFieldAxis = magneticField.unit();      // axis of the magnetic field
     G4ThreeVector dir = RotateToFieldAxis(momentum.unit());     // momentum direction 
 
     fVparallel = fSpeed * dir.z();  // particle velocity parallel to B field
     fVperp = fSpeed * dir.rho();    // particle velocity perpendicular to B field
     
-    fOmega = (q * B * c_light * c_light) / energy;           // cyclotron angular frequency of particle
+    fOmega = (q * B * c_light * c_light) / fEnergy;           // cyclotron angular frequency of particle
     fRadius = (p * dir.rho()) / (std::abs(q) * B*c_light);   // cyclotron radius
     fAlpha = std::atan2(-dir.x(), dir.y());                  // cyclotron azimuthal angle
 
@@ -121,13 +123,14 @@ G4double HelixApproach::TimeAtCylinderRadius(G4double radius) const {
     
     G4double func = 0.0;
     G4int count = 0;
-    G4int maxCount = 500; 
+    G4int maxCount = 1000; 
     const G4double epsilon = 1e-5 * mm * mm; 
 
     do {
         if (count >= maxCount){
-            G4cout << "ERROR: Count exceeded limit. Current tpos = " 
-                   << tpos << G4endl;
+            G4cout << "ERROR: Count exceeded limit. Current tpos = " << tpos 
+                   << ", energy = " << fEnergy 
+                   << ", momentum = " << fMomentum << G4endl;
             return -1.0;
         }
 

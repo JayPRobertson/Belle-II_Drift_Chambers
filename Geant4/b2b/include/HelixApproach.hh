@@ -37,4 +37,7 @@ private:
     G4double fRadius = 0.0;         // cyclotron radius
     G4double fAlpha = 0.0;          // cyclotron azimuthal angle
     G4double fSpeed = 0.0;          // particle speed
+    
+    G4double fEnergy = 0.0;         // particle initial energy
+    G4ThreeVector fMomentum;        // particle initial momentum
 };

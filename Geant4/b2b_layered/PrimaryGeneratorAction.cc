@@ -40,6 +40,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
   
     int seed = detectorConstruction->GetSeed();
     if (seed >= 0) G4Random::setTheSeed(seed + fPrimaryCount);
+    if (!fPrimaryCount) G4cout << "SEED = " << seed << G4endl;
     fPrimaryCount++;
     
     G4double cosTheta = 2.0*G4UniformRand() - 1.0;
