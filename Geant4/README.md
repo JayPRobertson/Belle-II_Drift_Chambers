@@ -5,14 +5,22 @@ Files for a basic drift chamber geometry built using a modified example in [v11.
 ## Directory Descriptions
 `b2b` - A basic drift chamber geometry. Does not include wires, gas layers, or the ability to provide a geometry. Ouputs data as csv files.
 
-`b2b_layered` - A more advanced drift chamber geometry. Includes gas mixture as a set of layers rather than a solid volume. Includes an option to read in a more detailed geometry from a json file. Outputs data as csv files.
+`b2b_kalman` - A basic drift chamber geometry (built off of `b2b_superlayers`). Includes gas mixture as a set of layers rather than a solid volume and reads geometry from a json file. Ouputs some data as a csv file and other data printed to terminal.
 
-`b2b_root` - A basic drift chamber geometry. Does not include wires, gas layers, or the ability to provide a geometry. Ouputs data as a root file.
+`b2b_layered` - A more advanced drift chamber geometry. Includes gas mixture as a set of layers rather than a solid volume. Includes an option to read in a more detailed geometry from a json file (sub-directory `b2b_superlayers`). Outputs data as csv files.
+
+`b2b_root` - A more advanced drift chamber geometry (built off of `b2b_superlayers`). Includes gas mixture as a set of layers rather than a solid volume and reads geometry from a json file. Ouputs data as a root file.
+
 
 ## Running Files
 This geometry was built using the [B2b example](https://github.com/Geant4/geant4/tree/v11.4.1/examples/basic/B2/B2b) provided by Geant4 as a framework. Rather than adjusting the makefiles and namespace, it runs off of the b2b files with adjusted src, .mac, and exampleB2b.cc files. As such, this modified geometry can be easily run if the `geant4/examples/basic/B2/b2b` directory is replaced with the contents of the provided b2b file.
 
-One the directory is replaced, run using the Geant4 visualization UI:
+One the directory is replaced, set up the environmental variables for Geant4 (`geant4.sh`) and ROOT (`thisroot.sh`). This can be done by executing the files `geant4.sh` and `thisroot.sh` respectively. An example of this may look like:
+```
+source ~/geant4/source/bin/geant4.sh
+source /opt/homebrew/Cellar/root/6.38.04_1/bin/thisroot.sh
+```
+Following this, the simulation can be run using the Geant4 visualization UI:
 
 ```
 cd geant4/examples/basic/B2/b2b/build
