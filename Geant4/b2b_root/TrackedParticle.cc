@@ -5,10 +5,12 @@ ClassImp(TrackedParticle)
 
 TrackedParticle::TrackedParticle( const int id, 
                     const ROOT::Math::XYZVector& position, 
-                    const ROOT::Math::PxPyPzEVector& momentum ) : 
+                    const ROOT::Math::PxPyPzEVector& momentum,
+                    const bool isDeltaRay ) : 
     m_id( id ), 
     m_position( position ), 
-    m_momentum( momentum ){}
+    m_momentum( momentum ),
+    m_isDelta( isDeltaRay ){};
 
 double TrackedParticle::getEnergyLoss() const { 
 

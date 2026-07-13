@@ -8,7 +8,7 @@ For more information on running this geometry, see the README of the `b2b_layere
 ## Output
 Outputs one ROOT file of collected data and one .so file. The ROOT file does not collect all the data that the csv files output by the `b2b` and `b2b_layered` examples do, but instead a more minimal version. Filepath of output is set as `Python/root/`and can be modified in `run_exampleb2b.sh`.
 
-- `particle_and_track_data.root` - includes the initial position and momentum of each particle, and a collection of times, energies, and positions of track segments for each particle track
+- `particle_and_track_data.root` - includes the initial position and momentum of each particle, and a collection of times, energies, and positions of track segments for each particle track. Includes a separate branch for delta rays.
 - `libexampleB2blib.so` - specifies the necessary root libraries
 
 To inspect this data, a ROOT TBrowser can be opened using the following:

@@ -4,10 +4,14 @@
 
 ClassImp(TrackNTupleSvc)
 
-TrackNTupleSvc::TrackNTupleSvc() : m_particlePtr( new TrackedParticle ) {}
+TrackNTupleSvc::TrackNTupleSvc() 
+    : m_particlePtr( new TrackedParticle ), 
+      m_deltaPtr( new TrackedParticle ) 
+{}
 
 TrackNTupleSvc::~TrackNTupleSvc(){
     delete m_particlePtr;
+    delete m_deltaPtr;
 }
 
 void TrackNTupleSvc::fileClose(){
@@ -38,6 +42,7 @@ void TrackNTupleSvc::fileOpen( const std::string& fileName ){
         
     m_tree = new TTree( "Particles", "Particles");
     m_tree->Branch("Particle",&m_particlePtr); 
+    m_tree->Branch("DeltaRay",&m_deltaPtr); 
 }
 
 
@@ -72,24 +77,30 @@ void TrackNTupleSvc::sortTrackSegments(){
     return; 
 }
 
-void TrackNTupleSvc::fillTree(){ 
+void TrackNTupleSvc::fillTree(){
     for ( const auto & [ id, particle ]: m_primaryParticles ){
+        m_particlePtr->Clear(); 
+        m_deltaPtr->Clear();
 
-        m_particlePtr->setID( particle.getID() );
-        m_particlePtr->setPosition( particle.getPosition() );
-        m_particlePtr->setMomentum( particle.getFourMomentum() );
+        auto cur_ptr = m_particlePtr;
+        if (particle.getIfDelta()) {
+            cur_ptr = m_deltaPtr;
+        }
 
-        m_particlePtr->clearTrackSegments(); 
+        cur_ptr->setIfDelta( particle.getIfDelta() );
+        cur_ptr->setID( particle.getID() );
+        cur_ptr->setPosition( particle.getPosition() );
+        cur_ptr->setMomentum( particle.getFourMomentum() );
+        cur_ptr->clearTrackSegments();
 
-        auto segmentIterator = m_trackSegments.find( id );    
+        auto segmentIterator = m_trackSegments.find( id );
         if ( segmentIterator != m_trackSegments.end() ){
-            m_particlePtr->addTrackSegments( segmentIterator->second ); 
+            cur_ptr->addTrackSegments( segmentIterator->second );
         }
 
         m_tree->Fill();
     }
-
     m_trackSegments.clear();
     m_primaryParticles.clear();
-    return; 
+    return;
 }

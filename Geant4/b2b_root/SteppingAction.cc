@@ -93,7 +93,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     }
 
     // Process only if the particle is currently inside a gas layer
-    if (preVol->GetName() == "GasLayerRing" && isMuon) {
+    if (preVol->GetName() == "GasLayerRing") {
         fEventAction->AddTrackedDistance(aStep->GetStepLength());
         G4int volumeID = preVol->GetCopyNo();
         G4int curIndex = fEventAction->GetCurIndex();
@@ -124,7 +124,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     
     // Get point particle enters gas volume
     if(preVol->GetName() != "GasLayerRing" &&
-        postVol->GetName() == "GasLayerRing" && isMuon){
+        postVol->GetName() == "GasLayerRing"){
 
         fEventAction->SetActualEntry(postStepPoint->GetPosition());
     
@@ -138,7 +138,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
                     fEventAction->GetInitEnergy()
          );
       
-      TrackedParticle tParticle(id, entryPos, mom);
+      TrackedParticle tParticle(id, entryPos, mom, !isMuon);
       TrackNTupleSvc::instance().addParticle( id, tParticle );
   }
     
