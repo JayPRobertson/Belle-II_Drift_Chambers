@@ -36,6 +36,7 @@ class TrackerHit : public G4VHit {
     void SetWireCenter(G4ThreeVector center) { fWireCenter = center; };
     void SetWireDirection(G4ThreeVector direction) { fWireDirection = direction; };
     void SetDriftDistance(G4double distance) {fDriftDistance = distance; };
+    void SetGlobalTime(G4double time) { globalTime = time; }
 
     // Get methods
     G4int GetTrackID() const { return fTrackID; };
@@ -45,6 +46,7 @@ class TrackerHit : public G4VHit {
     G4ThreeVector GetWireDirection() const { return fWireDirection; };
     G4ThreeVector GetWireCenter() const { return fWireCenter; };
     G4double GetDriftDistance() const { return fDriftDistance; };
+    G4double GetGlobalTime() const { return globalTime; };
 
   private:
     G4int fTrackID = -1;     // Manual track ID tracker
@@ -56,6 +58,7 @@ class TrackerHit : public G4VHit {
     G4double      fDriftDistance;  // Radius from wire or hit resolution 
     G4int fChamberNb = -1;         // Wire ID
     
+    G4double globalTime = 0.;
 };
 
 using TrackerHitsCollection = G4THitsCollection<TrackerHit>;

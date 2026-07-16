@@ -59,6 +59,7 @@ G4bool TrackerSD::ProcessHits(G4Step* step, G4TouchableHistory*){
   newHit->SetTrackID(step->GetTrack()->GetTrackID());
   newHit->SetEdep(edep);
   newHit->SetChamberNb(chamberNb);
+  newHit->SetGlobalTime(preStepPoint->GetGlobalTime());
 
   fHitsCollection->insert(newHit);
 

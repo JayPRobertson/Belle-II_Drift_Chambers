@@ -272,6 +272,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       G4double totalSenseVolume = senseVolume * senseWiresPerLayer;
       G4double totalGroundVolume = groundVolume * groundWiresPerLayer;
       
+      numSensePerLayer.push_back(senseWiresPerLayer);
+      
       // Calculate the percentage of the volume of each wire type
       G4double cylRingVolume = cylRing->GetCubicVolume();
       G4double sensePercent = totalSenseVolume / cylRingVolume;

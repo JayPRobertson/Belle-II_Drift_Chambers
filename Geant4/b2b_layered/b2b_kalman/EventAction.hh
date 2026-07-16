@@ -13,6 +13,10 @@ class EventAction : public G4UserEventAction{
   public:
     EventAction() = default;
     ~EventAction() override = default;
+    
+    struct Point {
+        double x, y;
+    };
 
     void BeginOfEventAction(const G4Event*) override;
 

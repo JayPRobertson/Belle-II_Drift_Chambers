@@ -7,6 +7,7 @@
 #include "G4ThreeVector.hh"
 
 #include <string>
+#include <vector>
 #include <nlohmann/json.hpp>
 #include "globals.hh"
 
@@ -50,6 +51,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     
     void SetSeed(int seed) { fSeed = seed; }
     int GetSeed() const { return fSeed; }
+    
+    std::vector<G4int> getNumWires() const { return numSensePerLayer; }
 
   private:
     void DefineMaterials();
@@ -78,6 +81,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     
     std::string particleType = "EMPTY";
     G4double particleEnergy;   //[GeV]
+    
+    std::vector<G4int> numSensePerLayer;
     
     int fSeed = -1;
 };
