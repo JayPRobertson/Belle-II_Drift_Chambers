@@ -382,22 +382,36 @@ void EventAction::EndOfEventAction(const G4Event* event){
                 
                 G4Polyline predictedTrack;
 
-                for (double s = -300.; s <= 300.; s += 1.) {
-                    genfit::MeasuredStateOnPlane sampleState(state);
+                double s = 300.;
+                bool passedOrigin = false;
+                const double epsilon = 1; 
                 
+                while (!passedOrigin && std::abs(s) < 800.) {
+                    genfit::MeasuredStateOnPlane sampleState(state);
                     try {
                         rep->extrapolateBy(sampleState, s);
                         TVector3 pos = sampleState.getPos();
-                
+                        
+                        // Check if cur pos is origin
+                        if (std::abs(pos.X()) < epsilon && 
+                            std::abs(pos.Y()) < epsilon && 
+                            std::abs(pos.Z()) < epsilon) {
+                            passedOrigin = true;
+                        }
+                        
                         predictedTrack.push_back(
-                            G4Point3D(pos.X() * cm, pos.Y() * cm, pos.Z() * cm )
+                            G4Point3D(pos.X() * cm, pos.Y() * cm, pos.Z() * cm)
                         );
                         
-                    }catch (genfit::Exception& e) {
+                    } catch (genfit::Exception& e) {
                         G4cerr << "GenFit exception: " << e.what() << G4endl;
-                    }catch (std::exception& e) {
+                        break; // Exit loop if extrapolation fails
+                    } catch (std::exception& e) {
                         G4cerr << "Standard exception: " << e.what() << G4endl;
-                    }           
+                        break;
+                    } 
+                    
+                    s -= 1.0; 
                 }
                 
                 // Create the Kalman trajectory lines in the Geant4 gui
