@@ -1,11 +1,11 @@
-'''
+/*
 Creates a drift chamber with either a single drift cell, a 3x3 grid of drift
 cells, or a set of circular drift cell rings.
 
 Writes out wire sag and stretch data to: "sag_wires_data.csv"
 
 Gas file must be changed manually. Run with: "run_sag.sh"
-'''
+*/
 
 #include <iostream>
 #include <fstream>

@@ -1,4 +1,4 @@
-'''
+/*
 Creates a drift chamber with a single drift cell and plots the resulting drift
 lines, isochrons, signal, and electric field for one vertical track.
 
@@ -6,7 +6,7 @@ Writes out electric field strength on the track, drift time, drift distance of e
 drift line to: "drift_data_file.csv"
 
 Gas file must be changed by CL arg. Run with: "run_mdt.sh"
-'''
+*/
 
 #include <iostream>
 #include <fstream>

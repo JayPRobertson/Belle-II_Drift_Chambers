@@ -1,4 +1,4 @@
-'''
+/*
 Creates a drift chamber with a single drift cell.
 
 Creates 1000 randomly generated tracks through the drift tube and writes out the
@@ -7,13 +7,14 @@ starting position along the track, and number of driftlines for each to:
 "multitrack_data_file.csv"
 
 Gas file must be changed by CL arg. Run with: "run_randtrack.sh"
-'''
+*/
 
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <string>
 #include <cstdio>
+#include <numeric>
 
 #include <TCanvas.h>
 #include <TROOT.h>
@@ -31,6 +32,9 @@ Gas file must be changed by CL arg. Run with: "run_randtrack.sh"
 #include "Garfield/ViewIsochrons.hh"
 #include "Garfield/ViewField.hh"
 #include "Garfield/ViewCell.hh"
+
+#include <TH1F.h>
+#include <TCanvas.h>
 
 #define _USE_MATH_DEFINES
 
@@ -163,6 +167,10 @@ int main(int argc, char* argv[]) {
   std::ofstream trackFile;
   trackFile.open("multitrack_data_file.csv");
   trackFile << "track_num,theta,start_x,start_y,drift_times,line_start_x,line_start_y,num_driftlines\n";
+  
+  std::ofstream otherFile;
+  otherFile.open("dNdx_file.csv");
+  otherFile << "dNdx,percent_deltas\n";
  
   TCanvas* cD = nullptr;
   ViewDrift driftView;
@@ -184,50 +192,82 @@ int main(int argc, char* argv[]) {
   
   double phi1=0, phi2=0., theta=0.;
   double x=0., y=0., dx=0., dy=0.;
+    
+  const int deltaClusterSizeThreshold = 300; 
+  
+  std::vector<double> dNdx;
   
   const unsigned int nTracks = 1000;
   for (unsigned int j = 0; j < nTracks; ++j) {
     driftView.Clear();
     
-    // Calculate random starting position and angle
     phi1 = rnd.Uniform(0, 2*pi);
     phi2 = rnd.Uniform(0, 2*pi);
     x = r * TMath::Cos(phi1);
     y = r * TMath::Sin(phi1);
-    dx = (r * TMath::Cos(phi2)) - x;
-    dy = (r * TMath::Sin(phi2)) - y;
-    theta = std::acos(dx / sqrt(dx*dx + dy*dy));
+    
+    double x2 = r * TMath::Cos(phi2);
+    double y2 = r * TMath::Sin(phi2);
+    
+    dx = x2 - x;
+    dy = y2 - y;
+    double trackLength = std::sqrt(dx*dx + dy*dy);
+    dx /= trackLength;
+    dy /= trackLength;
+    
+    theta = std::acos(dx);
 
     sensor.ClearSignal();
+    
     track.NewTrack(x, y, 0., 0., dx, dy, 0.); 
     
-    // Drift information about all drift lines on track j
     std::string driftTimesStr = "";
     std::string dlineStartX = "";
     std::string dlineStartY = "";
     
-    for (const auto& cluster : track.GetClusters()) {
-      for (const auto& electron : cluster.electrons) {
-        drift.DriftElectron(electron.x, electron.y, electron.z, electron.t);
-        points.push_back({electron.x, electron.y, electron.z});
+    double xc = 0., yc = 0., zc = 0., tc = 0., ec = 0., extra = 0.;
+    int ne = 0;
+    
+    unsigned int clusterCount = 0;
+    unsigned int deltaCount = 0;
+
+    while (track.GetCluster(xc, yc, zc, tc, ne, ec, extra)) {
+      clusterCount++;
+
+      if (ne > deltaClusterSizeThreshold) {
+        deltaCount++;
+      }
+    
+      for (int i = 0; i < ne; ++i) {
+        double xe = 0., ye = 0., ze = 0., te = 0., ee = 0., dxs = 0., dys = 0., dzs = 0.;
+        track.GetElectron(i, xe, ye, ze, te, ee, dxs, dys, dzs);
         
-        // Get drift time
+        drift.DriftElectron(xe, ye, ze, te);
+        points.push_back({xe, ye, ze});
+        
         double xf = 0., yf = 0., zf = 0., tf = 0.;
         int stat = 0;
         drift.GetEndPoint(xf, yf, zf, tf, stat);
-        double driftTime = tf - electron.t;
+        double driftTime = tf - te;
         
-        dlineStartX += std::to_string(electron.x) + "|";
-        dlineStartY += std::to_string(electron.y) + "|";
+        dlineStartX += std::to_string(xe) + "|";
+        dlineStartY += std::to_string(ye) + "|";
         driftTimesStr += std::to_string(driftTime) + "|";
       }
-  
     }
+
+    double experimental_dNdx = static_cast<double>(clusterCount) / trackLength;
+    dNdx.push_back(experimental_dNdx);
+    
+    if (deltaCount){
+       std::cout << deltaCount << "     " << clusterCount << std::endl;
+    }
+
+    double percentDeltas = (clusterCount > 0) ? (static_cast<double>(deltaCount) / clusterCount) * 100.0 : 0.0;
+    otherFile << experimental_dNdx << "," << percentDeltas << "\n";
     
     const std::size_t nDriftLines = driftView.GetNumberOfDriftLines();
-    //std::cout << "Number of drift lines: " << nDriftLines << std::endl;
-    
-    // Write out drift data as csv
+
     trackFile << j << "," << theta << "," << x << "," << y << "," << driftTimesStr;
     trackFile << "," << dlineStartX <<  "," << dlineStartY << "," << nDriftLines << "\n"; 
     
@@ -245,10 +285,26 @@ int main(int argc, char* argv[]) {
     if (plotSignal) sensor.PlotSignal("s", cS);
   } 
   
-   // Close csv file
+    // Close csv file
     trackFile.close(); 
+    
+    otherFile.close();
+    
+    double minVal = *std::min_element(dNdx.begin(), dNdx.end());
+    double maxVal = *std::max_element(dNdx.begin(), dNdx.end());
+      
+    TH1F *hist = new TH1F("hist", "Dataset Distribution 1000 tracks;dN/dx;Frequency", 25, minVal-10., maxVal+10.);
+    
+    for (double value: dNdx) { hist->Fill(value); }
+      
+    TCanvas *canvas = new TCanvas("canvas", "dN/dx Frequency", 800, 600);
+    hist->Draw();
+    canvas->SaveAs("dNdx_distribution.png");
+    
+    double sum_dNdx = std::accumulate(dNdx.begin(), dNdx.end(), 0.0);
+    double mean_dNdx = sum_dNdx / dNdx.size();
+    std::cout << "Mean dN/dx: " << mean_dNdx << " clusters/cm" << std::endl;
 
-  // Disable plotting so can be run with sh file
   //app.Run(kTRUE);
 
 }

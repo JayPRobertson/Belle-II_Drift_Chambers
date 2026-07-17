@@ -1,10 +1,10 @@
 
-'''
+/*
 Creates a drift chamber with a single drift cell and plots the resulting drift
 lines, isochrons, signal, and electric field for two vertical tracks.
 
 Gas file must be changed manually.
-'''
+*/
 
 #include <iostream>
 #include <fstream>

@@ -1,9 +1,9 @@
-'''
+/*
 Creates a drift chamber with a 3x3 grid of drift cells and plots the 
 resulting drift lines for one or two vertical tracks.
 
 Gas file must be changed manually.
-'''
+*/
 
 #include <iostream>
 #include <fstream>

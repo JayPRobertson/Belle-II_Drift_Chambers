@@ -1,9 +1,9 @@
-'''
+/*
 Creates a drift chamber with wires generated in a circular pattern around the origin
 and plots the resulting drift lines for one vertical track.
 
 Gas file must be changed manually.
-'''
+*/
 
 #include <iostream>
 #include <fstream>
