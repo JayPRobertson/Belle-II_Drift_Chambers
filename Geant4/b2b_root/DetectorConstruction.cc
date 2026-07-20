@@ -171,7 +171,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4double senseRadius = dimensions["sense_wires"]["radius_mm"].get<G4double>() *mm;
   G4double groundRadius = dimensions["ground_wires"]["radius_mm"].get<G4double>() *mm;
   G4double senseVolume = CLHEP::pi * senseRadius*senseRadius * length;
-  G4double groundVolume = CLHEP::pi * senseRadius*senseRadius * length;
+  G4double groundVolume = CLHEP::pi * groundRadius*groundRadius * length;
   
   bool useWireMaterials = dimensions["use_wire_materials"].get<bool>();
 

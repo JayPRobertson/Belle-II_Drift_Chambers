@@ -77,9 +77,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     HelixApproach helix( currentPos, momentum, magneticField, particleMass, charge);
     
-    G4double rOuter = detectorConstruction->GetLength(); 
+    G4double length = detectorConstruction->GetLength(); 
     G4double rInner = detectorConstruction->GetRInner();  
-    G4double length = detectorConstruction->GetROuter();
+    G4double rOuter = detectorConstruction->GetROuter();
 
     helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
     

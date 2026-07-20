@@ -240,7 +240,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4VPhysicalVolume* shellCylPhys = new G4PVPlacement(0, G4ThreeVector(0,0,0), shellCylLog,"shellCylPhys", worldLV, false, 0, true);
   
   G4LogicalVolume* inShellLog = new G4LogicalVolume(inShellS, fShellMaterial, "inShellLog");
-  G4VPhysicalVolume* inShellPhys = new G4PVPlacement(0, G4ThreeVector(0,0,0), inShellLog,"inShellPhys", worldLV, false, 0, true);
+  G4VPhysicalVolume* inShellPhys = new G4PVPlacement(0, G4ThreeVector(0,0,0), inShellLog,"inShellPhys", worldLV, false, 1, true);
   
   // ___________________ Print constants ____________________ //
   
