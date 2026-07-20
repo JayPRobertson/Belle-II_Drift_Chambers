@@ -78,7 +78,7 @@ void EventAction::BeginOfEventAction(const G4Event*) {
 }
 
 
-// ____________ HELPER FUNCTIONS ____________________
+// ________________________ HELPER FUNCTIONS ______________________________
 
 bool isAngleInRange(double theta, double theta_min, double theta_max) {
     auto wrap = [](double a) { return std::remainder(a, CLHEP::twopi); };
@@ -176,7 +176,8 @@ bool isInCell(Point p1, Point p2, double r_min, double r_max,
     return false;
 }
 
-// ______________ ACTUAL FUNCTION _____________________
+// ___________________________________________________________//
+
 void EventAction::EndOfEventAction(const G4Event* event){
     G4int eventID = event->GetEventID();
 
@@ -253,7 +254,6 @@ void EventAction::EndOfEventAction(const G4Event* event){
                const std::pair<TrackerHit*, TrackerHit*>& b) {
                 return a.first->GetChamberNb() < b.first->GetChamberNb(); 
         });
-        
    
         std::vector<G4ThreeVector> detectedWirePos;
         
