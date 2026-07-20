@@ -43,8 +43,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     if (seed >= 0) G4Random::setTheSeed(seed + fPrimaryCount);
     if (!fPrimaryCount) G4cout << "SEED = " << seed << G4endl;
     fPrimaryCount++;
-
+    
     // Generate a track starting at the origin going in a random direction
+    
     G4double cosTheta = 2.0*G4UniformRand() - 1.0;
     G4double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
 
@@ -68,9 +69,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     G4double particleMass = particle->GetPDGMass() *MeV;
     G4ThreeVector currentPos = fParticleGun->GetParticlePosition();
 
-    G4double kineticE = fParticleGun->GetParticleEnergy();
-    G4double totalE = kineticE + particleMass;
-    G4double pMag = std::sqrt(totalE*totalE - particleMass*particleMass);
+    G4double energy = fParticleGun->GetParticleEnergy();
+    G4double pMag = std::sqrt(energy*energy - particleMass*particleMass);
     G4ThreeVector momentum = pMag*direction;
     
     G4ThreeVector magneticField = detectorConstruction->GetMagneticField();
@@ -79,9 +79,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     HelixApproach helix( currentPos, momentum, magneticField, particleMass, charge);
     
-    G4double rOuter = detectorConstruction->GetLength(); 
+    G4double length = detectorConstruction->GetLength(); 
     G4double rInner = detectorConstruction->GetRInner();  
-    G4double length = detectorConstruction->GetROuter();
+    G4double rOuter = detectorConstruction->GetROuter();
 
     helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
     
@@ -89,6 +89,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     fEventAction->SetPredictedExit(exit);
     
     fEventAction->SetInitMomentum(momentum);
+    fEventAction->SetInitEnergy(energy);
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction(){

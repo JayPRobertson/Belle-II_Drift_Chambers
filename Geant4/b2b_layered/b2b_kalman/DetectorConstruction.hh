@@ -23,8 +23,7 @@ using json = nlohmann::json;
 
 class DetectorMessenger;
 
-class DetectorConstruction : public G4VUserDetectorConstruction
-{
+class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
     DetectorConstruction();
     ~DetectorConstruction() override;

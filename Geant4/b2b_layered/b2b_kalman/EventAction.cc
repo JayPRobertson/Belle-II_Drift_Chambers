@@ -49,22 +49,8 @@ void EventAction::BeginOfEventAction(const G4Event*) {
         fTrackerHCID = G4SDManager::GetSDMpointer()->GetCollectionID("TrackerHitsCollection");
   }
   
-  fTrackedDistance = 0.0;
-  
-  // Reset tracking variables
-  prePosX = "";
-  prePosY = "";
-  prePosZ = "";
-  
-  postPosX = "";
-  postPosY = "";
-  postPosZ = "";
-  
-  totEdep = "";
-  
-  fTrackedEdep = 0.0;
   curIndex = -1;
-  
+  fParticleID++;
   enteredGas = false;
   
   if (!genfitFieldInitialized) {
