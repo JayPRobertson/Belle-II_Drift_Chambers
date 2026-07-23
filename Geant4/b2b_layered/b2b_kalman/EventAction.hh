@@ -20,6 +20,30 @@ class EventAction : public G4UserEventAction{
     struct Point {
         double x, y;
     };
+    
+    struct Intersection {
+        bool valid = false;
+        double t = 0.0;   
+        Point p{0.0, 0.0};
+    };
+    
+    struct CellCrossing {
+        bool crossed = false;
+    
+        Point entry{0.0, 0.0};
+        Point exit{0.0, 0.0};
+    
+        double length = 0.0;
+    };
+    
+    struct CellHit {
+        G4ThreeVector wirePos;
+        double length;
+        int layer;
+        int cell;
+        Point entry;
+        Point exit;
+    };
 
     void BeginOfEventAction(const G4Event*) override;
     void EndOfEventAction(const G4Event*) override;

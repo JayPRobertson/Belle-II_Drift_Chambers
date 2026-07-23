@@ -41,6 +41,9 @@
 namespace B2{
     
 using Point = EventAction::Point;
+using Intersection = EventAction::Intersection;
+using CellCrossing = EventAction::CellCrossing;
+using CellHit = EventAction::CellHit;
   
 G4int fTrackerHCID = -1;
 
@@ -60,7 +63,6 @@ void EventAction::BeginOfEventAction(const G4Event*) {
         genfit::MaterialEffects::getInstance()->setNoEffects();
         genfitFieldInitialized = true;
   }
-  
 }
 
 
@@ -83,83 +85,134 @@ bool isAngleInRange(double theta, double theta_min, double theta_max) {
 }
 
 bool isPointInRegion(Point p, double r_min, double r_max, double theta_min, double theta_max){
-    double r2 = p.x * p.x + p.y * p.y;
+    double r2 = p.x*p.x + p.y*p.y;
     if (r2 < r_min * r_min || r2 > r_max * r_max) return false;
     
     double theta = std::atan2(p.y, p.x);
     return isAngleInRange(theta, theta_min, theta_max);
 }
 
-double crossProduct(Point o, Point a, Point b){
-    return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+bool onSegment(Point p, Point q, Point r) {
+    return q.x <= std::max(p.x, r.x) && q.x >= std::min(p.x, r.x) &&
+           q.y <= std::max(p.y, r.y) && q.y >= std::min(p.y, r.y);
 }
 
 // Check line segments intersect
-bool isIntersect(Point a, Point b, Point c, Point d){
-    auto sign = [](double val) { return (val > 1e-9) - (val < -1e-9); };
-    
-    double cp1 = crossProduct(a, b, c);
-    double cp2 = crossProduct(a, b, d);
-    double cp3 = crossProduct(c, d, a);
-    double cp4 = crossProduct(c, d, b);
-    
-    return (sign(cp1) * sign(cp2) < 0 && sign(cp3) * sign(cp4) < 0);
+Intersection isIntersect(Point a, Point b, Point c, Point d) {
+    double dx1 = b.x - a.x;
+    double dy1 = b.y - a.y;
+    double dx2 = d.x - c.x;
+    double dy2 = d.y - c.y;
+    double determinant = dx1 * dy2 - dy1 * dx2;
+
+    // If lines are parallel or coincident
+    if (std::abs(determinant) < 1e-12) return {};
+
+    double t = ((c.x - a.x) * dy2 - (c.y - a.y) * dx2) / determinant;
+
+    double u = ((c.x - a.x) * dy1 - (c.y - a.y) * dx1) / determinant;
+
+    if (t < 0.0 || t > 1.0)  return {};
+    if (u < 0.0 || u > 1.0)  return {};
+
+    Point intersection {a.x + t * dx1, a.y + t * dy1};
+    return {true, t, intersection};
 }
 
-bool isIntersectArc(Point p1, Point p2, double R, double theta_min, double theta_max){
+std::vector<Intersection> isIntersectArc(
+        Point p1, Point p2, double R, double theta_min, double theta_max){
+
+    std::vector<Intersection> intersections;
+
     double dx = p2.x - p1.x;
     double dy = p2.y - p1.y;
-    double A = dx * dx + dy * dy;
-    if (A < 1e-9) return false; 
+    double A = dx*dx + dy*dy;
 
-    double B = 2 * (p1.x * dx + p1.y * dy);
-    double C = p1.x * p1.x + p1.y * p1.y - R * R;
-    double discriminant = B * B - 4 * A * C;
+    if (A < 1e-12) return intersections;
 
-    if (discriminant < 0) return false;
+    double B = 2.0 * (p1.x * dx + p1.y * dy);
+    double C = p1.x*p1.x + p1.y*p1.y - R*R;
 
-    double sqrt_disc = std::sqrt(discriminant);
-    double t1 = (-B - sqrt_disc) / (2 * A);
-    double t2 = (-B + sqrt_disc) / (2 * A);
+    double discriminant = B*B - 4.0 * A * C;
+    if (discriminant < 0.0) return intersections;
+    double sqrtDisc = std::sqrt(discriminant);
 
-    // Check intersection points on the segment (t in [0, 1])
-    for (double t : {t1, t2}){
-        if (t >= 0.0 && t <= 1.0){
-            double ix = p1.x + t * dx;
-            double iy = p1.y + t * dy;
-            if (isAngleInRange(std::atan2(iy, ix), theta_min, theta_max)){
-                return true;
-            }
+    std::vector<double> tValues = {
+        (-B - sqrtDisc) / (2.0 * A),
+        (-B + sqrtDisc) / (2.0 * A)
+    };
+
+    for (double t : tValues){
+        if (t < 0.0 || t > 1.0) continue;
+
+        Point p { p1.x + t * dx, p1.y + t * dy };
+
+        if (isAngleInRange(std::atan2(p.y, p.x), theta_min, theta_max)) {
+            intersections.push_back({true, t, p});
         }
     }
-    return false;
+    
+    return intersections;
 }
 
-bool isInCell(Point p1, Point p2, double r_min, double r_max, 
-                                     double theta_min, double theta_max){
-    
-    if (isPointInRegion(p1, r_min, r_max, theta_min, theta_max) ||
-        isPointInRegion(p2, r_min, r_max, theta_min, theta_max)){
-        return true;
-    }
-    
-    // Naming: [r]<min/max>_[theta]<min/max>
-    Point min_min = {r_min*std::cos(theta_min), r_min*std::sin(theta_min)};
-    Point max_min = {r_max*std::cos(theta_min), r_max*std::sin(theta_min)};
-    Point min_max = {r_min*std::cos(theta_max), r_min*std::sin(theta_max)};
-    Point max_max = {r_max*std::cos(theta_max), r_max*std::sin(theta_max)};
+CellCrossing isInCell(Point p1, Point p2, double r_min, 
+                      double r_max, double theta_min, double theta_max){
 
-    if (isIntersect(p1, p2, min_min, max_min) ||
-        isIntersect(p1, p2, min_max, max_max)){
-        return true;
+    std::vector<Intersection> intersections;
+
+    // Add start and end points if  already inside the cell
+    if (isPointInRegion(p1, r_min, r_max, theta_min, theta_max)){
+        intersections.push_back({true, 0.0, p1});
     }
-    
-    if (isIntersectArc(p1, p2, r_min, theta_min, theta_max) ||
-        isIntersectArc(p1, p2, r_max, theta_min, theta_max)){
-        return true;
+    if (isPointInRegion(p2, r_min, r_max, theta_min,theta_max)){
+        intersections.push_back({true, 1.0, p2});
     }
 
-    return false;
+    // Check intersections with the two radial boundaries
+    Intersection radialMin = isIntersect( p1, p2,
+            {r_min * std::cos(theta_min),
+             r_min * std::sin(theta_min)},
+            {r_max * std::cos(theta_min),
+             r_max * std::sin(theta_min)}
+        );
+
+    Intersection radialMax =
+        isIntersect( p1, p2,
+            {r_min * std::cos(theta_max),
+             r_min * std::sin(theta_max)},
+            {r_max * std::cos(theta_max),
+             r_max * std::sin(theta_max)}
+        );
+
+    if(radialMin.valid)  intersections.push_back(radialMin);
+    if(radialMax.valid)  intersections.push_back(radialMax);
+
+    // Check intersections with the two circular boundaries
+    auto innerArc = isIntersectArc(p1, p2, r_min, theta_min,theta_max);
+    auto outerArc = isIntersectArc(p1, p2, r_max,theta_min, theta_max);
+
+    for(auto& x : innerArc)
+        intersections.push_back(x);
+
+    for(auto& x : outerArc)
+        intersections.push_back(x);
+
+    if(intersections.size() < 2) return {};
+
+    // Sort all intersections along the particle trajectory
+    std::sort(intersections.begin(), intersections.end(),
+           [](const Intersection& a, const Intersection& b){
+                return a.t < b.t;
+            });
+
+    Point entry = intersections.front().p;
+    Point exit  = intersections.back().p;
+
+    double dx = exit.x - entry.x;
+    double dy = exit.y - entry.y;
+    double length = std::sqrt(dx*dx + dy*dy);
+
+    return { true, entry, exit, length};
 }
 
 // ___________________________________________________________//
@@ -193,7 +246,9 @@ void EventAction::EndOfEventAction(const G4Event* event){
     const G4RunManager* runManager = G4RunManager::GetRunManager();
     const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
     std::vector<G4int> numWiresPerLayer = detectorConstruction->getNumWires();
-      
+    
+    const double avgNumClusters = 109.68 /cm; // clusters per mm
+    
     for (auto& entry : tracks) {
         int trackID = entry.first;
         auto& hits = entry.second;
@@ -242,6 +297,8 @@ void EventAction::EndOfEventAction(const G4Event* event){
         });
    
         std::vector<G4ThreeVector> detectedWirePos;
+        std::vector<CellHit> detectedCells;
+
         
         for (const auto& eePair : sortedHits) {
             
@@ -257,6 +314,9 @@ void EventAction::EndOfEventAction(const G4Event* event){
             int layerIndex = eePair.first->GetChamberNb() - 20000;
             G4int n = numWiresPerLayer[layerIndex];
             double delta = CLHEP::twopi / static_cast<double>(n);
+            
+            bool cellAdded = false;
+            int cellCount = 0;
         
             // Alternate layers are staggered by half a cell
             double offset = (layerIndex % 2 == 0) ? 0.0 : delta / 2.0;
@@ -267,25 +327,47 @@ void EventAction::EndOfEventAction(const G4Event* event){
             for (int i = 0; i < n; ++i){  
                 double t1 = offset + i * delta;
                 double t2 = offset + (i + 1) * delta;
-        
+            
                 double theta_min = std::atan2(std::sin(t1), std::cos(t1));
                 double theta_max = std::atan2(std::sin(t2), std::cos(t2));
-        
-                if (isInCell(p1, p2, r1, r2, theta_min, theta_max)){
-        
-                    // Centre of the drift cell
-                    double tc = offset + (i + 0.5) * delta;
-        
+            
+                CellCrossing crossing = isInCell(p1, p2, r1, r2, theta_min,theta_max);
+            
+                if(crossing.crossed){
+                    double tc = offset + (i + 0.5) * delta; // Cell centre
+                    
                     double wireX = r * std::cos(tc);
                     double wireY = r * std::sin(tc);
-                    double wireZ = 0.5 * (entryPos.z() + exitPos.z());
-        
-                    detectedWirePos.push_back(G4ThreeVector(wireX, wireY, wireZ));
-        
-                    // Track currently only crossing one cell in this layer
+                    double wireZ = 0.5 * (entryPos.z()+exitPos.z());
+            
+                    G4ThreeVector wirePosition(wireX, wireY, wireZ);
+            
+                    detectedCells.push_back({
+                            wirePosition,
+                            crossing.length,
+                            layerIndex,
+                            i,
+                            crossing.entry,
+                            crossing.exit
+                    });
+            
+                    if(!cellAdded){
+                        detectedWirePos.push_back(wirePosition);
+                        cellAdded = true;
+                    }
+                    cellCount++;
+                    
+                    G4cout << "Layer = " << layerIndex
+                               << ", cell = " << i
+                               << ", length = " << crossing.length << " mm" 
+                               << ", clusters = " << crossing.length * avgNumClusters
+                               << G4endl;
+                           
+                } else if(cellAdded){
                     break;
                 }
             }
+            //G4cout << "Number of cells passed through = " << cellCount << G4endl;
         }
         
         std::sort(detectedWirePos.begin(), detectedWirePos.end(), 
@@ -301,13 +383,16 @@ void EventAction::EndOfEventAction(const G4Event* event){
         }
 
         G4ThreeVector p0 = detectedWirePos.front();
-        TVector3 initPos(p0.x()/10., p0.y()/10.,p0.z()/10.); //[cm]
-        
         G4ThreeVector p1 = detectedWirePos.front();
-        G4ThreeVector p2 = detectedWirePos[std::min((size_t)5, hits.size()-1)];
+        
+        TVector3 initPos(p0.x()/10., p0.y()/10., p0.z()/10.); //[cm]
+        size_t directionIndex = std::min((size_t)5, detectedWirePos.size()-1);
+        
+        G4ThreeVector p2 = detectedWirePos[directionIndex];
         G4ThreeVector direction = (p2-p1).unit();
+        
         double momentum = initMomentum.mag()/1000.0; //[GeV]
-    
+
         TVector3 initMom(
             direction.x()*momentum,
             direction.y()*momentum,
@@ -337,12 +422,7 @@ void EventAction::EndOfEventAction(const G4Event* event){
             cov(2,2)=sigmaZ*sigmaZ;
 
             auto* measurement = new genfit::SpacepointMeasurement(
-                coords,
-                cov,
-                0,
-                hitID,
-                nullptr
-            );
+                coords, cov, 0, hitID, nullptr );
 
             gfTrack->insertMeasurement(measurement);
             hitID++;
@@ -378,7 +458,7 @@ void EventAction::EndOfEventAction(const G4Event* event){
                         rep->extrapolateBy(sampleState, s);
                         TVector3 pos = sampleState.getPos();
                         
-                        // Check if cur pos is origin
+                        // Check if cur pos is ~origin
                         if (std::abs(pos.X()) < epsilon && 
                             std::abs(pos.Y()) < epsilon && 
                             std::abs(pos.Z()) < epsilon) {

@@ -59,6 +59,7 @@ class TrackerHit : public G4VHit {
     G4int fChamberNb = -1;         // Wire ID
     
     G4double globalTime = 0.;
+    
 };
 
 using TrackerHitsCollection = G4THitsCollection<TrackerHit>;
