@@ -21,7 +21,6 @@
 #include "G4VProcess.hh"
 
 #include "DetectorConstruction.hh"
-#include "TrackSegment.hh"
 #include "TrackNTupleSvc.hh"
 #include "TrackedParticle.hh"
 
@@ -61,36 +60,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     
     // Verify particle is inside the volume
     if (!preVol || !postVol) return;
-    
-    fEventAction->AddLayerEdep(aStep->GetTotalEnergyDeposit());
+
     G4int postIndex = postVol->GetCopyNo();
-        
-    // Add new track segment every layer
-    if (postIndex%4000 < 1000 && postIndex != preVol->GetCopyNo()){
-        
-        if (fEventAction->GetGasStatus()){
-            G4ThreeVector postMom = postStepPoint->GetMomentum();
-            
-            // Update instance of current track in ROOT file
-            TrackSegment segment(
-                     fEventAction->GetLayerEntry(),
-                     fEventAction->GetLayerInitMomentum(),
-                     xyzVector{exitPos.x(), exitPos.y(), exitPos.z()},
-                     xyzVector{postMom.x(), postMom.y(), postMom.z()}, 
-                     fEventAction->GetLayerTime(), 
-                     fEventAction->GetLayerEdep()
-                     );
-                     
-            TrackNTupleSvc::instance().addTrackSegment(id, segment); 
-        }
-        
-        fEventAction->ResetLayerEdep();
-        fEventAction->SetLayerEntryVals( 
-                        postStepPoint->GetPosition(),
-                        track->GetLocalTime(),
-                        postStepPoint->GetMomentum()
-                    );
-    }
 
     // Process only if the particle is currently inside a gas layer
     if (preVol->GetName() == "GasLayerRing") {

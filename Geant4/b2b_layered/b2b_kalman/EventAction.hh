@@ -16,34 +16,6 @@ class EventAction : public G4UserEventAction{
   public:
     EventAction() = default;
     ~EventAction() override = default;
-    
-    struct Point {
-        double x, y;
-    };
-    
-    struct Intersection {
-        bool valid = false;
-        double t = 0.0;   
-        Point p{0.0, 0.0};
-    };
-    
-    struct CellCrossing {
-        bool crossed = false;
-    
-        Point entry{0.0, 0.0};
-        Point exit{0.0, 0.0};
-    
-        double length = 0.0;
-    };
-    
-    struct CellHit {
-        G4ThreeVector wirePos;
-        double length;
-        int layer;
-        int cell;
-        Point entry;
-        Point exit;
-    };
 
     void BeginOfEventAction(const G4Event*) override;
     void EndOfEventAction(const G4Event*) override;
@@ -71,26 +43,6 @@ class EventAction : public G4UserEventAction{
     
     bool GetGasStatus() { return enteredGas; }
     void SetGasStatus(bool status) { enteredGas = status; }
-    
-    void SetLayerEntryVals(G4ThreeVector pos, G4double time, G4ThreeVector mom){
-        fLayerEntry = pos;
-        fLayerInitTime = time;
-        fLayerInitMomentum = mom;
-    }
-    
-    void AddLayerEdep(G4double edep) { fLayerEdep += edep; }
-    G4double GetLayerEdep() { return fLayerEdep;}
-    void ResetLayerEdep() { fLayerEdep = 0.0; }
-    
-    xyzVector GetLayerEntry() { 
-        return xyzVector{fLayerEntry.x(), fLayerEntry.y(), fLayerEntry.z()};
-    }
-    
-    G4double GetLayerTime() { return fLayerInitTime; }
-    
-    xyzVector GetLayerInitMomentum() { 
-        return xyzVector{fLayerInitMomentum.x(), fLayerInitMomentum.y(), fLayerInitMomentum.z()};
-    }
 
 private:
     G4int curIndex = 0;
@@ -105,13 +57,7 @@ private:
     G4ThreeVector initMomentum;
     G4double fInitEnergy = 0.0;
     
-    bool enteredGas = false;
-    bool genfitFieldInitialized = false;
-    
-    G4double fLayerEdep = 0.0;
-    G4ThreeVector fLayerEntry;
-    G4double fLayerInitTime;
-    G4ThreeVector fLayerInitMomentum; 
+    bool enteredGas = false; 
 };
 
 }  // namespace B2

@@ -33,30 +33,23 @@ class TrackerHit : public G4VHit {
     void SetChamberNb(G4int chamb) { fChamberNb = chamb; };
     void SetEdep(G4double de) { fEdep = de; };
     void SetPos(G4ThreeVector xyz) { fPos = xyz; };
-    void SetWireCenter(G4ThreeVector center) { fWireCenter = center; };
-    void SetWireDirection(G4ThreeVector direction) { fWireDirection = direction; };
-    void SetDriftDistance(G4double distance) {fDriftDistance = distance; };
     void SetGlobalTime(G4double time) { globalTime = time; }
+    void SetMomentum(G4ThreeVector mom) { fMomentum = mom; }
 
     // Get methods
     G4int GetTrackID() const { return fTrackID; };
     G4int GetChamberNb() const { return fChamberNb; };
     G4double GetEdep() const { return fEdep; };
     G4ThreeVector GetPos() const { return fPos; };
-    G4ThreeVector GetWireDirection() const { return fWireDirection; };
-    G4ThreeVector GetWireCenter() const { return fWireCenter; };
-    G4double GetDriftDistance() const { return fDriftDistance; };
     G4double GetGlobalTime() const { return globalTime; };
+    G4ThreeVector GetMomentum() const { return fMomentum; };
 
   private:
-    G4int fTrackID = -1;     // Manual track ID tracker
-    G4double fEdep = 0.;     // Energy deposition 
-    G4ThreeVector fPos;      // Global position of the step
-    
-    G4ThreeVector fWireCenter;     // Midpoint of activated sense wire
-    G4ThreeVector fWireDirection;  // Unit vector pointing along the wire axis
-    G4double      fDriftDistance;  // Radius from wire or hit resolution 
-    G4int fChamberNb = -1;         // Wire ID
+    G4int fTrackID = -1;       // Manual track ID tracker
+    G4double fEdep = 0.;       // Energy deposition 
+    G4ThreeVector fPos;        // Global position of the step
+    G4int fChamberNb = -1;     // Wire ID
+    G4ThreeVector fMomentum;    // Step momentum
     
     G4double globalTime = 0.;
     
