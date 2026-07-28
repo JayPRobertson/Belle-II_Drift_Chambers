@@ -259,8 +259,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         }
       
     }                       
-                            
-    layerFile << r1 << "," << r2 << "\n";
     
     G4Tubs* cylRing = new G4Tubs("CylRing", r1, r2, thickness, startAngle, spanAngle);
     G4LogicalVolume* cylRingLog;
@@ -272,7 +270,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       G4double totalSenseVolume = senseVolume * senseWiresPerLayer;
       G4double totalGroundVolume = groundVolume * groundWiresPerLayer;
       
-      numSensePerLayer.push_back(senseWiresPerLayer);
+      layerFile << i << "," << senseWiresPerLayer 
+                << "," << r1 << "," << r2 << "\n";
       
       // Calculate the percentage of the volume of each wire type
       G4double cylRingVolume = cylRing->GetCubicVolume();

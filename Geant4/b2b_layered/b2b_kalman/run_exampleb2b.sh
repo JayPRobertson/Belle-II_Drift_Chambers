@@ -6,7 +6,11 @@ FILEPATH="$HOME/Desktop/Belle II/Python/root"
 FILENAME="$0"
 SEED="$1"
 
+rm *.csv
+rm *.root
+
 make
+echo "i,numWires,r1,r2" > layer_radius.csv
 
 if [ "$SEED" ]; then
    echo "============ Random generator seed detected ============"
@@ -15,10 +19,9 @@ else
    ./exampleB2b
 fi
 
-mv particle_and_track_data.root "$FILEPATH/particle_and_track_data.root"
+cp particle_and_track_data.root "$FILEPATH/particle_and_track_data.root"
 
 ln -s libexampleB2blib.dylib libexampleB2blib.so
 cp libexampleB2blib.so "$FILEPATH/"
 
-rm *.csv
 rm *.so

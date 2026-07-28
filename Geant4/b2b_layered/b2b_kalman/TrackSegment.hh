@@ -19,7 +19,9 @@ public:
                   const XYZVector& exitPos,  
                   const XYZVector& exitMom,
                   const double entryTime, 
-                  const double energyLoss ); 
+                  const double exitTime,
+                  const double energyLoss,
+                  const int layerIndex ); 
 
     void setEntryPosition( const XYZVector& position ){ m_entryPos = position; }
     void setEntryMomentum( const XYZVector& momentum ){ m_entryMom = momentum; }
@@ -32,10 +34,15 @@ public:
     void setExitPosition( const XYZVector& position ){ m_exitPos = position; }
     void setExitMomentum( const XYZVector& momentum ){ m_exitMom = momentum; }
     void setEnergyLoss( const double energy ) { m_energyLoss = energy; }
+    void setExitTime( const double time ){ m_exitTime = time; }
 
     XYZVector getExitPosition() const { return m_exitPos; }
     XYZVector getExitMomentum() const { return m_exitMom; }
     double getEnergyLoss() const { return m_energyLoss; }
+    double getExitTime() const { return m_exitTime; }
+        
+    void setLayerIndex( const int layerIndex ){ m_layerIndex = layerIndex; }
+    int getLayerIndex() const { return m_layerIndex; }
 
 
 private:
@@ -46,7 +53,9 @@ private:
     XYZVector m_exitMom{ 0., 0., 0. };
     
     double m_entryTime{0};
+    double m_exitTime{0};
     double m_energyLoss{0};  
+    int m_layerIndex{0};  
 
 public:
     ClassDef( TrackSegment, 1 ); 

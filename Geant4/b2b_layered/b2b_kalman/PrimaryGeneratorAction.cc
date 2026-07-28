@@ -87,9 +87,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     
     fEventAction->SetPredictedEntry(entry);
     fEventAction->SetPredictedExit(exit);
-    
     fEventAction->SetInitMomentum(momentum);
-    fEventAction->SetInitEnergy(energy);
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction(){

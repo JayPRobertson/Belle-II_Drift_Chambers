@@ -39,7 +39,7 @@ void readNTuple( const std::string fileName = "particle_and_track_data.root" ){
                   << "Summed energy loss = " << particle->getEnergyLoss() 
                   << G4endl; 
 
-        auto segments = particle->getTrackSegements(); 
+        auto segments = particle->getTrackSegments(); 
 
         for ( auto segment: segments ){
             G4cout << "\tSegment:\n"

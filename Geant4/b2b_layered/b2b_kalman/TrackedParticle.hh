@@ -45,7 +45,7 @@ public:
         m_trackSegments.clear();
     }
 
-    const std::vector< TrackSegment >& getTrackSegements() const { 
+    const std::vector< TrackSegment >& getTrackSegments() const { 
         return m_trackSegments;
     }
     
