@@ -17,110 +17,97 @@
 
 #include "G4EmCalculator.hh"
 #include "G4ParticleTable.hh"
-
 #include "G4Track.hh"
 #include "G4VProcess.hh"
+
+#include "DetectorConstruction.hh"
+#include "TrackNTupleSvc.hh"
+#include "TrackedParticle.hh"
+
+using xyzVector = ROOT::Math::XYZVector;
 
 SteppingAction::SteppingAction(B2::EventAction* eventAction)
  : fEventAction(eventAction){}
 
-void SteppingAction::UserSteppingAction(const G4Step* aStep){
-  G4Track* track = aStep->GetTrack();
-  bool isMuon = true;
+void SteppingAction::UserSteppingAction(const G4Step* aStep) {
+    
+    //_________ Checking if particle is delta ray _________
+    
+    const G4RunManager* runManager = G4RunManager::GetRunManager();
+    const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
+    
+    G4Track* track = aStep->GetTrack();
+    G4int id = fEventAction->GetParticleID();
+    bool isMuon = true;
   
-  // Don't record data if particle is a delta ray
-  const G4VProcess* creatorProcess = track->GetCreatorProcess();
-  if (creatorProcess) {
-    G4String procName = creatorProcess->GetProcessName();
-    if (procName == "eIoni" || procName == "muIoni") {
-      isMuon = false;
+    const G4VProcess* creatorProcess = track->GetCreatorProcess();
+    if (creatorProcess) {
+      G4String procName = creatorProcess->GetProcessName();
+      if (procName.substr(procName.length() - 4) == "Ioni") isMuon = false; 
     }
+    
+    //_____________ Collect stepping data ______________
+    
+    G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
+    G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
+    
+    G4VPhysicalVolume* preVol = preStepPoint->GetPhysicalVolume();
+    G4VPhysicalVolume* postVol = postStepPoint->GetPhysicalVolume();
+    
+    G4ThreeVector entryPos = preStepPoint->GetPosition();
+    G4ThreeVector exitPos = postStepPoint->GetPosition();
+    G4ThreeVector initMomentum = fEventAction->GetInitMomentum();
+    
+    // Verify particle is inside the volume
+    if (!preVol || !postVol) return;
+
+    G4int postIndex = postVol->GetCopyNo();
+
+    // Process only if the particle is currently inside a gas layer
+    if (preVol->GetName() == "GasLayerRing") {
+        G4int volumeID = preVol->GetCopyNo();
+        G4int curIndex = fEventAction->GetCurIndex();
+
+        // Check if new layer entered
+        if (curIndex < volumeID) {
+            // Initialize tracking for new layer
+            fEventAction->SetCurIndex(volumeID);
+    
+            // If entering gas
+            if (!fEventAction->GetGasStatus()){
+                fEventAction->SetGasStatus(true);
+            }
+        }
+    }
+    
+    // Get point particle enters gas volume
+    if (preVol->GetName() != "GasLayerRing" &&
+        postVol->GetName() == "GasLayerRing"){
+
+        fEventAction->SetActualEntry(postStepPoint->GetPosition());
+    
+        // Create instance of current particle in ROOT file
+        G4ThreeVector fActEntry  = fEventAction->GetActualEntry();
+        xyzVector entryPos{fActEntry.x(), fActEntry.y(), fActEntry.z()};
+        ROOT::Math::PxPyPzEVector mom(
+                    initMomentum.x(),
+                    initMomentum.y(),
+                    initMomentum.z(),
+                    fEventAction->GetInitEnergy()
+         );
+      
+      TrackedParticle tParticle(id, entryPos, mom, !isMuon);
+      TrackNTupleSvc::instance().addParticle( id, tParticle );
+      
   }
-
-  // Positions of particle before and after step
-  G4StepPoint* preStepPoint  = aStep->GetPreStepPoint();
-  G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
-
-  // Volumes particle is in before and after step
-  G4VPhysicalVolume* preVol  = preStepPoint->GetPhysicalVolume();
-  G4VPhysicalVolume* postVol = postStepPoint->GetPhysicalVolume();
-  
-  // Verify particle is inside the gas volume
-  if(!preVol || !postVol) return;
-
-   // Add step length to total distance
-  if(preVol->GetName() == "CylinderPhys" && isMuon){
-    fEventAction->AddTrackedDistance(aStep->GetStepLength());
-  }
-
-  // Get point particle enters gas volume
-  if(preVol->GetName() != "CylinderPhys" &&
-     postVol->GetName() == "CylinderPhys" && isMuon){
-
-      fEventAction->SetActualEntry(postStepPoint->GetPosition());
-  }
-
-  // Update collected data when particle exits gas volume
-  if(preVol->GetName() == "CylinderPhys" &&
-     postVol->GetName() != "CylinderPhys"){
-      
-      //_______________ Calculate mean energy loss __________________
-      
-      G4double energy = preStepPoint->GetKineticEnergy();
-      G4Material* material = preStepPoint->GetMaterial();
-      G4ParticleDefinition* particleDef = G4ParticleTable::GetParticleTable()->FindParticle("mu-");
-      
-      G4double beta = preStepPoint->GetBeta();
-      G4double restMass = track->GetDefinition()->GetPDGMass();
-      G4double gamma = 1.0 + (energy / restMass);
-      
-      G4EmCalculator emCalculator;
-      G4double dEdx = emCalculator.ComputeElectronicDEDX(energy, particleDef, material);
-      
+    
+    if(preVol->GetName() == "GasLayerRing" &&
+     postVol->GetName() != "GasLayerRing"){
+         
       // Get point particle exits gas volume
       fEventAction->SetActualExit(preStepPoint->GetPosition());
       
-      std::ofstream stepFile("init_step_data.csv", std::ios_base::app);
-
-      G4ThreeVector pos = preStepPoint->GetPosition();
-      G4double dist = fEventAction->GetTrackedDistance();
-
-      stepFile << energy << ","
-               << pos.x() << "," << pos.y() << "," << pos.z()
-               << "," << dist << "," << dEdx << "," << beta*gamma << "\n";
+  } 
   
-               
-      stepFile.close();
-      
-      if (!isMuon) return;
-      
-      //____________ Get entry and exit points to gas volume ____________ 
-      
-      G4ThreeVector fPredEntry = fEventAction->GetPredictedEntry();
-      G4ThreeVector fPredExit  = fEventAction->GetPredictedExit();
-      G4ThreeVector fActEntry  = fEventAction->GetActualEntry();
-      G4ThreeVector fActExit   = fEventAction->GetActualExit();
-      
-      G4ThreeVector initMomentum = fEventAction->GetInitMomentum();
-      
-      std::ofstream eePosFile("entry_exit_data.csv", std::ios_base::app);
-      
-      eePosFile << initMomentum.x() << "," << initMomentum.y() << ","
-                << initMomentum.z() << ","
-      
-                << fActEntry.x() << "," << fActEntry.y() << ","
-                << fActEntry.z() << ","
-                 
-                << fActExit.x() << "," << fActExit.y() << ","
-                << fActExit.z() << ","
-                 
-                << fPredEntry.x() << "," << fPredEntry.y() << ","
-                << fPredEntry.z() << ","
-                 
-                << fPredExit.x() << "," << fPredExit.y() << ","
-                << fPredExit.z() << "\n";
-                 
-      eePosFile.close();
-  }  
   
 }

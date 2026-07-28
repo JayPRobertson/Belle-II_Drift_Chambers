@@ -1,20 +1,16 @@
 #!/bin/bash
 
-FILEPATH="$HOME/Desktop/Belle II"
+FILEPATH="$HOME/Desktop/Belle II/Python/root"
 
 # Command-line args
 FILENAME="$0"
 SEED="$1"
 
 rm *.csv
-
-echo "event_id,num_trajectory,num_hits,energies,hitx,hity,hitz" > event_action_data.csv
-
-echo "initx_p,inity_p,initz_p,actx_ent,acty_ent,actz_ent,actx_exit,acty_exit,actz_exit,predx_ent,predy_ent,predz_ent,predx_exit,predy_exit,predz_exit" > entry_exit_data.csv
-
-echo "energies,initx,inity,initz,tot_dist,dEdx,beta_gamma" > init_step_data.csv
+rm *.root
 
 make
+echo "i,numWires,r1,r2" > layer_radius.csv
 
 if [ "$SEED" ]; then
    echo "============ Random generator seed detected ============"
@@ -23,7 +19,10 @@ else
    ./exampleB2b
 fi
 
+ln -s libexampleB2blib.dylib libexampleB2blib.so
 
-mv event_action_data.csv "$FILEPATH/Python/csv/hits/"
-mv init_step_data.csv "$FILEPATH/Python/csv/hits/"
-mv entry_exit_data.csv "$FILEPATH/Python/csv/hits/"
+# Copy data to storage location
+#cp particle_and_track_data.root "$FILEPATH/"
+#cp libexampleB2blib.so "$FILEPATH/"
+
+rm *.so

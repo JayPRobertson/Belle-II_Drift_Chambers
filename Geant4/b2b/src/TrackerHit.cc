@@ -8,16 +8,15 @@
 
 #include <iomanip>
 
-namespace B2 {
-
+namespace B2{
+  
 G4ThreadLocal G4Allocator<TrackerHit>* TrackerHitAllocator = nullptr;
 
 G4bool TrackerHit::operator==(const TrackerHit& right) const {
   return (this == &right) ? true : false;
 }
 
-void TrackerHit::Draw()
-{
+void TrackerHit::Draw(){
   G4VVisManager* pVVisManager = G4VVisManager::GetConcreteInstance();
   if (pVVisManager) {
     G4Circle circle(fPos);

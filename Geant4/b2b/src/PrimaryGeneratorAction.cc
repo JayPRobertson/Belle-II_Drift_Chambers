@@ -8,11 +8,12 @@
 #include "G4SystemOfUnits.hh"
 #include "globals.hh"
 #include "HelixApproach.hh"
-#include "G4MuonMinus.hh"
 #include "G4RunManager.hh"
 
 #include "Randomize.hh"
 #include <cmath>
+#include <string>
+#include <nlohmann/json.hpp>
 
 #include "EventAction.hh"
 #include "DetectorConstruction.hh"
@@ -22,11 +23,14 @@ namespace B2{
 PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEventAction(eventAction){
   G4int nofParticles = 1;
   fParticleGun = new G4ParticleGun(nofParticles);
+  
+  const G4RunManager* runManager = G4RunManager::GetRunManager();
+  const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
 
-  G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle("mu-");
+  G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle(detectorConstruction->GetParticleType());
 
   fParticleGun->SetParticleDefinition(particleDefinition);
-  fParticleGun->SetParticleEnergy(2.0 *GeV);
+  fParticleGun->SetParticleEnergy(detectorConstruction->GetParticleEnergy() * GeV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0,0,0));
 } 
 
@@ -34,12 +38,14 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     const G4RunManager* runManager = G4RunManager::GetRunManager();
     const B2b::DetectorConstruction* detectorConstruction = dynamic_cast<const B2b::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
   
+    // Set seed of the ran generator
     int seed = detectorConstruction->GetSeed();
     if (seed >= 0) G4Random::setTheSeed(seed + fPrimaryCount);
+    if (!fPrimaryCount) G4cout << "SEED = " << seed << G4endl;
     fPrimaryCount++;
     
-  // ___ Generate a track starting at the origin going in a random direction ___ //
-
+    // Generate a track starting at the origin going in a random direction
+    
     G4double cosTheta = 2.0*G4UniformRand() - 1.0;
     G4double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
 
@@ -55,33 +61,33 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     fParticleGun->SetParticleMomentumDirection(direction);
     fParticleGun->GeneratePrimaryVertex(event);
 
-    // ___ Get theoretical positions particle enters and exits the gas volume ___ //
-
     G4ThreeVector entry;
     G4ThreeVector exit;
-
-    // Gas volume dimensions
-    G4double rOuter = 109.6 *cm; 
-    G4double rInner = 16.0 *cm;  
-    G4double length = 241.69 *cm;
     
-    G4double muMass = G4MuonMinus::Definition()->GetPDGMass();
+    G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+    G4ParticleDefinition* particle = particleTable->FindParticle(detectorConstruction->GetParticleType());
+    G4double particleMass = particle->GetPDGMass() *MeV;
     G4ThreeVector currentPos = fParticleGun->GetParticlePosition();
 
-    G4double kineticE = fParticleGun->GetParticleEnergy();
-    G4double totalE = kineticE + muMass;
-    G4double pMag = std::sqrt(totalE*totalE - muMass*muMass);
+    G4double energy = fParticleGun->GetParticleEnergy();
+    G4double pMag = std::sqrt(energy*energy - particleMass*particleMass);
     G4ThreeVector momentum = pMag*direction;
+    
+    G4ThreeVector magneticField = detectorConstruction->GetMagneticField();
     
     G4double charge = fParticleGun->GetParticleDefinition()->GetPDGCharge()/CLHEP::eplus;
 
-    HelixApproach helix(currentPos, momentum, G4ThreeVector(0,0,1.5*tesla), muMass, charge);
-    helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
+    HelixApproach helix( currentPos, momentum, magneticField, particleMass, charge);
+    
+    G4double length = detectorConstruction->GetLength(); 
+    G4double rInner = detectorConstruction->GetRInner();  
+    G4double rOuter = detectorConstruction->GetROuter();
 
+    helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
+    
     fEventAction->SetPredictedEntry(entry);
     fEventAction->SetPredictedExit(exit);
-    
-    fEventAction->SetInitMomentum(direction);
+    fEventAction->SetInitMomentum(momentum);
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction(){
