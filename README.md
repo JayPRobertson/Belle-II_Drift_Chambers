@@ -1,6 +1,8 @@
 # Drift Chamber Simulation
 
-The Belle II collaboration is currently working to replace and upgrade their Central Drift Chamber. This repo details some preliminary modelling and data collection in Garfield++ and Geant4. This simulation creates a Geant4 geometry modelled off of the current Belle II Central Drift Chamber (CDC). This geometry is read from a `geometry.json`, which specifies various properties based on the [2010 Belle II Technical Design Report](https://docs.belle2.org/files/4270/BELLE2-REPORT-2016-001/1/BELLE2-REPORT-2016-001.pdf) (pp. 202–208). 
+The Belle II collaboration is currently working to replace and upgrade their Central Drift Chamber. This software was developed to conduct some preliminary modelling and data collection in Garfield++ and Geant4 in preparation for this upgrade. 
+
+This simulation creates a Geant4 geometry modelled off of the current Belle II Central Drift Chamber (CDC). The specifications for the detector are read from `geometry.json`, which currently specifies various properties based on the [2010 Belle II Technical Design Report](https://docs.belle2.org/files/4270/BELLE2-REPORT-2016-001/1/BELLE2-REPORT-2016-001.pdf) (pp. 202–208). 
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Toolkit Installations</span></summary>
@@ -54,9 +56,7 @@ chmod +x run_DCSim.sh
 ./run_DCSim.sh
 ```
 
-Make sure to adjust the filepath in `run_DCSim.sh`.
-
-The initial momentum of the generated particles along each track are generated randomly. The seed for the random geenrator can be optionally set by passing it as a command line argument, e.g. `./run_DCSim.sh 12345`
+The initial momentum of each simulated particle is generated randomly. The seed for the random geenrator can be optionally set by passing it as a command line argument, e.g. `./run_DCSim.sh 12345`
 
 ### Warning
 After the trajectories have loaded in the GUI, do NOT close the GUI window until the GUI menu info has printed to the terminal. This will start with:
@@ -77,26 +77,28 @@ If the window is closed early, a segmentation fault will occur and no data will 
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Output</span></summary>
-`run_DCSim.sh` provides an option to save outputted data to a filepath provided at the top of that file.
 
-- `particle_and_track_data.root` - includes the initial position and momentum of each particle, and a collection of times, energies, and positions of track segments for each particle track. Includes a separate branch for delta rays.
-- `libexampleB2blib.so` - specifies the necessary root libraries
+The simulation outputs three data files. `run_DCSim.sh` provides an option to save these outputs to a filepath provided at the top of that file.
 
-To inspect this data, a ROOT TBrowser can be opened using the following:
-```
-root particle_and_track_data.root
-gSystem->Load("libexampleB2blib.so");
-TBrowser b
-```
+- `drift_times_lookup.csv` - a lookup table of sample drift times \[ns\] of electrons originating at various positions in a drift cell; each cell of the csv file correponds to a 1mm x 1mm section of the drift cell
+- `particle_and_track_data.root` - data about each particle sent through the drift chamber during the simulation, including the particle's initial position and momentum, as well as the times, energies, and positions of the particle as it passed through each layer in the cell. Includes a separate branch for delta rays.
+- `libDriftChamberlib.so` - record of the necessary ROOT libraries
 
-Sample data output can be found in `Python/root`.
+Sample data output can be found in `SampleData`.
 
 </details>
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Analysis</span></summary>
 
-`KalmanFit` is an tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. The project Makefile generates an executable for this tool that can be run using `./kalman`. All data will be output to the terminal.
+`KalmanFit` is a tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. The project Makefile generates an executable for this tool that can be run using `./kalman`. All data will be output to the terminal (a sample output can be found in `SampleData/kalmanFit_output.txt`)
+
+To inspect the simulation data, a ROOT TBrowser can be opened using the following:
+```
+root particle_and_track_data.root
+gSystem->Load("libDriftChamberlib.so");
+TBrowser b
+```
 
 </details>
 

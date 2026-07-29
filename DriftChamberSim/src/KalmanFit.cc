@@ -41,10 +41,8 @@ std::map<int, int> numWiresPerLayer;
 
 void KalmanFit::ProcessParticleTracks(){
     
-    std::string filepath = "~/Desktop/Belle II/Python/root/";
-    
     // Open ROOT file
-    TFile *file = TFile::Open((filepath + "particle_and_track_data.root").c_str());
+    TFile *file = TFile::Open("particle_and_track_data.root");
     if (!file || file->IsZombie()) {
         std::cerr << "Error opening file particle_and_track_data.root" << std::endl;
         return;
