@@ -21,6 +21,14 @@ message(STATUS "ROOT version: ${ROOT_VERSION}")
 message(STATUS "ROOT libraries: ${ROOT_LIBRARIES}")
 
 #----------------------------------------------------------------------------
+# Garfield++
+#----------------------------------------------------------------------------
+set(Garfield_DIR "~/garfieldpp/install/share/Garfield/cmake")
+if(NOT TARGET Garfield::Garfield)
+  find_package(Garfield REQUIRED)
+endif()
+
+#----------------------------------------------------------------------------
 # Build GenFit2
 #----------------------------------------------------------------------------
 include(ExternalProject)
@@ -99,7 +107,7 @@ set_target_properties(DriftChamberSim PROPERTIES
 )
 
 #----------------------------------------------------------------------------
-# Executable: kalman
+# Executable: Kalman
 #----------------------------------------------------------------------------
 add_executable(kalman 
   ${PROJECT_SOURCE_DIR}/src/KalmanFit.cc 
@@ -120,6 +128,12 @@ set_target_properties(kalman PROPERTIES
 
 add_dependencies(kalman genfit2_external)
 target_link_libraries(kalman PRIVATE ${COMMON_LIBRARIES})
+
+#----------------------------------------------------------------------------
+# Executable: DriftTimes
+#----------------------------------------------------------------------------
+add_executable(DriftTimes DriftTimes.C)
+target_link_libraries(DriftTimes Garfield::Garfield)
 
 #----------------------------------------------------------------------------
 # Shared library
@@ -151,3 +165,8 @@ foreach(script ${DRIFTCHAMBER_SCRIPTS})
     COPYONLY
   )
 endforeach()
+
+foreach(_file dt_elx_delta.txt)
+  configure_file(${_file} ${CMAKE_CURRENT_BINARY_DIR}/${_file} COPYONLY)
+endforeach()
+

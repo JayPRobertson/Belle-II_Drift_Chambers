@@ -1,6 +1,0 @@
-set(__QT_DEPLOY_TARGET_exampleB2b_FILE /Users/jayrobertson/geant4/examples/basic/B2/B2b/build/exampleB2b)
-set(__QT_DEPLOY_TARGET_exampleB2b_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_kalman_FILE /Users/jayrobertson/geant4/examples/basic/B2/B2b/build/kalman)
-set(__QT_DEPLOY_TARGET_kalman_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_exampleB2blib_FILE /Users/jayrobertson/geant4/examples/basic/B2/B2b/build/libexampleB2blib.dylib)
-set(__QT_DEPLOY_TARGET_exampleB2blib_TYPE SHARED_LIBRARY)

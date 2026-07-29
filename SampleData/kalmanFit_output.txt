@@ -1,0 +1,2608 @@
+============= Kalman Filter Processing ===========
+Initializing GenFit field
+>>> Track = 0, hits = 48, fitted = 1, converged = 1, chi2 = 28.4386, ndf = 91
+       Momentum = 2.00655 GeV
+       Position = -11.5924 -11.1758 -17.6849 cm
+>>> Track = 1, hits = 30, fitted = 1, converged = 1, chi2 = 16.2572, ndf = 55
+       Momentum = 2.06083 GeV
+       Position = -9.86782 -17.7939 29.9053 cm
+>>> Track = 3, hits = 29, fitted = 1, converged = 1, chi2 = 14.7444, ndf = 53
+       Momentum = 1.78198 GeV
+       Position = 20.1254 2.06411 30.0491 cm
+>>> Track = 4, hits = 53, fitted = 1, converged = 1, chi2 = 30.7229, ndf = 101
+       Momentum = 2.09187 GeV
+       Position = 7.02983 14.9083 -3.62186 cm
+>>> Track = 5, hits = 43, fitted = 1, converged = 1, chi2 = 24.9584, ndf = 81
+       Momentum = 1.9866 GeV
+       Position = 14.0442 10.3159 -20.4575 cm
+>>> Track = 6, hits = 27, fitted = 1, converged = 1, chi2 = 13.7887, ndf = 49
+       Momentum = 1.87588 GeV
+       Position = 19.1301 -5.70597 -30.4481 cm
+>>> Track = 7, hits = 54, fitted = 1, converged = 1, chi2 = 36.6767, ndf = 103
+       Momentum = 2.2492 GeV
+       Position = -1.21417 -16.4484 -10.2157 cm
+>>> Track = 8, hits = 55, fitted = 1, converged = 1, chi2 = 36.6354, ndf = 105
+       Momentum = 2.10104 GeV
+       Position = -12.7933 -10.4057 12.6096 cm
+>>> Track = 9, hits = 53, fitted = 1, converged = 1, chi2 = 34.1652, ndf = 101
+       Momentum = 2.20755 GeV
+       Position = 3.58518 -16.0923 2.61077 cm
+>>> Track = 10, hits = 54, fitted = 1, converged = 1, chi2 = 35.5704, ndf = 103
+       Momentum = 1.94661 GeV
+       Position = -2.38664 16.3158 -8.61877 cm
+>>> Track = 11, hits = 54, fitted = 1, converged = 1, chi2 = 32.904, ndf = 103
+       Momentum = 2.07191 GeV
+       Position = 5.47901 15.5528 0.412084 cm
+>>> Track = 12, hits = 54, fitted = 1, converged = 1, chi2 = 34.5133, ndf = 103
+       Momentum = 2.0813 GeV
+       Position = 16.2274 -2.89771 -15.4715 cm
+>>> Track = 13, hits = 54, fitted = 1, converged = 1, chi2 = 33.8393, ndf = 103
+       Momentum = 1.99052 GeV
+       Position = -10.1327 -13.0081 -0.247307 cm
+>>> Track = 14, hits = 25, fitted = 1, converged = 1, chi2 = 11.4912, ndf = 45
+       Momentum = 2.36668 GeV
+       Position = 11.0971 -17.7762 33.6074 cm
+>>> Track = 15, hits = 55, fitted = 1, converged = 1, chi2 = 36.2763, ndf = 105
+       Momentum = 2.10093 GeV
+       Position = 15.1021 -6.61663 5.84631 cm
+>>> Track = 16, hits = 18, fitted = 1, converged = 1, chi2 = 8.34919, ndf = 31
+       Momentum = 1.84998 GeV
+       Position = -21.5955 11.2694 43.5946 cm
+>>> Track = 17, hits = 55, fitted = 1, converged = 1, chi2 = 34.5635, ndf = 105
+       Momentum = 2.18431 GeV
+       Position = 16.1042 3.54368 12.4173 cm
+>>> Track = 18, hits = 55, fitted = 1, converged = 1, chi2 = 38.9891, ndf = 105
+       Momentum = 2.06315 GeV
+       Position = -16.0228 -3.8657 -8.31341 cm
+>>> Track = 19, hits = 108, fitted = 1, converged = 1, chi2 = 69.3825, ndf = 211
+       Momentum = 2.10424 GeV
+       Position = -13.5806 9.34876 13.8424 cm
+>>> Track = 22, hits = 55, fitted = 1, converged = 1, chi2 = 33.193, ndf = 105
+       Momentum = 1.97316 GeV
+       Position = -8.81663 13.9233 13.9176 cm
+>>> Track = 23, hits = 54, fitted = 1, converged = 1, chi2 = 34.9426, ndf = 103
+       Momentum = 1.92544 GeV
+       Position = -13.3247 -9.70128 7.01139 cm
+>>> Track = 24, hits = 38, fitted = 1, converged = 1, chi2 = 23.407, ndf = 71
+       Momentum = 2.1192 GeV
+       Position = 18.4119 -0.805153 -22.9744 cm
+Skipping track 26 too many or too few hits 4
+>>> Track = 27, hits = 23, fitted = 1, converged = 1, chi2 = 11.5942, ndf = 41
+       Momentum = 1.66442 GeV
+       Position = 2.98117 -21.9902 36.3656 cm
+>>> Track = 28, hits = 55, fitted = 1, converged = 1, chi2 = 32.6693, ndf = 105
+       Momentum = 2.1801 GeV
+       Position = -12.1017 11.2019 15.1047 cm
+>>> Track = 29, hits = 55, fitted = 1, converged = 1, chi2 = 35.6123, ndf = 105
+       Momentum = 2.06983 GeV
+       Position = 11.9641 11.3454 -14.8993 cm
+>>> Track = 30, hits = 54, fitted = 1, converged = 1, chi2 = 33.0726, ndf = 103
+       Momentum = 2.02708 GeV
+       Position = 2.61067 16.2751 0.0377041 cm
+>>> Track = 31, hits = 40, fitted = 1, converged = 1, chi2 = 23.0677, ndf = 75
+       Momentum = 2.0998 GeV
+       Position = -15.9402 -9.26755 -22.8084 cm
+>>> Track = 32, hits = 22, fitted = 1, converged = 1, chi2 = 9.88851, ndf = 39
+       Momentum = 1.46585 GeV
+       Position = 3.19517 -21.876 36.4967 cm
+>>> Track = 33, hits = 47, fitted = 1, converged = 1, chi2 = 29.0365, ndf = 89
+       Momentum = 2.0932 GeV
+       Position = -17.2682 2.58602 -19.4316 cm
+>>> Track = 35, hits = 54, fitted = 1, converged = 1, chi2 = 34.9928, ndf = 103
+       Momentum = 2.05729 GeV
+       Position = 15.8617 -4.47841 -12.044 cm
+>>> Track = 36, hits = 55, fitted = 1, converged = 1, chi2 = 34.8914, ndf = 105
+       Momentum = 2.07038 GeV
+       Position = 16.0443 3.76069 -15.8842 cm
+>>> Track = 37, hits = 54, fitted = 1, converged = 1, chi2 = 36.2039, ndf = 103
+       Momentum = 2.03092 GeV
+       Position = -2.50705 -16.2963 4.10917 cm
+>>> Track = 38, hits = 54, fitted = 1, converged = 1, chi2 = 33.5439, ndf = 103
+       Momentum = 1.96393 GeV
+       Position = 8.81705 -13.9341 3.19725 cm
+>>> Track = 39, hits = 55, fitted = 1, converged = 1, chi2 = 34.1797, ndf = 105
+       Momentum = 2.1422 GeV
+       Position = -1.64473 16.4036 -15.8772 cm
+>>> Track = 40, hits = 53, fitted = 1, converged = 1, chi2 = 35.3332, ndf = 101
+       Momentum = 2.16442 GeV
+       Position = 1.92271 16.3786 -13.404 cm
+>>> Track = 41, hits = 55, fitted = 1, converged = 1, chi2 = 34.7356, ndf = 105
+       Momentum = 2.11693 GeV
+       Position = -11.0584 12.2243 -6.8793 cm
+>>> Track = 42, hits = 53, fitted = 1, converged = 1, chi2 = 36.2223, ndf = 101
+       Momentum = 2.32081 GeV
+       Position = -16.48 -0.69138 -0.936473 cm
+>>> Track = 43, hits = 54, fitted = 1, converged = 1, chi2 = 34.2512, ndf = 103
+       Momentum = 2.27559 GeV
+       Position = -16.4378 -1.37314 0.516984 cm
+>>> Track = 46, hits = 162, fitted = 1, converged = 1, chi2 = 101.622, ndf = 319
+       Momentum = 2.11213 GeV
+       Position = -8.04087 -14.3979 11.3458 cm
+>>> Track = 48, hits = 54, fitted = 1, converged = 1, chi2 = 35.4767, ndf = 103
+       Momentum = 2.2565 GeV
+       Position = 6.55682 15.1249 -10.0654 cm
+>>> Track = 49, hits = 55, fitted = 1, converged = 1, chi2 = 33.4568, ndf = 105
+       Momentum = 2.24502 GeV
+       Position = -13.6139 9.29319 1.55012 cm
+>>> Track = 50, hits = 55, fitted = 1, converged = 1, chi2 = 34.5461, ndf = 105
+       Momentum = 2.13484 GeV
+       Position = -7.51195 14.681 -13.8449 cm
+>>> Track = 51, hits = 55, fitted = 1, converged = 1, chi2 = 35.1205, ndf = 105
+       Momentum = 2.15106 GeV
+       Position = 13.5543 -9.39507 -8.65809 cm
+>>> Track = 52, hits = 55, fitted = 1, converged = 1, chi2 = 33.2108, ndf = 105
+       Momentum = 2.04421 GeV
+       Position = 15.2019 6.38611 -9.62592 cm
+>>> Track = 53, hits = 54, fitted = 1, converged = 1, chi2 = 39.0074, ndf = 103
+       Momentum = 2.001 GeV
+       Position = 16.1487 3.3326 -0.230637 cm
+>>> Track = 54, hits = 53, fitted = 1, converged = 1, chi2 = 35.4336, ndf = 101
+       Momentum = 2.06574 GeV
+       Position = -15.7311 4.94634 -3.56275 cm
+>>> Track = 55, hits = 53, fitted = 1, converged = 1, chi2 = 36.3939, ndf = 101
+       Momentum = 1.96084 GeV
+       Position = 13.6326 9.27413 -0.577867 cm
+>>> Track = 57, hits = 53, fitted = 1, converged = 1, chi2 = 33.2937, ndf = 101
+       Momentum = 1.94623 GeV
+       Position = 15.4575 -5.72154 -4.17996 cm
+>>> Track = 59, hits = 54, fitted = 1, converged = 1, chi2 = 37.3919, ndf = 103
+       Momentum = 2.03625 GeV
+       Position = 8.76439 -13.9684 10.0072 cm
+>>> Track = 60, hits = 88, fitted = 1, converged = 1, chi2 = 51.1332, ndf = 171
+       Momentum = 1.97886 GeV
+       Position = -9.52078 14.6378 -20.3448 cm
+>>> Track = 61, hits = 40, fitted = 1, converged = 1, chi2 = 23.9804, ndf = 75
+       Momentum = 2.02808 GeV
+       Position = -7.52172 16.8265 22.8456 cm
+>>> Track = 62, hits = 16, fitted = 1, converged = 1, chi2 = 8.14704, ndf = 27
+       Momentum = 2.579 GeV
+       Position = 3.10787 23.8754 44.103 cm
+>>> Track = 63, hits = 54, fitted = 1, converged = 1, chi2 = 35.7815, ndf = 103
+       Momentum = 2.06922 GeV
+       Position = 16.4058 1.64792 -9.00452 cm
+>>> Track = 64, hits = 52, fitted = 1, converged = 1, chi2 = 34.1271, ndf = 99
+       Momentum = 2.04852 GeV
+       Position = 15.0262 6.77957 11.1107 cm
+>>> Track = 65, hits = 55, fitted = 1, converged = 1, chi2 = 33.879, ndf = 105
+       Momentum = 2.07562 GeV
+       Position = 14.2659 -8.2582 -16.0765 cm
+>>> Track = 67, hits = 6, fitted = 1, converged = 1, chi2 = 1.51802, ndf = 7
+       Momentum = 1.30707 GeV
+       Position = -21.8581 -24.2574 73.1294 cm
+>>> Track = 68, hits = 53, fitted = 1, converged = 1, chi2 = 34.1624, ndf = 101
+       Momentum = 1.92849 GeV
+       Position = -11.1275 12.1621 -7.31057 cm
+>>> Track = 69, hits = 55, fitted = 1, converged = 1, chi2 = 36.5176, ndf = 105
+       Momentum = 2.23005 GeV
+       Position = 12.4948 10.7657 -15.6257 cm
+>>> Track = 70, hits = 55, fitted = 1, converged = 1, chi2 = 36.5651, ndf = 105
+       Momentum = 1.98537 GeV
+       Position = 1.47742 16.4225 9.12658 cm
+>>> Track = 71, hits = 52, fitted = 1, converged = 1, chi2 = 37.1006, ndf = 99
+       Momentum = 1.99189 GeV
+       Position = 13.6615 -9.22282 7.96932 cm
+>>> Track = 72, hits = 55, fitted = 1, converged = 1, chi2 = 33.5324, ndf = 105
+       Momentum = 2.10174 GeV
+       Position = 12.0763 -11.2197 2.34585 cm
+>>> Track = 74, hits = 55, fitted = 1, converged = 1, chi2 = 38.1448, ndf = 105
+       Momentum = 2.22593 GeV
+       Position = -14.2093 -8.36092 3.59039 cm
+>>> Track = 75, hits = 54, fitted = 1, converged = 1, chi2 = 33.9597, ndf = 103
+       Momentum = 2.12561 GeV
+       Position = -15.565 -5.43857 2.81433 cm
+>>> Track = 76, hits = 54, fitted = 1, converged = 1, chi2 = 33.4033, ndf = 103
+       Momentum = 2.01223 GeV
+       Position = 7.11781 -14.8742 -9.4231 cm
+>>> Track = 77, hits = 38, fitted = 1, converged = 1, chi2 = 20.8288, ndf = 71
+       Momentum = 2.02546 GeV
+       Position = -2.17563 -18.2056 23.664 cm
+>>> Track = 78, hits = 54, fitted = 1, converged = 1, chi2 = 35.2259, ndf = 103
+       Momentum = 2.03678 GeV
+       Position = 16.3101 2.39883 4.31296 cm
+>>> Track = 79, hits = 54, fitted = 1, converged = 1, chi2 = 33.237, ndf = 103
+       Momentum = 1.96986 GeV
+       Position = 15.7187 -4.97632 8.20896 cm
+>>> Track = 80, hits = 37, fitted = 1, converged = 1, chi2 = 18.8575, ndf = 69
+       Momentum = 1.74162 GeV
+       Position = -2.57877 -17.9933 -23.8728 cm
+>>> Track = 81, hits = 53, fitted = 1, converged = 1, chi2 = 33.2161, ndf = 101
+       Momentum = 1.9478 GeV
+       Position = 2.21348 16.3364 -7.09331 cm
+>>> Track = 82, hits = 53, fitted = 1, converged = 1, chi2 = 31.0551, ndf = 101
+       Momentum = 1.99864 GeV
+       Position = 9.00248 -13.8105 -1.37968 cm
+>>> Track = 83, hits = 53, fitted = 1, converged = 1, chi2 = 32.9514, ndf = 101
+       Momentum = 2.09918 GeV
+       Position = 3.72449 16.065 1.74359 cm
+>>> Track = 84, hits = 55, fitted = 1, converged = 1, chi2 = 35.9763, ndf = 105
+       Momentum = 2.00495 GeV
+       Position = -3.69217 -16.0642 -10.2573 cm
+>>> Track = 85, hits = 50, fitted = 1, converged = 1, chi2 = 28.5149, ndf = 95
+       Momentum = 2.11517 GeV
+       Position = 15.4961 5.61607 1.51939 cm
+>>> Track = 87, hits = 88, fitted = 1, converged = 1, chi2 = 53.2254, ndf = 171
+       Momentum = 2.06304 GeV
+       Position = 16.686 5.16983 -20.2468 cm
+>>> Track = 89, hits = 110, fitted = 1, converged = 1, chi2 = 67.3172, ndf = 215
+       Momentum = 1.97871 GeV
+       Position = -15.5979 5.34397 2.148 cm
+>>> Track = 90, hits = 55, fitted = 1, converged = 1, chi2 = 38.7674, ndf = 105
+       Momentum = 2.21628 GeV
+       Position = -3.02359 16.2075 -8.491 cm
+>>> Track = 91, hits = 43, fitted = 1, converged = 1, chi2 = 23.2088, ndf = 81
+       Momentum = 2.03053 GeV
+       Position = -7.19858 -15.5245 -20.8182 cm
+>>> Track = 92, hits = 55, fitted = 1, converged = 1, chi2 = 37.2519, ndf = 105
+       Momentum = 2.16064 GeV
+       Position = 16.3535 2.11217 9.15929 cm
+>>> Track = 93, hits = 54, fitted = 1, converged = 1, chi2 = 34.1603, ndf = 103
+       Momentum = 2.12819 GeV
+       Position = 12.2356 -11.0527 13.9366 cm
+>>> Track = 94, hits = 55, fitted = 1, converged = 1, chi2 = 34.6345, ndf = 105
+       Momentum = 2.09623 GeV
+       Position = -6.66297 -15.0818 2.46742 cm
+>>> Track = 95, hits = 55, fitted = 1, converged = 1, chi2 = 31.6308, ndf = 105
+       Momentum = 1.94266 GeV
+       Position = -10.2981 12.8781 -3.69118 cm
+>>> Track = 96, hits = 54, fitted = 1, converged = 1, chi2 = 37.8807, ndf = 103
+       Momentum = 2.18676 GeV
+       Position = 4.12037 15.9643 0.985049 cm
+>>> Track = 97, hits = 55, fitted = 1, converged = 1, chi2 = 36.5057, ndf = 105
+       Momentum = 2.05417 GeV
+       Position = -14.9563 -6.92155 -9.4199 cm
+>>> Track = 98, hits = 44, fitted = 1, converged = 1, chi2 = 24.8144, ndf = 83
+       Momentum = 2.12808 GeV
+       Position = 14.9595 9.01274 20.4091 cm
+>>> Track = 99, hits = 108, fitted = 1, converged = 1, chi2 = 66.7106, ndf = 211
+       Momentum = 2.1293 GeV
+       Position = 11.9668 -11.3401 -5.71919 cm
+>>> Track = 100, hits = 54, fitted = 1, converged = 1, chi2 = 36.6171, ndf = 103
+       Momentum = 2.147 GeV
+       Position = -11.9893 -11.3185 -16.0918 cm
+>>> Track = 101, hits = 54, fitted = 1, converged = 1, chi2 = 35.4998, ndf = 103
+       Momentum = 2.16055 GeV
+       Position = 8.52038 -14.1161 -16.6442 cm
+>>> Track = 103, hits = 55, fitted = 1, converged = 1, chi2 = 32.7466, ndf = 105
+       Momentum = 2.11405 GeV
+       Position = 13.7527 -9.10347 -0.288156 cm
+>>> Track = 105, hits = 54, fitted = 1, converged = 1, chi2 = 32.9602, ndf = 103
+       Momentum = 2.01755 GeV
+       Position = 11.9574 -11.3469 -12.0286 cm
+>>> Track = 106, hits = 54, fitted = 1, converged = 1, chi2 = 35.4974, ndf = 103
+       Momentum = 2.1301 GeV
+       Position = 0.241127 16.4842 8.21338 cm
+>>> Track = 107, hits = 42, fitted = 1, converged = 1, chi2 = 23.1458, ndf = 79
+       Momentum = 2.11423 GeV
+       Position = -5.88974 -16.0724 20.8107 cm
+>>> Track = 108, hits = 55, fitted = 1, converged = 1, chi2 = 32.4578, ndf = 105
+       Momentum = 1.97988 GeV
+       Position = -8.32888 -14.2305 -0.330797 cm
+>>> Track = 109, hits = 45, fitted = 1, converged = 1, chi2 = 25.1886, ndf = 85
+       Momentum = 2.18725 GeV
+       Position = 1.50901 17.378 -20.4436 cm
+>>> Track = 110, hits = 53, fitted = 1, converged = 1, chi2 = 32.1047, ndf = 101
+       Momentum = 2.20515 GeV
+       Position = 5.49231 -15.5479 -5.7357 cm
+>>> Track = 111, hits = 54, fitted = 1, converged = 1, chi2 = 33.7729, ndf = 103
+       Momentum = 2.09201 GeV
+       Position = 15.6813 -5.09265 -15.5619 cm
+>>> Track = 112, hits = 51, fitted = 1, converged = 1, chi2 = 34.7299, ndf = 97
+       Momentum = 2.12373 GeV
+       Position = -16.4815 -0.329374 -13.606 cm
+>>> Track = 113, hits = 25, fitted = 1, converged = 1, chi2 = 11.8462, ndf = 45
+       Momentum = 2.54561 GeV
+       Position = -21.009 0.00699612 -33.5366 cm
+>>> Track = 114, hits = 55, fitted = 1, converged = 1, chi2 = 37.5316, ndf = 105
+       Momentum = 2.18011 GeV
+       Position = 3.0072 -16.2096 -10.9174 cm
+>>> Track = 115, hits = 54, fitted = 1, converged = 1, chi2 = 34.8619, ndf = 103
+       Momentum = 2.1338 GeV
+       Position = 12.4377 -10.817 -7.98912 cm
+>>> Track = 116, hits = 55, fitted = 1, converged = 1, chi2 = 34.2452, ndf = 105
+       Momentum = 2.06485 GeV
+       Position = 12.0033 11.3074 -8.70154 cm
+>>> Track = 117, hits = 54, fitted = 1, converged = 1, chi2 = 33.9967, ndf = 103
+       Momentum = 2.08913 GeV
+       Position = -0.656575 -16.4682 -0.322479 cm
+>>> Track = 118, hits = 54, fitted = 1, converged = 1, chi2 = 35.1828, ndf = 103
+       Momentum = 2.10438 GeV
+       Position = 1.32732 16.4287 8.56539 cm
+>>> Track = 119, hits = 32, fitted = 1, converged = 1, chi2 = 16.3727, ndf = 59
+       Momentum = 2.28242 GeV
+       Position = -10.5343 -16.1427 26.8643 cm
+>>> Track = 120, hits = 54, fitted = 1, converged = 1, chi2 = 33.7753, ndf = 103
+       Momentum = 2.2216 GeV
+       Position = -8.82401 -13.9259 4.65075 cm
+>>> Track = 121, hits = 55, fitted = 1, converged = 1, chi2 = 33.1562, ndf = 105
+       Momentum = 2.17344 GeV
+       Position = 16.4853 -0.27328 5.82475 cm
+>>> Track = 122, hits = 53, fitted = 1, converged = 1, chi2 = 33.4828, ndf = 101
+       Momentum = 2.09856 GeV
+       Position = 8.51138 14.123 11.2423 cm
+>>> Track = 123, hits = 54, fitted = 1, converged = 1, chi2 = 35.6515, ndf = 103
+       Momentum = 2.09765 GeV
+       Position = 11.7226 11.5866 -4.99548 cm
+>>> Track = 124, hits = 55, fitted = 1, converged = 1, chi2 = 33.0249, ndf = 105
+       Momentum = 2.00679 GeV
+       Position = -12.6053 10.6296 -1.20782 cm
+>>> Track = 125, hits = 53, fitted = 1, converged = 1, chi2 = 33.7405, ndf = 101
+       Momentum = 2.14497 GeV
+       Position = -17.4313 -0.914232 -16.1148 cm
+>>> Track = 126, hits = 55, fitted = 1, converged = 1, chi2 = 34.2393, ndf = 105
+       Momentum = 2.12463 GeV
+       Position = 15.9582 -4.13823 12.4047 cm
+>>> Track = 127, hits = 45, fitted = 1, converged = 1, chi2 = 28.3907, ndf = 85
+       Momentum = 2.00868 GeV
+       Position = 12.9068 11.7506 -20.1138 cm
+>>> Track = 128, hits = 54, fitted = 1, converged = 1, chi2 = 34.6942, ndf = 103
+       Momentum = 2.11673 GeV
+       Position = -12.7001 10.5137 10.8738 cm
+>>> Track = 129, hits = 55, fitted = 1, converged = 1, chi2 = 36.1021, ndf = 105
+       Momentum = 1.94677 GeV
+       Position = -11.378 -11.9333 -0.0156603 cm
+>>> Track = 130, hits = 55, fitted = 1, converged = 1, chi2 = 34.38, ndf = 105
+       Momentum = 2.08515 GeV
+       Position = -4.92146 15.7357 -13.2947 cm
+>>> Track = 131, hits = 52, fitted = 1, converged = 1, chi2 = 30.1867, ndf = 99
+       Momentum = 2.12795 GeV
+       Position = 16.0162 3.92207 13.3409 cm
+>>> Track = 132, hits = 55, fitted = 1, converged = 1, chi2 = 33.351, ndf = 105
+       Momentum = 2.12689 GeV
+       Position = 0.743981 -16.4752 9.83402 cm
+>>> Track = 133, hits = 54, fitted = 1, converged = 1, chi2 = 32.772, ndf = 103
+       Momentum = 2.1077 GeV
+       Position = 8.97211 -13.8322 -5.61373 cm
+>>> Track = 134, hits = 55, fitted = 1, converged = 1, chi2 = 36.8475, ndf = 105
+       Momentum = 2.13215 GeV
+       Position = -10.8783 -12.3905 7.52983 cm
+>>> Track = 136, hits = 110, fitted = 1, converged = 1, chi2 = 72.6787, ndf = 215
+       Momentum = 2.18155 GeV
+       Position = -9.31416 -13.5997 9.78783 cm
+>>> Track = 137, hits = 53, fitted = 1, converged = 1, chi2 = 35.984, ndf = 101
+       Momentum = 2.04435 GeV
+       Position = 4.74182 15.7902 -10.9062 cm
+>>> Track = 138, hits = 52, fitted = 1, converged = 1, chi2 = 33.875, ndf = 99
+       Momentum = 1.99257 GeV
+       Position = -16.3226 -2.3003 9.85603 cm
+>>> Track = 139, hits = 55, fitted = 1, converged = 1, chi2 = 35.7153, ndf = 105
+       Momentum = 2.10966 GeV
+       Position = 9.13632 13.7309 0.543029 cm
+>>> Track = 140, hits = 53, fitted = 1, converged = 1, chi2 = 32.4603, ndf = 101
+       Momentum = 2.1102 GeV
+       Position = -14.6533 -7.56271 0.518176 cm
+>>> Track = 141, hits = 27, fitted = 1, converged = 1, chi2 = 13.6475, ndf = 49
+       Momentum = 2.6798 GeV
+       Position = -0.607768 21.3633 32.8299 cm
+>>> Track = 142, hits = 55, fitted = 1, converged = 1, chi2 = 32.8434, ndf = 105
+       Momentum = 2.11922 GeV
+       Position = -16.4838 0.221961 -1.30074 cm
+>>> Track = 143, hits = 5, fitted = 1, converged = 1, chi2 = 2.31708, ndf = 5
+       Momentum = 1.08934 GeV
+       Position = -2.8353 -32.1748 -73.9051 cm
+>>> Track = 144, hits = 54, fitted = 1, converged = 1, chi2 = 36.6214, ndf = 103
+       Momentum = 2.18895 GeV
+       Position = 16.4554 1.04457 8.24319 cm
+>>> Track = 145, hits = 55, fitted = 1, converged = 1, chi2 = 35.3625, ndf = 105
+       Momentum = 2.07162 GeV
+       Position = -4.36013 -15.8993 -13.346 cm
+>>> Track = 146, hits = 54, fitted = 1, converged = 1, chi2 = 32.7178, ndf = 103
+       Momentum = 2.14975 GeV
+       Position = -9.23211 13.6677 3.41168 cm
+>>> Track = 147, hits = 55, fitted = 1, converged = 1, chi2 = 37.2638, ndf = 105
+       Momentum = 2.09111 GeV
+       Position = 9.67732 13.3489 -14.001 cm
+>>> Track = 148, hits = 55, fitted = 1, converged = 1, chi2 = 34.7824, ndf = 105
+       Momentum = 2.10031 GeV
+       Position = 10.5497 -12.6743 -16.1936 cm
+>>> Track = 149, hits = 34, fitted = 1, converged = 1, chi2 = 17.8482, ndf = 63
+       Momentum = 2.49677 GeV
+       Position = -19.1783 -3.03623 26.2927 cm
+>>> Track = 150, hits = 54, fitted = 1, converged = 1, chi2 = 33.6655, ndf = 103
+       Momentum = 2.14568 GeV
+       Position = -3.45972 -16.1104 16.5866 cm
+>>> Track = 151, hits = 54, fitted = 1, converged = 1, chi2 = 35.3112, ndf = 103
+       Momentum = 2.16314 GeV
+       Position = 16.4841 0.3359 -1.40689 cm
+>>> Track = 152, hits = 55, fitted = 1, converged = 1, chi2 = 35.5464, ndf = 105
+       Momentum = 2.24676 GeV
+       Position = 11.6243 11.6992 12.7715 cm
+>>> Track = 153, hits = 55, fitted = 1, converged = 1, chi2 = 35.231, ndf = 105
+       Momentum = 2.05875 GeV
+       Position = -15.0326 6.7787 1.22433 cm
+>>> Track = 154, hits = 54, fitted = 1, converged = 1, chi2 = 31.9639, ndf = 103
+       Momentum = 2.02692 GeV
+       Position = 13.4847 9.48756 6.76999 cm
+>>> Track = 155, hits = 53, fitted = 1, converged = 1, chi2 = 32.8979, ndf = 101
+       Momentum = 2.11727 GeV
+       Position = 15.7008 -5.02163 8.58131 cm
+>>> Track = 156, hits = 55, fitted = 1, converged = 1, chi2 = 34.355, ndf = 105
+       Momentum = 2.04664 GeV
+       Position = 14.1863 8.39838 -3.29873 cm
+>>> Track = 158, hits = 37, fitted = 1, converged = 1, chi2 = 18.7791, ndf = 69
+       Momentum = 2.15582 GeV
+       Position = 15.999 -8.47443 -23.9679 cm
+>>> Track = 159, hits = 54, fitted = 1, converged = 1, chi2 = 35.6059, ndf = 103
+       Momentum = 2.00323 GeV
+       Position = 16.4571 -0.848023 13.0922 cm
+>>> Track = 161, hits = 28, fitted = 1, converged = 1, chi2 = 14.2755, ndf = 51
+       Momentum = 1.91286 GeV
+       Position = 6.6988 -18.9364 30.267 cm
+>>> Track = 165, hits = 110, fitted = 1, converged = 1, chi2 = 71.5077, ndf = 215
+       Momentum = 2.254 GeV
+       Position = -12.9091 10.2607 13.539 cm
+>>> Track = 166, hits = 54, fitted = 1, converged = 1, chi2 = 35.569, ndf = 103
+       Momentum = 2.21656 GeV
+       Position = -14.4245 7.99871 2.51128 cm
+>>> Track = 167, hits = 54, fitted = 1, converged = 1, chi2 = 31.0269, ndf = 103
+       Momentum = 2.13534 GeV
+       Position = 11.0869 12.2061 7.21079 cm
+>>> Track = 168, hits = 54, fitted = 1, converged = 1, chi2 = 34.5469, ndf = 103
+       Momentum = 2.03954 GeV
+       Position = -7.97294 -14.4351 4.34085 cm
+>>> Track = 169, hits = 55, fitted = 1, converged = 1, chi2 = 37.4023, ndf = 105
+       Momentum = 2.10133 GeV
+       Position = -14.8954 7.07449 -11.0366 cm
+>>> Track = 171, hits = 54, fitted = 1, converged = 1, chi2 = 35.7434, ndf = 103
+       Momentum = 2.17991 GeV
+       Position = -7.71216 14.5771 -12.8804 cm
+>>> Track = 172, hits = 53, fitted = 1, converged = 1, chi2 = 36.9539, ndf = 101
+       Momentum = 1.98774 GeV
+       Position = 9.3305 13.6248 10.4109 cm
+>>> Track = 173, hits = 55, fitted = 1, converged = 1, chi2 = 35.5851, ndf = 105
+       Momentum = 2.28362 GeV
+       Position = -16.3901 1.85035 2.27654 cm
+>>> Track = 174, hits = 55, fitted = 1, converged = 1, chi2 = 36.7347, ndf = 105
+       Momentum = 2.0209 GeV
+       Position = 8.54768 14.1003 -4.52473 cm
+>>> Track = 175, hits = 53, fitted = 1, converged = 1, chi2 = 30.0787, ndf = 101
+       Momentum = 2.14178 GeV
+       Position = -13.6185 -9.29984 -3.68475 cm
+>>> Track = 176, hits = 54, fitted = 1, converged = 1, chi2 = 37.1503, ndf = 103
+       Momentum = 2.17531 GeV
+       Position = 0.615892 16.4812 -1.01922 cm
+>>> Track = 177, hits = 55, fitted = 1, converged = 1, chi2 = 35.3246, ndf = 105
+       Momentum = 2.19896 GeV
+       Position = -2.27312 16.3302 -2.76401 cm
+>>> Track = 178, hits = 54, fitted = 1, converged = 1, chi2 = 37.885, ndf = 103
+       Momentum = 2.05494 GeV
+       Position = -12.123 11.1673 -7.76967 cm
+>>> Track = 179, hits = 53, fitted = 1, converged = 1, chi2 = 31.6206, ndf = 101
+       Momentum = 2.16468 GeV
+       Position = -16.1004 -3.55851 1.82938 cm
+>>> Track = 180, hits = 55, fitted = 1, converged = 1, chi2 = 33.8896, ndf = 105
+       Momentum = 2.04642 GeV
+       Position = 12.4835 10.7725 3.60721 cm
+>>> Track = 181, hits = 55, fitted = 1, converged = 1, chi2 = 31.9054, ndf = 105
+       Momentum = 2.27891 GeV
+       Position = -6.49082 15.1598 2.58147 cm
+>>> Track = 182, hits = 53, fitted = 1, converged = 1, chi2 = 38.2348, ndf = 101
+       Momentum = 2.17913 GeV
+       Position = 11.9796 -11.3237 -10.3055 cm
+>>> Track = 183, hits = 55, fitted = 1, converged = 1, chi2 = 33.2142, ndf = 105
+       Momentum = 2.02232 GeV
+       Position = 16.155 3.29741 -9.22136 cm
+>>> Track = 184, hits = 54, fitted = 1, converged = 1, chi2 = 33.5432, ndf = 103
+       Momentum = 1.90272 GeV
+       Position = 7.24784 -14.8065 6.89266 cm
+>>> Track = 185, hits = 54, fitted = 1, converged = 1, chi2 = 34.0461, ndf = 103
+       Momentum = 2.24847 GeV
+       Position = 16.4033 1.65097 -3.52074 cm
+>>> Track = 186, hits = 9, fitted = 1, converged = 1, chi2 = 3.2915, ndf = 13
+       Momentum = 1.0124 GeV
+       Position = -27.0943 -11.8922 -62.0457 cm
+>>> Track = 187, hits = 43, fitted = 1, converged = 1, chi2 = 24.4709, ndf = 81
+       Momentum = 2.0884 GeV
+       Position = 10.1721 -14.0184 -20.5761 cm
+>>> Track = 188, hits = 55, fitted = 1, converged = 1, chi2 = 35.4928, ndf = 105
+       Momentum = 2.17767 GeV
+       Position = 9.95348 13.1479 -5.66747 cm
+>>> Track = 189, hits = 55, fitted = 1, converged = 1, chi2 = 35.9012, ndf = 105
+       Momentum = 2.11598 GeV
+       Position = -15.7262 4.9665 5.46001 cm
+>>> Track = 190, hits = 54, fitted = 1, converged = 1, chi2 = 32.5889, ndf = 103
+       Momentum = 2.22744 GeV
+       Position = -14.3706 8.066 -4.10488 cm
+>>> Track = 191, hits = 55, fitted = 1, converged = 1, chi2 = 33.8393, ndf = 105
+       Momentum = 2.09886 GeV
+       Position = -16.0783 3.68087 15.582 cm
+>>> Track = 192, hits = 55, fitted = 1, converged = 1, chi2 = 38.1573, ndf = 105
+       Momentum = 2.20426 GeV
+       Position = 3.44273 16.126 -11.2501 cm
+>>> Track = 193, hits = 55, fitted = 1, converged = 1, chi2 = 33.7237, ndf = 105
+       Momentum = 2.05959 GeV
+       Position = -11.4711 -11.8397 -11.9996 cm
+>>> Track = 194, hits = 52, fitted = 1, converged = 1, chi2 = 33.4071, ndf = 99
+       Momentum = 2.08487 GeV
+       Position = 9.41997 -13.5308 -11.6911 cm
+>>> Track = 196, hits = 110, fitted = 1, converged = 1, chi2 = 72.1694, ndf = 215
+       Momentum = 2.19679 GeV
+       Position = 10.8575 -12.4146 -16.4082 cm
+>>> Track = 197, hits = 53, fitted = 1, converged = 1, chi2 = 29.3408, ndf = 101
+       Momentum = 2.13532 GeV
+       Position = 16.4345 1.36641 6.63755 cm
+>>> Track = 200, hits = 55, fitted = 1, converged = 1, chi2 = 36.1606, ndf = 105
+       Momentum = 2.04913 GeV
+       Position = -1.01694 16.4533 10.8745 cm
+>>> Track = 201, hits = 54, fitted = 1, converged = 1, chi2 = 34.0077, ndf = 103
+       Momentum = 2.20577 GeV
+       Position = 7.86781 -14.4908 -6.92167 cm
+>>> Track = 202, hits = 55, fitted = 1, converged = 1, chi2 = 34.7198, ndf = 105
+       Momentum = 2.13977 GeV
+       Position = -13.9255 -8.83213 5.00207 cm
+>>> Track = 203, hits = 55, fitted = 1, converged = 1, chi2 = 32.8972, ndf = 105
+       Momentum = 2.12531 GeV
+       Position = -11.0436 12.2384 -4.41665 cm
+>>> Track = 204, hits = 20, fitted = 1, converged = 1, chi2 = 9.35513, ndf = 35
+       Momentum = 3.1933 GeV
+       Position = -1.96215 22.9327 -39.8366 cm
+>>> Track = 205, hits = 55, fitted = 1, converged = 1, chi2 = 37.0646, ndf = 105
+       Momentum = 2.17177 GeV
+       Position = -2.28994 -16.3301 4.91584 cm
+>>> Track = 206, hits = 50, fitted = 1, converged = 1, chi2 = 29.4648, ndf = 95
+       Momentum = 1.94621 GeV
+       Position = 7.78916 14.1309 17.6517 cm
+>>> Track = 207, hits = 53, fitted = 1, converged = 1, chi2 = 36.3581, ndf = 101
+       Momentum = 2.09026 GeV
+       Position = -8.31788 -14.2356 -4.31173 cm
+>>> Track = 208, hits = 54, fitted = 1, converged = 1, chi2 = 35.5019, ndf = 103
+       Momentum = 2.05647 GeV
+       Position = 15.8615 4.52382 9.68793 cm
+>>> Track = 209, hits = 54, fitted = 1, converged = 1, chi2 = 34.6681, ndf = 103
+       Momentum = 2.0221 GeV
+       Position = -16.3061 -2.42529 -11.1764 cm
+>>> Track = 210, hits = 53, fitted = 1, converged = 1, chi2 = 36.1149, ndf = 101
+       Momentum = 2.3148 GeV
+       Position = 8.63588 14.0527 -4.73341 cm
+Skipping track 211 too many or too few hits 1
+>>> Track = 212, hits = 52, fitted = 1, converged = 1, chi2 = 34.418, ndf = 99
+       Momentum = 2.0937 GeV
+       Position = -15.6857 -5.09964 0.617393 cm
+>>> Track = 213, hits = 23, fitted = 1, converged = 1, chi2 = 10.5075, ndf = 41
+       Momentum = 1.64122 GeV
+       Position = -9.49844 20.0193 36.4233 cm
+>>> Track = 214, hits = 55, fitted = 1, converged = 1, chi2 = 35.0429, ndf = 105
+       Momentum = 2.08783 GeV
+       Position = 10.0704 13.0522 15.742 cm
+>>> Track = 215, hits = 55, fitted = 1, converged = 1, chi2 = 34.027, ndf = 105
+       Momentum = 2.07232 GeV
+       Position = 16.1269 3.44612 -2.01586 cm
+>>> Track = 216, hits = 48, fitted = 1, converged = 1, chi2 = 28.6821, ndf = 91
+       Momentum = 2.01431 GeV
+       Position = -3.08518 -17.1828 -19.4671 cm
+>>> Track = 217, hits = 54, fitted = 1, converged = 1, chi2 = 34.6648, ndf = 103
+       Momentum = 2.15167 GeV
+       Position = -15.909 4.35835 -7.176 cm
+>>> Track = 218, hits = 55, fitted = 1, converged = 1, chi2 = 37.1612, ndf = 105
+       Momentum = 2.11479 GeV
+       Position = -14.9395 -6.98155 -3.29882 cm
+>>> Track = 219, hits = 55, fitted = 1, converged = 1, chi2 = 38.0308, ndf = 105
+       Momentum = 2.1771 GeV
+       Position = 15.9644 -4.11832 1.25427 cm
+>>> Track = 220, hits = 15, fitted = 1, converged = 1, chi2 = 6.68835, ndf = 25
+       Momentum = 2.65532 GeV
+       Position = -15.8487 19.9692 48.5021 cm
+>>> Track = 221, hits = 54, fitted = 1, converged = 1, chi2 = 34.9142, ndf = 103
+       Momentum = 1.98021 GeV
+       Position = 14.8166 7.23726 9.77614 cm
+>>> Track = 223, hits = 108, fitted = 1, converged = 1, chi2 = 72.8009, ndf = 211
+       Momentum = 1.90739 GeV
+       Position = 12.1993 -11.0937 -1.69909 cm
+>>> Track = 224, hits = 55, fitted = 1, converged = 1, chi2 = 32.5776, ndf = 105
+       Momentum = 2.23467 GeV
+       Position = -11.3923 -11.9181 0.437101 cm
+>>> Track = 225, hits = 54, fitted = 1, converged = 1, chi2 = 34.5583, ndf = 103
+       Momentum = 2.09062 GeV
+       Position = 16.3442 2.15792 16.366 cm
+>>> Track = 227, hits = 24, fitted = 1, converged = 1, chi2 = 10.1819, ndf = 43
+       Momentum = 3.18852 GeV
+       Position = -1.94851 -20.9697 -33.4759 cm
+>>> Track = 228, hits = 55, fitted = 1, converged = 1, chi2 = 37.084, ndf = 105
+       Momentum = 1.95079 GeV
+       Position = -16.4835 -0.415335 4.06897 cm
+>>> Track = 229, hits = 54, fitted = 1, converged = 1, chi2 = 33.1115, ndf = 103
+       Momentum = 2.10509 GeV
+       Position = -15.0578 -6.72089 -6.14067 cm
+>>> Track = 230, hits = 52, fitted = 1, converged = 1, chi2 = 33.4266, ndf = 99
+       Momentum = 2.0063 GeV
+       Position = -5.09394 15.6767 -1.75941 cm
+>>> Track = 231, hits = 54, fitted = 1, converged = 1, chi2 = 34.31, ndf = 103
+       Momentum = 2.08346 GeV
+       Position = 14.0371 8.63819 -3.9909 cm
+>>> Track = 232, hits = 40, fitted = 1, converged = 1, chi2 = 22.495, ndf = 75
+       Momentum = 2.1155 GeV
+       Position = 6.51536 17.2431 -23.0371 cm
+>>> Track = 233, hits = 36, fitted = 1, converged = 1, chi2 = 18.8049, ndf = 67
+       Momentum = 2.06899 GeV
+       Position = -16.1994 7.84225 24.1115 cm
+>>> Track = 234, hits = 55, fitted = 1, converged = 1, chi2 = 36.2326, ndf = 105
+       Momentum = 2.15059 GeV
+       Position = -10.4691 12.7369 7.7903 cm
+>>> Track = 235, hits = 55, fitted = 1, converged = 1, chi2 = 35.0597, ndf = 105
+       Momentum = 2.18208 GeV
+       Position = 7.8187 -14.5182 -13.767 cm
+>>> Track = 238, hits = 55, fitted = 1, converged = 1, chi2 = 37.2721, ndf = 105
+       Momentum = 2.03729 GeV
+       Position = 15.2954 6.14873 10.2701 cm
+>>> Track = 239, hits = 35, fitted = 1, converged = 1, chi2 = 19.3017, ndf = 65
+       Momentum = 2.23911 GeV
+       Position = -19.0294 3.8619 26.2004 cm
+>>> Track = 240, hits = 55, fitted = 1, converged = 1, chi2 = 33.2879, ndf = 105
+       Momentum = 2.00118 GeV
+       Position = -15.15 6.50152 -6.0126 cm
+>>> Track = 241, hits = 54, fitted = 1, converged = 1, chi2 = 31.42, ndf = 103
+       Momentum = 1.92093 GeV
+       Position = -4.23886 15.9348 2.83968 cm
+>>> Track = 242, hits = 55, fitted = 1, converged = 1, chi2 = 37.2186, ndf = 105
+       Momentum = 2.28379 GeV
+       Position = -10.0487 13.0701 3.88997 cm
+>>> Track = 243, hits = 11, fitted = 1, converged = 1, chi2 = 4.4976, ndf = 17
+       Momentum = 2.74531 GeV
+       Position = 10.8408 -26.0441 57.5266 cm
+>>> Track = 244, hits = 52, fitted = 1, converged = 1, chi2 = 35.5993, ndf = 99
+       Momentum = 2.14295 GeV
+       Position = -2.74887 17.2469 -12.584 cm
+>>> Track = 245, hits = 55, fitted = 1, converged = 1, chi2 = 33.2016, ndf = 105
+       Momentum = 2.01329 GeV
+       Position = -0.0825117 16.4918 9.01392 cm
+>>> Track = 246, hits = 53, fitted = 1, converged = 1, chi2 = 32.9847, ndf = 101
+       Momentum = 2.22611 GeV
+       Position = 14.483 -7.89348 -10.1488 cm
+>>> Track = 247, hits = 55, fitted = 1, converged = 1, chi2 = 37.7402, ndf = 105
+       Momentum = 2.13803 GeV
+       Position = 13.0099 -10.1421 10.1008 cm
+>>> Track = 249, hits = 53, fitted = 1, converged = 1, chi2 = 33.9679, ndf = 101
+       Momentum = 2.10639 GeV
+       Position = -2.12839 -16.3486 11.5442 cm
+>>> Track = 250, hits = 54, fitted = 1, converged = 1, chi2 = 34.2145, ndf = 103
+       Momentum = 2.18088 GeV
+       Position = 7.75746 -14.5515 4.03805 cm
+>>> Track = 251, hits = 55, fitted = 1, converged = 1, chi2 = 35.3589, ndf = 105
+       Momentum = 2.16825 GeV
+       Position = 11.5136 -11.8089 15.4299 cm
+>>> Track = 252, hits = 55, fitted = 1, converged = 1, chi2 = 32.1908, ndf = 105
+       Momentum = 2.22192 GeV
+       Position = 8.93258 -13.8799 -14.2179 cm
+>>> Track = 253, hits = 54, fitted = 1, converged = 1, chi2 = 33.4727, ndf = 103
+       Momentum = 2.08066 GeV
+       Position = 9.65804 -13.3568 -0.306076 cm
+>>> Track = 254, hits = 53, fitted = 1, converged = 1, chi2 = 33.7669, ndf = 101
+       Momentum = 2.10908 GeV
+       Position = 12.32 10.9603 -1.97657 cm
+>>> Track = 255, hits = 54, fitted = 1, converged = 1, chi2 = 34.5631, ndf = 103
+       Momentum = 2.11292 GeV
+       Position = 15.5664 5.43176 -0.357266 cm
+>>> Track = 256, hits = 55, fitted = 1, converged = 1, chi2 = 37.4409, ndf = 105
+       Momentum = 2.12649 GeV
+       Position = 13.2411 9.83468 -14.0366 cm
+>>> Track = 257, hits = 11, fitted = 1, converged = 1, chi2 = 3.90717, ndf = 17
+       Momentum = 8.76418 GeV
+       Position = 4.23568 28.0045 57.3045 cm
+>>> Track = 258, hits = 53, fitted = 1, converged = 1, chi2 = 32.2903, ndf = 101
+       Momentum = 2.05173 GeV
+       Position = 14.3519 8.10697 -17.2299 cm
+>>> Track = 259, hits = 23, fitted = 1, converged = 1, chi2 = 11.2225, ndf = 41
+       Momentum = 1.90736 GeV
+       Position = -4.19927 -21.7896 36.3788 cm
+>>> Track = 260, hits = 53, fitted = 1, converged = 1, chi2 = 36.8756, ndf = 101
+       Momentum = 2.08475 GeV
+       Position = -14.7248 7.42684 5.45715 cm
+>>> Track = 262, hits = 36, fitted = 1, converged = 1, chi2 = 17.5515, ndf = 67
+       Momentum = 1.74214 GeV
+       Position = 0.249202 18.0142 24.0792 cm
+>>> Track = 263, hits = 53, fitted = 1, converged = 1, chi2 = 29.9759, ndf = 101
+       Momentum = 2.09699 GeV
+       Position = -4.56205 -15.8421 11.8252 cm
+>>> Track = 264, hits = 13, fitted = 1, converged = 1, chi2 = 5.15548, ndf = 21
+       Momentum = 1.16945 GeV
+       Position = -19.3282 -18.7644 -52.835 cm
+>>> Track = 266, hits = 52, fitted = 1, converged = 1, chi2 = 34.7346, ndf = 99
+       Momentum = 2.01914 GeV
+       Position = -9.67918 -13.3369 6.85707 cm
+>>> Track = 267, hits = 55, fitted = 1, converged = 1, chi2 = 32.8379, ndf = 105
+       Momentum = 2.17474 GeV
+       Position = 15.3376 -6.06251 -12.0333 cm
+>>> Track = 268, hits = 55, fitted = 1, converged = 1, chi2 = 35.9584, ndf = 105
+       Momentum = 2.13212 GeV
+       Position = -10.3279 12.8609 -9.71754 cm
+>>> Track = 269, hits = 53, fitted = 1, converged = 1, chi2 = 33.3103, ndf = 101
+       Momentum = 2.21497 GeV
+       Position = -15.6533 5.15905 -4.57225 cm
+>>> Track = 272, hits = 110, fitted = 1, converged = 1, chi2 = 71.7994, ndf = 215
+       Momentum = 2.00492 GeV
+       Position = -4.68639 -15.8064 -8.21344 cm
+>>> Track = 273, hits = 53, fitted = 1, converged = 1, chi2 = 35.8349, ndf = 101
+       Momentum = 2.02304 GeV
+       Position = -13.245 -9.82677 -13.4297 cm
+>>> Track = 274, hits = 55, fitted = 1, converged = 1, chi2 = 35.5851, ndf = 105
+       Momentum = 2.26398 GeV
+       Position = -1.3826 16.4359 -0.554657 cm
+>>> Track = 275, hits = 54, fitted = 1, converged = 1, chi2 = 31.8896, ndf = 103
+       Momentum = 2.04908 GeV
+       Position = 15.5039 5.58954 -13.5315 cm
+>>> Track = 276, hits = 54, fitted = 1, converged = 1, chi2 = 37.0731, ndf = 103
+       Momentum = 2.09159 GeV
+       Position = 12.1751 -11.1208 -0.39524 cm
+>>> Track = 277, hits = 55, fitted = 1, converged = 1, chi2 = 37.1429, ndf = 105
+       Momentum = 2.19525 GeV
+       Position = -2.3622 -16.3274 15.3848 cm
+>>> Track = 278, hits = 53, fitted = 1, converged = 1, chi2 = 36.051, ndf = 101
+       Momentum = 2.08103 GeV
+       Position = 14.2899 -8.22195 -2.41799 cm
+>>> Track = 279, hits = 55, fitted = 1, converged = 1, chi2 = 34.5114, ndf = 105
+       Momentum = 2.05847 GeV
+       Position = 7.76265 14.5386 -16.6555 cm
+>>> Track = 280, hits = 54, fitted = 1, converged = 1, chi2 = 33.6292, ndf = 103
+       Momentum = 1.96177 GeV
+       Position = 15.658 5.17012 -4.56512 cm
+>>> Track = 282, hits = 54, fitted = 1, converged = 1, chi2 = 34.7482, ndf = 103
+       Momentum = 2.29332 GeV
+       Position = 16.4392 1.35623 -2.28214 cm
+>>> Track = 283, hits = 53, fitted = 1, converged = 1, chi2 = 35.574, ndf = 101
+       Momentum = 2.1416 GeV
+       Position = -15.5641 5.44295 -10.9263 cm
+Skipping track 284 too many or too few hits 2
+>>> Track = 285, hits = 54, fitted = 1, converged = 1, chi2 = 31.8738, ndf = 103
+       Momentum = 2.13651 GeV
+       Position = 2.91923 16.2254 -11.2153 cm
+>>> Track = 286, hits = 42, fitted = 1, converged = 1, chi2 = 25.2272, ndf = 79
+       Momentum = 2.1705 GeV
+       Position = -16.075 -5.64368 -20.9157 cm
+>>> Track = 287, hits = 54, fitted = 1, converged = 1, chi2 = 34.527, ndf = 103
+       Momentum = 2.01781 GeV
+       Position = 0.780085 -16.4692 -13.9395 cm
+>>> Track = 288, hits = 55, fitted = 1, converged = 1, chi2 = 34.7033, ndf = 105
+       Momentum = 2.20937 GeV
+       Position = 3.26286 -16.1705 -14.883 cm
+>>> Track = 289, hits = 53, fitted = 1, converged = 1, chi2 = 33.1229, ndf = 101
+       Momentum = 2.05117 GeV
+       Position = 4.73954 15.7911 11.9196 cm
+>>> Track = 290, hits = 55, fitted = 1, converged = 1, chi2 = 35.3286, ndf = 105
+       Momentum = 1.95305 GeV
+       Position = 8.40432 -14.1805 9.29596 cm
+>>> Track = 291, hits = 49, fitted = 1, converged = 1, chi2 = 27.4825, ndf = 93
+       Momentum = 2.14402 GeV
+       Position = -0.534299 16.0526 17.724 cm
+>>> Track = 292, hits = 54, fitted = 1, converged = 1, chi2 = 35.5225, ndf = 103
+       Momentum = 2.20865 GeV
+       Position = 12.8104 -10.3769 11.4067 cm
+>>> Track = 293, hits = 55, fitted = 1, converged = 1, chi2 = 37.0797, ndf = 105
+       Momentum = 1.97247 GeV
+       Position = -14.8732 7.10802 -6.43624 cm
+>>> Track = 294, hits = 55, fitted = 1, converged = 1, chi2 = 32.8562, ndf = 105
+       Momentum = 2.13331 GeV
+       Position = 3.54177 -16.1064 9.01537 cm
+>>> Track = 295, hits = 54, fitted = 1, converged = 1, chi2 = 33.6261, ndf = 103
+       Momentum = 1.96737 GeV
+       Position = -11.4709 11.8398 -12.4736 cm
+>>> Track = 296, hits = 55, fitted = 1, converged = 1, chi2 = 34.2619, ndf = 105
+       Momentum = 2.24338 GeV
+       Position = -13.7213 9.15542 3.04206 cm
+>>> Track = 297, hits = 55, fitted = 1, converged = 1, chi2 = 35.9709, ndf = 105
+       Momentum = 2.00238 GeV
+       Position = 7.86155 14.4923 -6.00807 cm
+>>> Track = 298, hits = 54, fitted = 1, converged = 1, chi2 = 32.8092, ndf = 103
+       Momentum = 2.17301 GeV
+       Position = 3.35538 -16.1453 -5.01559 cm
+>>> Track = 299, hits = 55, fitted = 1, converged = 1, chi2 = 35.5532, ndf = 105
+       Momentum = 2.00942 GeV
+       Position = -15.6281 -5.26587 -4.44466 cm
+>>> Track = 300, hits = 55, fitted = 1, converged = 1, chi2 = 36.4914, ndf = 105
+       Momentum = 2.31462 GeV
+       Position = -16.4461 -1.12301 3.75889 cm
+>>> Track = 301, hits = 55, fitted = 1, converged = 1, chi2 = 33.2789, ndf = 105
+       Momentum = 2.06337 GeV
+       Position = -0.267358 -16.4829 -6.97766 cm
+>>> Track = 302, hits = 55, fitted = 1, converged = 1, chi2 = 35.6231, ndf = 105
+       Momentum = 2.00495 GeV
+       Position = -4.07026 -15.9781 -13.352 cm
+>>> Track = 303, hits = 52, fitted = 1, converged = 1, chi2 = 31.5866, ndf = 99
+       Momentum = 2.18149 GeV
+       Position = -16.3826 -0.988599 17.3628 cm
+>>> Track = 304, hits = 9, fitted = 1, converged = 1, chi2 = 3.85709, ndf = 13
+       Momentum = 2.66192 GeV
+       Position = -29.22 -2.84617 -62.4883 cm
+>>> Track = 305, hits = 55, fitted = 1, converged = 1, chi2 = 32.0879, ndf = 105
+       Momentum = 2.10422 GeV
+       Position = -6.36675 15.2116 6.30154 cm
+>>> Track = 306, hits = 54, fitted = 1, converged = 1, chi2 = 34.6884, ndf = 103
+       Momentum = 2.0306 GeV
+       Position = 12.6131 -10.6186 2.76032 cm
+>>> Track = 308, hits = 108, fitted = 1, converged = 1, chi2 = 70.8699, ndf = 211
+       Momentum = 2.00537 GeV
+       Position = 15.3106 6.11388 1.32423 cm
+>>> Track = 309, hits = 55, fitted = 1, converged = 1, chi2 = 34.8992, ndf = 105
+       Momentum = 1.96219 GeV
+       Position = -5.28051 15.6187 6.1065 cm
+>>> Track = 310, hits = 55, fitted = 1, converged = 1, chi2 = 39.1876, ndf = 105
+       Momentum = 2.06863 GeV
+       Position = 8.9419 -13.8538 1.89662 cm
+>>> Track = 311, hits = 54, fitted = 1, converged = 1, chi2 = 33.1627, ndf = 103
+       Momentum = 2.07229 GeV
+       Position = 13.2592 -9.79062 13.6196 cm
+>>> Track = 312, hits = 55, fitted = 1, converged = 1, chi2 = 34.8331, ndf = 105
+       Momentum = 2.06688 GeV
+       Position = 10.8051 -12.4565 -7.90487 cm
+>>> Track = 313, hits = 55, fitted = 1, converged = 1, chi2 = 35.0132, ndf = 105
+       Momentum = 2.08488 GeV
+       Position = -0.986349 -16.4604 -3.79452 cm
+>>> Track = 314, hits = 55, fitted = 1, converged = 1, chi2 = 37.0167, ndf = 105
+       Momentum = 2.13708 GeV
+       Position = -14.8603 7.14805 11.2988 cm
+>>> Track = 316, hits = 54, fitted = 1, converged = 1, chi2 = 37.3171, ndf = 103
+       Momentum = 1.96231 GeV
+       Position = 13.9406 -8.80295 -0.726159 cm
+>>> Track = 317, hits = 23, fitted = 1, converged = 1, chi2 = 10.8578, ndf = 41
+       Momentum = 2.19982 GeV
+       Position = 2.26042 -21.9587 -36.5547 cm
+>>> Track = 318, hits = 55, fitted = 1, converged = 1, chi2 = 35.3346, ndf = 105
+       Momentum = 2.15542 GeV
+       Position = 16.4577 -1.02402 3.41325 cm
+>>> Track = 319, hits = 23, fitted = 1, converged = 1, chi2 = 10.1371, ndf = 41
+       Momentum = 2.68669 GeV
+       Position = -3.68713 -21.9065 -36.3272 cm
+>>> Track = 320, hits = 54, fitted = 1, converged = 1, chi2 = 33.2388, ndf = 103
+       Momentum = 2.2493 GeV
+       Position = 1.06995 -16.4495 -14.2878 cm
+>>> Track = 321, hits = 11, fitted = 1, converged = 1, chi2 = 5.3169, ndf = 17
+       Momentum = 8.94848 GeV
+       Position = -26.5884 9.1064 57.7998 cm
+>>> Track = 322, hits = 55, fitted = 1, converged = 1, chi2 = 37.3158, ndf = 105
+       Momentum = 2.09591 GeV
+       Position = -3.10131 -16.1906 -10.0951 cm
+>>> Track = 323, hits = 53, fitted = 1, converged = 1, chi2 = 36.5863, ndf = 101
+       Momentum = 2.07076 GeV
+       Position = -11.1603 12.1352 -8.6896 cm
+>>> Track = 324, hits = 55, fitted = 1, converged = 1, chi2 = 31.6819, ndf = 105
+       Momentum = 2.22361 GeV
+       Position = -7.10715 14.882 -1.69252 cm
+>>> Track = 325, hits = 54, fitted = 1, converged = 1, chi2 = 35.1435, ndf = 103
+       Momentum = 2.10926 GeV
+       Position = 12.6111 -10.6293 -11.7905 cm
+>>> Track = 327, hits = 53, fitted = 1, converged = 1, chi2 = 35.0833, ndf = 101
+       Momentum = 2.04374 GeV
+       Position = -6.59213 15.1131 -2.19684 cm
+>>> Track = 328, hits = 33, fitted = 1, converged = 1, chi2 = 17.3729, ndf = 61
+       Momentum = 2.13454 GeV
+       Position = -15.2353 -11.705 -26.9676 cm
+>>> Track = 329, hits = 55, fitted = 1, converged = 1, chi2 = 35.0532, ndf = 105
+       Momentum = 2.08848 GeV
+       Position = 7.75662 -14.5495 12.5836 cm
+>>> Track = 330, hits = 51, fitted = 1, converged = 1, chi2 = 30.7172, ndf = 97
+       Momentum = 2.17326 GeV
+       Position = -0.0160349 16.4926 4.19291 cm
+>>> Track = 331, hits = 55, fitted = 1, converged = 1, chi2 = 34.0712, ndf = 105
+       Momentum = 2.13649 GeV
+       Position = 3.36548 -16.1445 4.96337 cm
+>>> Track = 332, hits = 54, fitted = 1, converged = 1, chi2 = 35.9118, ndf = 103
+       Momentum = 2.03742 GeV
+       Position = -0.792886 -16.4632 -16.782 cm
+>>> Track = 334, hits = 55, fitted = 1, converged = 1, chi2 = 32.7541, ndf = 105
+       Momentum = 2.04273 GeV
+       Position = 2.25925 16.3327 5.46541 cm
+>>> Track = 335, hits = 50, fitted = 1, converged = 1, chi2 = 27.7265, ndf = 95
+       Momentum = 1.95431 GeV
+       Position = 11.4886 -11.826 6.31651 cm
+>>> Track = 336, hits = 41, fitted = 1, converged = 1, chi2 = 21.5691, ndf = 77
+       Momentum = 2.27449 GeV
+       Position = -16.8938 2.26718 -20.9068 cm
+>>> Track = 337, hits = 54, fitted = 1, converged = 1, chi2 = 38.8369, ndf = 103
+       Momentum = 2.06992 GeV
+       Position = -12.1166 -11.169 8.17885 cm
+>>> Track = 338, hits = 52, fitted = 1, converged = 1, chi2 = 35.3148, ndf = 99
+       Momentum = 2.05356 GeV
+       Position = -4.71789 -15.7902 10.5575 cm
+>>> Track = 339, hits = 52, fitted = 1, converged = 1, chi2 = 32.3646, ndf = 99
+       Momentum = 2.11908 GeV
+       Position = -7.19172 -14.8378 -2.32584 cm
+>>> Track = 341, hits = 108, fitted = 1, converged = 1, chi2 = 64.5097, ndf = 211
+       Momentum = 2.05056 GeV
+       Position = 13.1536 -9.93601 9.7189 cm
+>>> Track = 342, hits = 55, fitted = 1, converged = 1, chi2 = 32.8647, ndf = 105
+       Momentum = 2.16022 GeV
+       Position = 6.54484 15.1298 15.6182 cm
+>>> Track = 343, hits = 43, fitted = 1, converged = 1, chi2 = 23.7147, ndf = 81
+       Momentum = 2.30361 GeV
+       Position = 3.16602 16.8526 -20.7689 cm
+>>> Track = 344, hits = 53, fitted = 1, converged = 1, chi2 = 33.6067, ndf = 101
+       Momentum = 2.20321 GeV
+       Position = -15.1594 6.48397 -13.881 cm
+>>> Track = 345, hits = 55, fitted = 1, converged = 1, chi2 = 35.9277, ndf = 105
+       Momentum = 2.25513 GeV
+       Position = -10.2618 12.9157 3.00012 cm
+>>> Track = 346, hits = 54, fitted = 1, converged = 1, chi2 = 37.3564, ndf = 103
+       Momentum = 2.09742 GeV
+       Position = -5.41819 15.5766 13.6515 cm
+>>> Track = 347, hits = 53, fitted = 1, converged = 1, chi2 = 33.1413, ndf = 101
+       Momentum = 2.0798 GeV
+       Position = 10.2923 12.879 -14.4245 cm
+>>> Track = 348, hits = 38, fitted = 1, converged = 1, chi2 = 18.9058, ndf = 71
+       Momentum = 2.05028 GeV
+       Position = -11.916 14.0739 23.2691 cm
+>>> Track = 349, hits = 52, fitted = 1, converged = 1, chi2 = 33.0519, ndf = 99
+       Momentum = 1.98112 GeV
+       Position = -15.1513 -6.35674 -17.3434 cm
+Skipping track 350 too many or too few hits 4
+>>> Track = 351, hits = 55, fitted = 1, converged = 1, chi2 = 34.5135, ndf = 105
+       Momentum = 2.0918 GeV
+       Position = 12.2584 11.0246 16.0967 cm
+>>> Track = 352, hits = 54, fitted = 1, converged = 1, chi2 = 34.8963, ndf = 103
+       Momentum = 2.26361 GeV
+       Position = -1.93402 16.3825 6.32465 cm
+>>> Track = 353, hits = 55, fitted = 1, converged = 1, chi2 = 37.8287, ndf = 105
+       Momentum = 2.06942 GeV
+       Position = 8.61168 -14.055 13.5998 cm
+>>> Track = 354, hits = 54, fitted = 1, converged = 1, chi2 = 36.0966, ndf = 103
+       Momentum = 1.90815 GeV
+       Position = -0.457501 16.481 2.51979 cm
+>>> Track = 355, hits = 26, fitted = 1, converged = 1, chi2 = 13.9491, ndf = 47
+       Momentum = 1.60026 GeV
+       Position = 13.0324 -16.7494 33.1898 cm
+>>> Track = 356, hits = 43, fitted = 1, converged = 1, chi2 = 23.6417, ndf = 81
+       Momentum = 1.95245 GeV
+       Position = -16.6903 4.1437 20.7168 cm
+>>> Track = 357, hits = 54, fitted = 1, converged = 1, chi2 = 35.099, ndf = 103
+       Momentum = 2.05458 GeV
+       Position = -10.5644 12.6544 -15.5467 cm
+>>> Track = 358, hits = 54, fitted = 1, converged = 1, chi2 = 32.7804, ndf = 103
+       Momentum = 2.15255 GeV
+       Position = -15.5042 -5.59881 11.962 cm
+>>> Track = 359, hits = 48, fitted = 1, converged = 1, chi2 = 31.2123, ndf = 91
+       Momentum = 1.96744 GeV
+       Position = 16.0689 1.41347 -17.6557 cm
+>>> Track = 360, hits = 17, fitted = 1, converged = 1, chi2 = 9.02925, ndf = 29
+       Momentum = 2.14763 GeV
+       Position = 0.109787 24.0874 -44.0708 cm
+>>> Track = 361, hits = 16, fitted = 1, converged = 1, chi2 = 8.45394, ndf = 27
+       Momentum = 1.55528 GeV
+       Position = -21.4405 14.1444 48.1469 cm
+>>> Track = 362, hits = 55, fitted = 1, converged = 1, chi2 = 36.2192, ndf = 105
+       Momentum = 2.19798 GeV
+       Position = 1.81782 16.3936 -16.5291 cm
+>>> Track = 363, hits = 55, fitted = 1, converged = 1, chi2 = 38.0626, ndf = 105
+       Momentum = 1.99461 GeV
+       Position = -15.0009 6.8426 5.57883 cm
+>>> Track = 364, hits = 15, fitted = 1, converged = 1, chi2 = 7.36674, ndf = 25
+       Momentum = 1.56747 GeV
+       Position = 0.0833883 25.3523 -48.7739 cm
+>>> Track = 365, hits = 55, fitted = 1, converged = 1, chi2 = 38.4883, ndf = 105
+       Momentum = 2.05379 GeV
+       Position = 3.78647 -16.0404 9.71885 cm
+>>> Track = 366, hits = 55, fitted = 1, converged = 1, chi2 = 36.2107, ndf = 105
+       Momentum = 1.97589 GeV
+       Position = 1.5167 16.4145 10.7702 cm
+>>> Track = 367, hits = 55, fitted = 1, converged = 1, chi2 = 33.5645, ndf = 105
+       Momentum = 2.07694 GeV
+       Position = -16.483 0.0881409 0.21668 cm
+>>> Track = 368, hits = 54, fitted = 1, converged = 1, chi2 = 33.7781, ndf = 103
+       Momentum = 2.12955 GeV
+       Position = 7.6507 14.6005 -8.12632 cm
+>>> Track = 369, hits = 55, fitted = 1, converged = 1, chi2 = 33.0049, ndf = 105
+       Momentum = 2.01567 GeV
+       Position = -15.7151 4.99702 -2.00962 cm
+>>> Track = 370, hits = 54, fitted = 1, converged = 1, chi2 = 32.9414, ndf = 103
+       Momentum = 2.17837 GeV
+       Position = -16.1596 3.2313 -9.96761 cm
+>>> Track = 371, hits = 54, fitted = 1, converged = 1, chi2 = 33.9308, ndf = 103
+       Momentum = 2.17467 GeV
+       Position = -3.24805 -17.1539 -5.84096 cm
+>>> Track = 372, hits = 55, fitted = 1, converged = 1, chi2 = 36.5718, ndf = 105
+       Momentum = 2.04026 GeV
+       Position = 10.3985 12.7932 9.99334 cm
+>>> Track = 373, hits = 55, fitted = 1, converged = 1, chi2 = 38.5525, ndf = 105
+       Momentum = 1.99657 GeV
+       Position = -6.26812 -15.2509 14.8441 cm
+>>> Track = 374, hits = 54, fitted = 1, converged = 1, chi2 = 38.7142, ndf = 103
+       Momentum = 2.08494 GeV
+       Position = -5.71311 -15.4615 8.77864 cm
+>>> Track = 375, hits = 55, fitted = 1, converged = 1, chi2 = 34.7705, ndf = 105
+       Momentum = 2.05985 GeV
+       Position = 10.5472 -12.6716 -15.5658 cm
+>>> Track = 376, hits = 25, fitted = 1, converged = 1, chi2 = 12.5126, ndf = 45
+       Momentum = 1.78066 GeV
+       Position = 12.478 16.7971 33.6602 cm
+>>> Track = 377, hits = 13, fitted = 1, converged = 1, chi2 = 5.1551, ndf = 21
+       Momentum = 1.17131 GeV
+       Position = 10.6804 24.7422 52.8097 cm
+>>> Track = 378, hits = 55, fitted = 1, converged = 1, chi2 = 35.4242, ndf = 105
+       Momentum = 2.20473 GeV
+       Position = 4.33739 -15.902 6.68809 cm
+>>> Track = 379, hits = 55, fitted = 1, converged = 1, chi2 = 32.1526, ndf = 105
+       Momentum = 2.10156 GeV
+       Position = -10.1691 12.9678 -8.58396 cm
+>>> Track = 380, hits = 54, fitted = 1, converged = 1, chi2 = 34.119, ndf = 103
+       Momentum = 1.98675 GeV
+       Position = 1.78386 16.3869 -12.909 cm
+>>> Track = 381, hits = 55, fitted = 1, converged = 1, chi2 = 37.1341, ndf = 105
+       Momentum = 2.17421 GeV
+       Position = 6.93149 -14.9676 4.73151 cm
+>>> Track = 382, hits = 54, fitted = 1, converged = 1, chi2 = 33.4009, ndf = 103
+       Momentum = 2.19774 GeV
+       Position = -11.4057 -11.9078 -1.79107 cm
+>>> Track = 383, hits = 55, fitted = 1, converged = 1, chi2 = 34.031, ndf = 105
+       Momentum = 2.10878 GeV
+       Position = 2.65218 -16.2817 -13.3898 cm
+>>> Track = 384, hits = 55, fitted = 1, converged = 1, chi2 = 34.7438, ndf = 105
+       Momentum = 2.13536 GeV
+       Position = -1.11735 -16.4536 -6.28378 cm
+>>> Track = 385, hits = 54, fitted = 1, converged = 1, chi2 = 36.7954, ndf = 103
+       Momentum = 1.99542 GeV
+       Position = -0.433333 16.4807 3.60879 cm
+>>> Track = 386, hits = 53, fitted = 1, converged = 1, chi2 = 36.0389, ndf = 101
+       Momentum = 1.95219 GeV
+       Position = -11.4651 -11.8479 -9.42824 cm
+>>> Track = 387, hits = 55, fitted = 1, converged = 1, chi2 = 35.2385, ndf = 105
+       Momentum = 2.12544 GeV
+       Position = -8.73248 13.9871 -4.41497 cm
+>>> Track = 388, hits = 55, fitted = 1, converged = 1, chi2 = 33.6882, ndf = 105
+       Momentum = 1.93296 GeV
+       Position = -16.3278 2.28217 -8.58575 cm
+>>> Track = 389, hits = 54, fitted = 1, converged = 1, chi2 = 34.3913, ndf = 103
+       Momentum = 2.0681 GeV
+       Position = 0.999993 -16.457 -4.78182 cm
+>>> Track = 390, hits = 55, fitted = 1, converged = 1, chi2 = 36.8052, ndf = 105
+       Momentum = 2.24179 GeV
+       Position = -8.2325 -14.2857 -10.9822 cm
+>>> Track = 391, hits = 53, fitted = 1, converged = 1, chi2 = 35.867, ndf = 101
+       Momentum = 2.09819 GeV
+       Position = 15.0895 6.63586 -15.2062 cm
+>>> Track = 392, hits = 55, fitted = 1, converged = 1, chi2 = 33.6087, ndf = 105
+       Momentum = 2.085 GeV
+       Position = 9.81862 13.24 5.5647 cm
+>>> Track = 393, hits = 53, fitted = 1, converged = 1, chi2 = 33.877, ndf = 101
+       Momentum = 2.08418 GeV
+       Position = -14.9321 -6.99371 13.0375 cm
+>>> Track = 394, hits = 55, fitted = 1, converged = 1, chi2 = 33.1321, ndf = 105
+       Momentum = 2.09175 GeV
+       Position = -4.0114 15.996 3.10564 cm
+>>> Track = 395, hits = 54, fitted = 1, converged = 1, chi2 = 32.6233, ndf = 103
+       Momentum = 1.96391 GeV
+       Position = 12.2016 11.0849 -8.13565 cm
+>>> Track = 396, hits = 53, fitted = 1, converged = 1, chi2 = 34.0109, ndf = 101
+       Momentum = 2.05178 GeV
+       Position = -7.12811 -14.8666 -6.73653 cm
+>>> Track = 397, hits = 55, fitted = 1, converged = 1, chi2 = 32.1412, ndf = 105
+       Momentum = 2.02159 GeV
+       Position = -14.0303 -8.66911 7.13362 cm
+>>> Track = 398, hits = 55, fitted = 1, converged = 1, chi2 = 35.7802, ndf = 105
+       Momentum = 2.08866 GeV
+       Position = -15.0043 -6.82221 -4.23023 cm
+>>> Track = 400, hits = 54, fitted = 1, converged = 1, chi2 = 35.6343, ndf = 103
+       Momentum = 2.17421 GeV
+       Position = -7.80096 14.5282 7.12356 cm
+>>> Track = 401, hits = 29, fitted = 1, converged = 1, chi2 = 14.0322, ndf = 53
+       Momentum = 1.67945 GeV
+       Position = 19.7725 3.66039 -30.2353 cm
+>>> Track = 402, hits = 39, fitted = 1, converged = 1, chi2 = 19.4233, ndf = 73
+       Momentum = 1.93246 GeV
+       Position = 9.54971 -15.7599 -23.2461 cm
+>>> Track = 404, hits = 55, fitted = 1, converged = 1, chi2 = 34.8083, ndf = 105
+       Momentum = 2.16803 GeV
+       Position = 3.34273 16.1416 3.03529 cm
+>>> Track = 405, hits = 54, fitted = 1, converged = 1, chi2 = 32.4357, ndf = 103
+       Momentum = 2.13218 GeV
+       Position = -11.8182 -11.4945 0.103274 cm
+>>> Track = 406, hits = 52, fitted = 1, converged = 1, chi2 = 32.4705, ndf = 99
+       Momentum = 2.13745 GeV
+       Position = -16.382 -1.83722 -8.32473 cm
+>>> Track = 407, hits = 54, fitted = 1, converged = 1, chi2 = 33.0071, ndf = 103
+       Momentum = 2.15658 GeV
+       Position = 11.5437 11.7736 -15.4345 cm
+>>> Track = 408, hits = 55, fitted = 1, converged = 1, chi2 = 34.5562, ndf = 105
+       Momentum = 2.11694 GeV
+       Position = 7.22142 -14.8219 4.28443 cm
+>>> Track = 409, hits = 54, fitted = 1, converged = 1, chi2 = 32.8281, ndf = 103
+       Momentum = 2.15559 GeV
+       Position = -10.6683 -12.5772 -6.17384 cm
+>>> Track = 411, hits = 41, fitted = 1, converged = 1, chi2 = 25.7523, ndf = 77
+       Momentum = 1.86832 GeV
+       Position = -12.4067 11.6779 20.9077 cm
+>>> Track = 412, hits = 54, fitted = 1, converged = 1, chi2 = 36.1806, ndf = 103
+       Momentum = 2.24982 GeV
+       Position = 1.62872 16.4083 -0.582628 cm
+>>> Track = 413, hits = 55, fitted = 1, converged = 1, chi2 = 32.9685, ndf = 105
+       Momentum = 2.07406 GeV
+       Position = -15.1558 6.48991 -4.22566 cm
+>>> Track = 416, hits = 54, fitted = 1, converged = 1, chi2 = 34.7394, ndf = 103
+       Momentum = 2.16907 GeV
+       Position = -14.5144 -7.82123 -3.38688 cm
+>>> Track = 417, hits = 53, fitted = 1, converged = 1, chi2 = 34.4837, ndf = 101
+       Momentum = 2.19801 GeV
+       Position = -7.65654 -14.5978 -13.5604 cm
+>>> Track = 418, hits = 54, fitted = 1, converged = 1, chi2 = 33.1305, ndf = 103
+       Momentum = 2.11 GeV
+       Position = -5.64476 15.4871 -5.80439 cm
+>>> Track = 419, hits = 54, fitted = 1, converged = 1, chi2 = 33.1492, ndf = 103
+       Momentum = 2.10336 GeV
+       Position = -16.4795 -0.40804 -8.54565 cm
+>>> Track = 420, hits = 52, fitted = 1, converged = 1, chi2 = 35.674, ndf = 99
+       Momentum = 2.09318 GeV
+       Position = -15.444 5.7626 -10.1063 cm
+>>> Track = 422, hits = 20, fitted = 1, converged = 1, chi2 = 10.5244, ndf = 35
+       Momentum = 2.40702 GeV
+       Position = 16.0659 -16.4877 39.7994 cm
+>>> Track = 423, hits = 38, fitted = 1, converged = 1, chi2 = 20.3465, ndf = 71
+       Momentum = 2.23696 GeV
+       Position = -6.13603 17.3609 23.5798 cm
+>>> Track = 424, hits = 55, fitted = 1, converged = 1, chi2 = 36.9815, ndf = 105
+       Momentum = 2.11134 GeV
+       Position = 15.8909 -4.40731 -5.95091 cm
+>>> Track = 425, hits = 54, fitted = 1, converged = 1, chi2 = 33.9374, ndf = 103
+       Momentum = 2.10419 GeV
+       Position = 1.8537 16.386 -2.30979 cm
+>>> Track = 426, hits = 54, fitted = 1, converged = 1, chi2 = 33.4855, ndf = 103
+       Momentum = 1.99813 GeV
+       Position = -6.72285 -15.0572 -0.28256 cm
+>>> Track = 428, hits = 53, fitted = 1, converged = 1, chi2 = 30.291, ndf = 101
+       Momentum = 1.99367 GeV
+       Position = -11.4387 11.8675 -10.9011 cm
+>>> Track = 429, hits = 49, fitted = 1, converged = 1, chi2 = 28.6845, ndf = 93
+       Momentum = 2.10631 GeV
+       Position = -16.1786 -0.118374 -17.6073 cm
+Skipping track 430 too many or too few hits 2
+>>> Track = 431, hits = 55, fitted = 1, converged = 1, chi2 = 35.7683, ndf = 105
+       Momentum = 2.15984 GeV
+       Position = -16.4469 1.23429 3.85174 cm
+>>> Track = 432, hits = 44, fitted = 1, converged = 1, chi2 = 26.9809, ndf = 83
+       Momentum = 2.04961 GeV
+       Position = -16.1319 6.43131 -20.5199 cm
+>>> Track = 433, hits = 55, fitted = 1, converged = 1, chi2 = 31.9345, ndf = 105
+       Momentum = 2.12529 GeV
+       Position = -15.5066 5.61098 -13.6559 cm
+>>> Track = 434, hits = 54, fitted = 1, converged = 1, chi2 = 34.1284, ndf = 103
+       Momentum = 2.02587 GeV
+       Position = 4.56062 -15.84 14.237 cm
+>>> Track = 435, hits = 23, fitted = 1, converged = 1, chi2 = 11.5339, ndf = 41
+       Momentum = 2.89391 GeV
+       Position = -7.17447 -21.0182 36.3403 cm
+>>> Track = 437, hits = 106, fitted = 1, converged = 1, chi2 = 69.782, ndf = 207
+       Momentum = 2.09858 GeV
+       Position = 7.75245 -14.552 -4.22651 cm
+>>> Track = 441, hits = 110, fitted = 1, converged = 1, chi2 = 65.5635, ndf = 215
+       Momentum = 2.06564 GeV
+       Position = 7.19478 -14.834 -6.06035 cm
+>>> Track = 442, hits = 53, fitted = 1, converged = 1, chi2 = 31.9396, ndf = 101
+       Momentum = 2.10042 GeV
+       Position = -11.0231 -12.2629 7.55079 cm
+>>> Track = 443, hits = 55, fitted = 1, converged = 1, chi2 = 34.2923, ndf = 105
+       Momentum = 2.1471 GeV
+       Position = -8.08359 -14.3613 -1.19188 cm
+>>> Track = 444, hits = 18, fitted = 1, converged = 1, chi2 = 8.1963, ndf = 31
+       Momentum = 3.87123 GeV
+       Position = -21.0816 12.3979 -43.4584 cm
+>>> Track = 445, hits = 55, fitted = 1, converged = 1, chi2 = 32.4938, ndf = 105
+       Momentum = 2.06905 GeV
+       Position = 13.3945 -9.60602 -15.4692 cm
+>>> Track = 447, hits = 55, fitted = 1, converged = 1, chi2 = 36.4239, ndf = 105
+       Momentum = 2.04344 GeV
+       Position = -14.2779 8.24387 -5.31763 cm
+>>> Track = 448, hits = 53, fitted = 1, converged = 1, chi2 = 32.0117, ndf = 101
+       Momentum = 2.01408 GeV
+       Position = -8.70007 14.0078 -1.8462 cm
+>>> Track = 449, hits = 7, fitted = 1, converged = 1, chi2 = 2.32657, ndf = 9
+       Momentum = 2.23692 GeV
+       Position = 30.5946 2.7969 67.011 cm
+>>> Track = 450, hits = 54, fitted = 1, converged = 1, chi2 = 35.9127, ndf = 103
+       Momentum = 2.15329 GeV
+       Position = -0.643029 -16.4805 -4.47332 cm
+>>> Track = 451, hits = 46, fitted = 1, converged = 1, chi2 = 28.736, ndf = 87
+       Momentum = 2.20273 GeV
+       Position = 14.9874 -8.95249 19.437 cm
+>>> Track = 452, hits = 37, fitted = 1, converged = 1, chi2 = 19.1818, ndf = 69
+       Momentum = 1.8767 GeV
+       Position = 12.6498 13.1171 -23.8162 cm
+>>> Track = 453, hits = 50, fitted = 1, converged = 1, chi2 = 32.5446, ndf = 95
+       Momentum = 2.03913 GeV
+       Position = 9.80615 -12.8009 17.6598 cm
+>>> Track = 454, hits = 13, fitted = 1, converged = 1, chi2 = 4.88608, ndf = 21
+       Momentum = 2.62976 GeV
+       Position = 1.55028 -26.652 -53.3211 cm
+>>> Track = 455, hits = 55, fitted = 1, converged = 1, chi2 = 37.5114, ndf = 105
+       Momentum = 2.13798 GeV
+       Position = 13.2955 9.75664 0.70887 cm
+>>> Track = 456, hits = 54, fitted = 1, converged = 1, chi2 = 33.4531, ndf = 103
+       Momentum = 1.98318 GeV
+       Position = -4.41921 -15.8805 -16.5993 cm
+>>> Track = 457, hits = 55, fitted = 1, converged = 1, chi2 = 34.6686, ndf = 105
+       Momentum = 2.03044 GeV
+       Position = -14.4032 -8.02029 8.7345 cm
+>>> Track = 458, hits = 23, fitted = 1, converged = 1, chi2 = 11.8582, ndf = 41
+       Momentum = 2.41762 GeV
+       Position = -13.3345 -17.8288 36.2506 cm
+>>> Track = 459, hits = 54, fitted = 1, converged = 1, chi2 = 35.0148, ndf = 103
+       Momentum = 2.04297 GeV
+       Position = -16.4038 1.67108 12.3991 cm
+>>> Track = 461, hits = 52, fitted = 1, converged = 1, chi2 = 33.969, ndf = 99
+       Momentum = 2.14666 GeV
+       Position = 16.4885 0.333036 -11.6487 cm
+>>> Track = 462, hits = 54, fitted = 1, converged = 1, chi2 = 37.9186, ndf = 103
+       Momentum = 2.07493 GeV
+       Position = 6.93219 14.9531 -8.48226 cm
+>>> Track = 464, hits = 55, fitted = 1, converged = 1, chi2 = 39.4794, ndf = 105
+       Momentum = 2.04274 GeV
+       Position = 9.74426 -13.3027 -8.0742 cm
+>>> Track = 465, hits = 55, fitted = 1, converged = 1, chi2 = 34.897, ndf = 105
+       Momentum = 2.10298 GeV
+       Position = 15.7526 4.86458 -3.89929 cm
+>>> Track = 468, hits = 110, fitted = 1, converged = 1, chi2 = 68.5368, ndf = 215
+       Momentum = 2.13777 GeV
+       Position = -16.4784 0.0977924 11.1176 cm
+>>> Track = 469, hits = 55, fitted = 1, converged = 1, chi2 = 34.4702, ndf = 105
+       Momentum = 2.42621 GeV
+       Position = -3.04416 -16.2121 -10.2324 cm
+>>> Track = 470, hits = 55, fitted = 1, converged = 1, chi2 = 33.8629, ndf = 105
+       Momentum = 2.01483 GeV
+       Position = -16.1123 3.50052 -6.96715 cm
+>>> Track = 471, hits = 54, fitted = 1, converged = 1, chi2 = 36.2492, ndf = 103
+       Momentum = 2.05298 GeV
+       Position = -11.4686 11.8428 -13.0508 cm
+>>> Track = 472, hits = 54, fitted = 1, converged = 1, chi2 = 33.825, ndf = 103
+       Momentum = 2.02342 GeV
+       Position = -1.79884 -16.3916 -5.12233 cm
+>>> Track = 473, hits = 55, fitted = 1, converged = 1, chi2 = 34.7171, ndf = 105
+       Momentum = 2.12302 GeV
+       Position = -11.8916 11.4269 -15.6007 cm
+>>> Track = 474, hits = 55, fitted = 1, converged = 1, chi2 = 36.7222, ndf = 105
+       Momentum = 1.99752 GeV
+       Position = -3.22009 16.1609 16.4213 cm
+>>> Track = 475, hits = 55, fitted = 1, converged = 1, chi2 = 37.062, ndf = 105
+       Momentum = 2.15669 GeV
+       Position = 5.43175 15.5694 4.49206 cm
+>>> Track = 476, hits = 55, fitted = 1, converged = 1, chi2 = 35.6096, ndf = 105
+       Momentum = 2.03227 GeV
+       Position = 16.4436 -1.22959 4.38595 cm
+>>> Track = 477, hits = 53, fitted = 1, converged = 1, chi2 = 36.1805, ndf = 101
+       Momentum = 2.09772 GeV
+       Position = -4.72402 -15.7963 -0.0248405 cm
+>>> Track = 478, hits = 24, fitted = 1, converged = 1, chi2 = 12.5102, ndf = 43
+       Momentum = 2.0025 GeV
+       Position = 16.251 15.2059 36.2726 cm
+>>> Track = 479, hits = 54, fitted = 1, converged = 1, chi2 = 33.272, ndf = 103
+       Momentum = 2.1365 GeV
+       Position = 15.3843 -5.92651 -3.57481 cm
+>>> Track = 480, hits = 53, fitted = 1, converged = 1, chi2 = 35.7573, ndf = 101
+       Momentum = 2.0279 GeV
+       Position = -12.7591 10.441 15.4961 cm
+>>> Track = 481, hits = 34, fitted = 1, converged = 1, chi2 = 18.8808, ndf = 63
+       Momentum = 2.37012 GeV
+       Position = -7.7427 -17.8094 -26.2882 cm
+>>> Track = 482, hits = 54, fitted = 1, converged = 1, chi2 = 35.0903, ndf = 103
+       Momentum = 2.05219 GeV
+       Position = -10.9334 12.3422 12.6524 cm
+>>> Track = 483, hits = 55, fitted = 1, converged = 1, chi2 = 34.2636, ndf = 105
+       Momentum = 2.06473 GeV
+       Position = 10.6515 -12.5761 -3.59535 cm
+>>> Track = 484, hits = 21, fitted = 1, converged = 1, chi2 = 11.6092, ndf = 37
+       Momentum = 1.97006 GeV
+       Position = -21.0746 9.64233 39.5163 cm
+>>> Track = 485, hits = 53, fitted = 1, converged = 1, chi2 = 32.6049, ndf = 101
+       Momentum = 1.97353 GeV
+       Position = 15.1072 6.59808 -15.7237 cm
+>>> Track = 486, hits = 54, fitted = 1, converged = 1, chi2 = 35.1474, ndf = 103
+       Momentum = 2.04273 GeV
+       Position = -2.86376 16.235 -3.13832 cm
+>>> Track = 488, hits = 54, fitted = 1, converged = 1, chi2 = 34.697, ndf = 103
+       Momentum = 2.12293 GeV
+       Position = -15.7679 -4.81482 4.9747 cm
+>>> Track = 489, hits = 55, fitted = 1, converged = 1, chi2 = 36.3115, ndf = 105
+       Momentum = 2.05778 GeV
+       Position = -12.0874 11.2089 -6.23921 cm
+>>> Track = 490, hits = 53, fitted = 1, converged = 1, chi2 = 32.2792, ndf = 101
+       Momentum = 2.06254 GeV
+       Position = 0.778815 16.4666 -3.01127 cm
+>>> Track = 491, hits = 55, fitted = 1, converged = 1, chi2 = 34.454, ndf = 105
+       Momentum = 2.09141 GeV
+       Position = -6.0438 15.3401 4.31963 cm
+>>> Track = 492, hits = 53, fitted = 1, converged = 1, chi2 = 34.2051, ndf = 101
+       Momentum = 2.01209 GeV
+       Position = 15.205 6.38281 -2.30032 cm
+>>> Track = 493, hits = 5, fitted = 1, converged = 1, chi2 = 1.10075, ndf = 5
+       Momentum = 0.280143 GeV
+       Position = -32.2668 -1.49273 73.9914 cm
+>>> Track = 494, hits = 53, fitted = 1, converged = 1, chi2 = 35.8009, ndf = 101
+       Momentum = 2.05369 GeV
+       Position = 16.3181 2.34045 11.533 cm
+>>> Track = 495, hits = 55, fitted = 1, converged = 1, chi2 = 34.9287, ndf = 105
+       Momentum = 2.14041 GeV
+       Position = -10.5726 -12.6589 -14.3142 cm
+>>> Track = 496, hits = 55, fitted = 1, converged = 1, chi2 = 38.2227, ndf = 105
+       Momentum = 2.11591 GeV
+       Position = 2.57273 -16.2769 7.28461 cm
+>>> Track = 497, hits = 54, fitted = 1, converged = 1, chi2 = 33.7606, ndf = 103
+       Momentum = 2.17324 GeV
+       Position = 14.9159 -7.00569 -12.1028 cm
+>>> Track = 498, hits = 54, fitted = 1, converged = 1, chi2 = 31.8872, ndf = 103
+       Momentum = 1.99503 GeV
+       Position = -2.6432 16.278 6.54268 cm
+>>> Track = 499, hits = 54, fitted = 1, converged = 1, chi2 = 33.9778, ndf = 103
+       Momentum = 2.13 GeV
+       Position = 11.7614 11.5501 -4.74527 cm
+>>> Track = 500, hits = 53, fitted = 1, converged = 1, chi2 = 34.9973, ndf = 101
+       Momentum = 2.20107 GeV
+       Position = 10.4562 12.7473 8.2323 cm
+>>> Track = 501, hits = 38, fitted = 1, converged = 1, chi2 = 20.8711, ndf = 71
+       Momentum = 2.24076 GeV
+       Position = -0.814609 18.2693 -23.7455 cm
+>>> Track = 502, hits = 54, fitted = 1, converged = 1, chi2 = 34.1569, ndf = 103
+       Momentum = 2.08603 GeV
+       Position = 16.3928 -1.78156 1.58368 cm
+>>> Track = 503, hits = 55, fitted = 1, converged = 1, chi2 = 35.1951, ndf = 105
+       Momentum = 2.20527 GeV
+       Position = 15.7311 4.92696 -2.22311 cm
+>>> Track = 504, hits = 12, fitted = 1, converged = 1, chi2 = 4.49001, ndf = 19
+       Momentum = 2.27863 GeV
+       Position = 25.0626 -8.96067 -53.4868 cm
+>>> Track = 505, hits = 54, fitted = 1, converged = 1, chi2 = 35.925, ndf = 103
+       Momentum = 2.13248 GeV
+       Position = 8.90724 13.8757 -2.08086 cm
+>>> Track = 506, hits = 54, fitted = 1, converged = 1, chi2 = 32.886, ndf = 103
+       Momentum = 2.18848 GeV
+       Position = -15.9449 4.20452 -11.385 cm
+>>> Track = 507, hits = 55, fitted = 1, converged = 1, chi2 = 33.9309, ndf = 105
+       Momentum = 2.12042 GeV
+       Position = 10.7602 -12.4871 15.307 cm
+>>> Track = 508, hits = 54, fitted = 1, converged = 1, chi2 = 34.3658, ndf = 103
+       Momentum = 2.15236 GeV
+       Position = 16.4532 -1.10721 -8.83554 cm
+>>> Track = 509, hits = 52, fitted = 1, converged = 1, chi2 = 33.7258, ndf = 99
+       Momentum = 2.17805 GeV
+       Position = 15.8494 4.55861 -10.5497 cm
+>>> Track = 510, hits = 51, fitted = 1, converged = 1, chi2 = 29.8033, ndf = 97
+       Momentum = 2.10783 GeV
+       Position = 2.48822 -16.2973 17.1641 cm
+>>> Track = 511, hits = 43, fitted = 1, converged = 1, chi2 = 25.9132, ndf = 81
+       Momentum = 2.17362 GeV
+       Position = -13.1874 11.0496 20.7045 cm
+>>> Track = 512, hits = 54, fitted = 1, converged = 1, chi2 = 37.4936, ndf = 103
+       Momentum = 1.9848 GeV
+       Position = 11.8479 11.4602 -14.2942 cm
+>>> Track = 513, hits = 7, fitted = 1, converged = 1, chi2 = 2.44933, ndf = 9
+       Momentum = 2.47254 GeV
+       Position = 1.03604 -30.7591 -66.8938 cm
+>>> Track = 515, hits = 54, fitted = 1, converged = 1, chi2 = 33.1498, ndf = 103
+       Momentum = 2.02644 GeV
+       Position = 15.1497 -6.50248 6.70893 cm
+>>> Track = 516, hits = 39, fitted = 1, converged = 1, chi2 = 21.1148, ndf = 73
+       Momentum = 1.82612 GeV
+       Position = -8.88323 -16.1493 -23.2164 cm
+>>> Track = 517, hits = 54, fitted = 1, converged = 1, chi2 = 32.7464, ndf = 103
+       Momentum = 2.18663 GeV
+       Position = 6.59599 15.1126 9.06953 cm
+>>> Track = 518, hits = 54, fitted = 1, converged = 1, chi2 = 33.2548, ndf = 103
+       Momentum = 1.99191 GeV
+       Position = -15.1726 -6.45933 6.09047 cm
+>>> Track = 519, hits = 55, fitted = 1, converged = 1, chi2 = 34.1187, ndf = 105
+       Momentum = 2.03162 GeV
+       Position = -5.41723 15.5732 -3.45248 cm
+>>> Track = 521, hits = 54, fitted = 1, converged = 1, chi2 = 33.2339, ndf = 103
+       Momentum = 2.03739 GeV
+       Position = 4.10138 -15.97 -7.79301 cm
+>>> Track = 522, hits = 55, fitted = 1, converged = 1, chi2 = 35.6953, ndf = 105
+       Momentum = 2.08122 GeV
+       Position = 14.2943 -8.21703 13.1317 cm
+>>> Track = 523, hits = 50, fitted = 1, converged = 1, chi2 = 29.4776, ndf = 95
+       Momentum = 2.29096 GeV
+       Position = 3.20811 -15.8963 -17.5737 cm
+>>> Track = 524, hits = 55, fitted = 1, converged = 1, chi2 = 38.1625, ndf = 105
+       Momentum = 2.13333 GeV
+       Position = 15.3596 -5.99408 6.56436 cm
+>>> Track = 525, hits = 55, fitted = 1, converged = 1, chi2 = 38.0752, ndf = 105
+       Momentum = 2.11051 GeV
+       Position = 16.3308 2.28967 5.39431 cm
+>>> Track = 526, hits = 53, fitted = 1, converged = 1, chi2 = 37.9603, ndf = 101
+       Momentum = 2.14564 GeV
+       Position = 9.05583 -13.774 -8.68774 cm
+>>> Track = 527, hits = 54, fitted = 1, converged = 1, chi2 = 36.4676, ndf = 103
+       Momentum = 2.17774 GeV
+       Position = 16.4594 -1.10797 -15.619 cm
+>>> Track = 528, hits = 52, fitted = 1, converged = 1, chi2 = 34.8545, ndf = 99
+       Momentum = 2.0126 GeV
+       Position = 15.7917 -4.73045 8.15532 cm
+>>> Track = 529, hits = 53, fitted = 1, converged = 1, chi2 = 36.3196, ndf = 101
+       Momentum = 2.00346 GeV
+       Position = 15.7588 4.85157 1.94861 cm
+>>> Track = 531, hits = 55, fitted = 1, converged = 1, chi2 = 35.2264, ndf = 105
+       Momentum = 2.0908 GeV
+       Position = -5.83683 15.4242 -3.17956 cm
+>>> Track = 532, hits = 53, fitted = 1, converged = 1, chi2 = 34.2897, ndf = 101
+       Momentum = 2.04251 GeV
+       Position = -16.2709 -2.61418 2.47733 cm
+>>> Track = 533, hits = 53, fitted = 1, converged = 1, chi2 = 37.9142, ndf = 101
+       Momentum = 2.08535 GeV
+       Position = -16.2112 3.02867 -8.46139 cm
+>>> Track = 534, hits = 54, fitted = 1, converged = 1, chi2 = 31.8032, ndf = 103
+       Momentum = 2.1255 GeV
+       Position = 15.1342 -6.53812 1.4075 cm
+>>> Track = 535, hits = 55, fitted = 1, converged = 1, chi2 = 37.5319, ndf = 105
+       Momentum = 1.9449 GeV
+       Position = 15.2106 6.35262 -7.3206 cm
+>>> Track = 536, hits = 55, fitted = 1, converged = 1, chi2 = 37.133, ndf = 105
+       Momentum = 2.06799 GeV
+       Position = 4.38168 15.8976 -5.4173 cm
+>>> Track = 537, hits = 55, fitted = 1, converged = 1, chi2 = 36.4211, ndf = 105
+       Momentum = 2.0047 GeV
+       Position = -4.89409 15.7439 -1.10753 cm
+>>> Track = 538, hits = 16, fitted = 1, converged = 1, chi2 = 6.68973, ndf = 27
+       Momentum = 14.259 GeV
+       Position = -21.6472 10.5189 -44.1524 cm
+>>> Track = 540, hits = 52, fitted = 1, converged = 1, chi2 = 32.6825, ndf = 99
+       Momentum = 2.23581 GeV
+       Position = -11.8742 11.4419 -7.51399 cm
+>>> Track = 541, hits = 52, fitted = 1, converged = 1, chi2 = 34.1875, ndf = 99
+       Momentum = 2.01519 GeV
+       Position = 0.213397 16.4868 -9.07947 cm
+>>> Track = 542, hits = 55, fitted = 1, converged = 1, chi2 = 33.3212, ndf = 105
+       Momentum = 2.07158 GeV
+       Position = -13.7425 9.10672 -10.8323 cm
+>>> Track = 543, hits = 55, fitted = 1, converged = 1, chi2 = 36.1428, ndf = 105
+       Momentum = 2.08376 GeV
+       Position = -15.9815 -4.06969 15.2042 cm
+>>> Track = 544, hits = 55, fitted = 1, converged = 1, chi2 = 34.8787, ndf = 105
+       Momentum = 2.05455 GeV
+       Position = 11.3527 -11.9609 -4.5473 cm
+>>> Track = 545, hits = 45, fitted = 1, converged = 1, chi2 = 26.1835, ndf = 85
+       Momentum = 2.00969 GeV
+       Position = 10.2947 -14.1029 19.8015 cm
+>>> Track = 546, hits = 54, fitted = 1, converged = 1, chi2 = 37.4346, ndf = 103
+       Momentum = 2.17806 GeV
+       Position = 8.62358 -14.0546 -5.90327 cm
+>>> Track = 547, hits = 54, fitted = 1, converged = 1, chi2 = 34.6832, ndf = 103
+       Momentum = 2.0679 GeV
+       Position = -9.16508 13.7029 -13.9431 cm
+>>> Track = 548, hits = 55, fitted = 1, converged = 1, chi2 = 36.3142, ndf = 105
+       Momentum = 2.04169 GeV
+       Position = 2.17124 -16.345 15.505 cm
+>>> Track = 550, hits = 55, fitted = 1, converged = 1, chi2 = 34.3908, ndf = 105
+       Momentum = 2.07692 GeV
+       Position = -13.1714 9.91459 9.77905 cm
+>>> Track = 552, hits = 54, fitted = 1, converged = 1, chi2 = 35.2321, ndf = 103
+       Momentum = 2.07188 GeV
+       Position = -16.4592 0.990511 0.0753294 cm
+>>> Track = 553, hits = 30, fitted = 1, converged = 1, chi2 = 15.5553, ndf = 55
+       Momentum = 2.43062 GeV
+       Position = -20.1438 -3.10011 -29.5501 cm
+>>> Track = 554, hits = 54, fitted = 1, converged = 1, chi2 = 33.5462, ndf = 103
+       Momentum = 2.06437 GeV
+       Position = -5.75944 15.4504 7.28075 cm
+>>> Track = 555, hits = 32, fitted = 1, converged = 1, chi2 = 17.4305, ndf = 59
+       Momentum = 2.15147 GeV
+       Position = -15.2777 -11.7334 -26.8983 cm
+>>> Track = 556, hits = 54, fitted = 1, converged = 1, chi2 = 35.2453, ndf = 103
+       Momentum = 1.96785 GeV
+       Position = 12.365 -10.9044 -3.69542 cm
+>>> Track = 557, hits = 55, fitted = 1, converged = 1, chi2 = 33.3342, ndf = 105
+       Momentum = 2.04008 GeV
+       Position = -11.8545 -11.4617 7.45904 cm
+>>> Track = 558, hits = 54, fitted = 1, converged = 1, chi2 = 36.2791, ndf = 103
+       Momentum = 2.02393 GeV
+       Position = 7.1443 -14.861 12.4086 cm
+>>> Track = 559, hits = 21, fitted = 1, converged = 1, chi2 = 9.18242, ndf = 37
+       Momentum = 1.35881 GeV
+       Position = -17.7535 14.9678 -39.4391 cm
+>>> Track = 560, hits = 54, fitted = 1, converged = 1, chi2 = 34.9582, ndf = 103
+       Momentum = 2.04943 GeV
+       Position = -10.3395 12.8402 -10.024 cm
+>>> Track = 562, hits = 54, fitted = 1, converged = 1, chi2 = 32.6817, ndf = 103
+       Momentum = 2.16956 GeV
+       Position = -3.03026 16.2045 3.12653 cm
+>>> Track = 563, hits = 55, fitted = 1, converged = 1, chi2 = 33.8659, ndf = 105
+       Momentum = 2.08927 GeV
+       Position = 15.6386 -5.21431 -9.39191 cm
+>>> Track = 564, hits = 19, fitted = 1, converged = 1, chi2 = 9.2508, ndf = 33
+       Momentum = 2.52349 GeV
+       Position = 22.1083 5.80842 40.0793 cm
+>>> Track = 565, hits = 54, fitted = 1, converged = 1, chi2 = 37.3161, ndf = 103
+       Momentum = 2.0221 GeV
+       Position = -9.49741 13.4763 4.43866 cm
+>>> Track = 566, hits = 55, fitted = 1, converged = 1, chi2 = 32.8317, ndf = 105
+       Momentum = 2.1936 GeV
+       Position = -0.951659 -16.4602 -10.1745 cm
+>>> Track = 567, hits = 54, fitted = 1, converged = 1, chi2 = 34.5018, ndf = 103
+       Momentum = 1.96901 GeV
+       Position = 11.1796 12.1121 0.919508 cm
+>>> Track = 569, hits = 7, fitted = 1, converged = 1, chi2 = 2.92366, ndf = 9
+       Momentum = 0.899417 GeV
+       Position = 30.5069 4.02923 -66.8703 cm
+>>> Track = 570, hits = 55, fitted = 1, converged = 1, chi2 = 35.7141, ndf = 105
+       Momentum = 2.08845 GeV
+       Position = -3.83458 16.0288 -3.59819 cm
+>>> Track = 571, hits = 55, fitted = 1, converged = 1, chi2 = 38.3008, ndf = 105
+       Momentum = 2.04912 GeV
+       Position = 13.2008 -9.87738 3.87003 cm
+>>> Track = 573, hits = 106, fitted = 1, converged = 1, chi2 = 61.8475, ndf = 207
+       Momentum = 1.93552 GeV
+       Position = 3.14232 16.1757 -10.26 cm
+>>> Track = 574, hits = 53, fitted = 1, converged = 1, chi2 = 34.1939, ndf = 101
+       Momentum = 1.95974 GeV
+       Position = 3.86876 16.0189 -8.76442 cm
+>>> Track = 575, hits = 55, fitted = 1, converged = 1, chi2 = 38.8499, ndf = 105
+       Momentum = 2.00424 GeV
+       Position = -15.2945 6.15673 -12.1034 cm
+>>> Track = 576, hits = 54, fitted = 1, converged = 1, chi2 = 34.0762, ndf = 103
+       Momentum = 1.94635 GeV
+       Position = -2.75904 16.2568 3.21042 cm
+>>> Track = 577, hits = 55, fitted = 1, converged = 1, chi2 = 34.9189, ndf = 105
+       Momentum = 2.14624 GeV
+       Position = -15.5682 -5.42883 6.92597 cm
+>>> Track = 578, hits = 54, fitted = 1, converged = 1, chi2 = 37.1297, ndf = 103
+       Momentum = 2.01969 GeV
+       Position = 11.9476 -11.3494 -12.9736 cm
+>>> Track = 579, hits = 39, fitted = 1, converged = 1, chi2 = 22.3077, ndf = 73
+       Momentum = 2.03833 GeV
+       Position = -16.1895 -8.81709 22.8848 cm
+>>> Track = 580, hits = 53, fitted = 1, converged = 1, chi2 = 30.7865, ndf = 101
+       Momentum = 2.25217 GeV
+       Position = 15.3683 -5.97141 -2.19045 cm
+>>> Track = 581, hits = 55, fitted = 1, converged = 1, chi2 = 33.5156, ndf = 105
+       Momentum = 2.21004 GeV
+       Position = -12.5304 10.7056 -3.01857 cm
+>>> Track = 583, hits = 55, fitted = 1, converged = 1, chi2 = 35.4099, ndf = 105
+       Momentum = 2.01591 GeV
+       Position = 14.8361 7.18308 12.8605 cm
+>>> Track = 584, hits = 53, fitted = 1, converged = 1, chi2 = 31.7413, ndf = 101
+       Momentum = 2.03024 GeV
+       Position = 6.66948 -15.0689 -12.2896 cm
+>>> Track = 585, hits = 54, fitted = 1, converged = 1, chi2 = 33.5365, ndf = 103
+       Momentum = 2.05016 GeV
+       Position = 10.488 -12.7241 -3.73639 cm
+>>> Track = 586, hits = 54, fitted = 1, converged = 1, chi2 = 32.0141, ndf = 103
+       Momentum = 2.11081 GeV
+       Position = 16.2231 2.95171 -16.472 cm
+>>> Track = 587, hits = 15, fitted = 1, converged = 1, chi2 = 7.31152, ndf = 25
+       Momentum = 13.9707 GeV
+       Position = 20.4347 -15.1678 48.6254 cm
+>>> Track = 590, hits = 24, fitted = 1, converged = 1, chi2 = 12.1479, ndf = 43
+       Momentum = 2.23439 GeV
+       Position = 20.497 -4.0277 -33.7164 cm
+>>> Track = 591, hits = 55, fitted = 1, converged = 1, chi2 = 33.1881, ndf = 105
+       Momentum = 2.09837 GeV
+       Position = -15.4143 -5.85526 -3.71349 cm
+>>> Track = 592, hits = 55, fitted = 1, converged = 1, chi2 = 34.2719, ndf = 105
+       Momentum = 2.09798 GeV
+       Position = -9.56619 -13.431 9.32159 cm
+>>> Track = 593, hits = 36, fitted = 1, converged = 1, chi2 = 17.3953, ndf = 67
+       Momentum = 2.14828 GeV
+       Position = -14.6652 -10.5284 24.0319 cm
+>>> Track = 595, hits = 9, fitted = 1, converged = 1, chi2 = 3.60385, ndf = 13
+       Momentum = 5.75028 GeV
+       Position = -28.8681 6.55016 -61.9983 cm
+>>> Track = 596, hits = 55, fitted = 1, converged = 1, chi2 = 31.9711, ndf = 105
+       Momentum = 2.03323 GeV
+       Position = 15.6808 -5.06294 8.18441 cm
+>>> Track = 597, hits = 42, fitted = 1, converged = 1, chi2 = 25.3967, ndf = 79
+       Momentum = 2.06376 GeV
+       Position = 15.0278 -7.92292 -20.974 cm
+>>> Track = 601, hits = 80, fitted = 1, converged = 1, chi2 = 45.6635, ndf = 155
+       Momentum = 1.95422 GeV
+       Position = -3.28209 -18.1374 22.8813 cm
+>>> Track = 602, hits = 53, fitted = 1, converged = 1, chi2 = 36.1207, ndf = 101
+       Momentum = 2.14299 GeV
+       Position = 16.3689 1.99962 10.3547 cm
+>>> Track = 603, hits = 54, fitted = 1, converged = 1, chi2 = 33.2277, ndf = 103
+       Momentum = 2.16577 GeV
+       Position = -2.13309 -16.3473 11.2577 cm
+>>> Track = 604, hits = 55, fitted = 1, converged = 1, chi2 = 32.4474, ndf = 105
+       Momentum = 2.0033 GeV
+       Position = -2.26685 -16.3317 -2.33689 cm
+>>> Track = 605, hits = 54, fitted = 1, converged = 1, chi2 = 34.6708, ndf = 103
+       Momentum = 2.02972 GeV
+       Position = 13.5686 -9.36551 -0.762776 cm
+>>> Track = 606, hits = 44, fitted = 1, converged = 1, chi2 = 26.5915, ndf = 83
+       Momentum = 2.23482 GeV
+       Position = 12.0251 -12.6626 -19.9411 cm
+>>> Track = 607, hits = 52, fitted = 1, converged = 1, chi2 = 32.5343, ndf = 99
+       Momentum = 2.01272 GeV
+       Position = 12.9282 -10.2245 3.29973 cm
+>>> Track = 608, hits = 54, fitted = 1, converged = 1, chi2 = 31.6482, ndf = 103
+       Momentum = 2.25486 GeV
+       Position = 9.25147 -13.6526 2.86548 cm
+>>> Track = 609, hits = 48, fitted = 1, converged = 1, chi2 = 29.1327, ndf = 91
+       Momentum = 2.0855 GeV
+       Position = 15.2614 -8.48277 19.5606 cm
+>>> Track = 610, hits = 54, fitted = 1, converged = 1, chi2 = 35.9964, ndf = 103
+       Momentum = 2.05703 GeV
+       Position = -12.3677 -10.9064 -8.61095 cm
+>>> Track = 611, hits = 54, fitted = 1, converged = 1, chi2 = 34.9234, ndf = 103
+       Momentum = 2.0021 GeV
+       Position = 13.3012 9.73133 -1.43574 cm
+>>> Track = 612, hits = 38, fitted = 1, converged = 1, chi2 = 20.5216, ndf = 71
+       Momentum = 2.33361 GeV
+       Position = -17.9293 3.94737 23.6525 cm
+>>> Track = 613, hits = 52, fitted = 1, converged = 1, chi2 = 32.3801, ndf = 99
+       Momentum = 2.1337 GeV
+       Position = -7.79103 14.4648 17.3452 cm
+>>> Track = 615, hits = 108, fitted = 1, converged = 1, chi2 = 67.4251, ndf = 211
+       Momentum = 2.09277 GeV
+       Position = 16.0213 3.89923 -9.87418 cm
+>>> Track = 616, hits = 54, fitted = 1, converged = 1, chi2 = 34.6019, ndf = 103
+       Momentum = 2.07053 GeV
+       Position = -16.3089 -2.40492 8.46896 cm
+>>> Track = 617, hits = 55, fitted = 1, converged = 1, chi2 = 36.5006, ndf = 105
+       Momentum = 2.15626 GeV
+       Position = 7.92214 14.4673 5.1264 cm
+>>> Track = 618, hits = 54, fitted = 1, converged = 1, chi2 = 35.9734, ndf = 103
+       Momentum = 2.00143 GeV
+       Position = -12.6444 10.5846 -1.01411 cm
+>>> Track = 619, hits = 55, fitted = 1, converged = 1, chi2 = 38.4961, ndf = 105
+       Momentum = 2.04335 GeV
+       Position = 2.92323 -16.2273 -6.65353 cm
+>>> Track = 620, hits = 54, fitted = 1, converged = 1, chi2 = 34.3183, ndf = 103
+       Momentum = 2.06656 GeV
+       Position = -11.8284 -11.482 -9.1379 cm
+>>> Track = 621, hits = 53, fitted = 1, converged = 1, chi2 = 34.7734, ndf = 101
+       Momentum = 2.24877 GeV
+       Position = -16.4198 1.46949 3.32329 cm
+>>> Track = 623, hits = 53, fitted = 1, converged = 1, chi2 = 34.4747, ndf = 101
+       Momentum = 1.97326 GeV
+       Position = 16.4214 1.49269 0.761975 cm
+>>> Track = 624, hits = 55, fitted = 1, converged = 1, chi2 = 32.7165, ndf = 105
+       Momentum = 2.22813 GeV
+       Position = -11.3231 11.9943 -12.8768 cm
+>>> Track = 625, hits = 25, fitted = 1, converged = 1, chi2 = 12.7305, ndf = 45
+       Momentum = 1.77764 GeV
+       Position = 21.1569 2.60281 -33.056 cm
+>>> Track = 627, hits = 54, fitted = 1, converged = 1, chi2 = 35.32, ndf = 103
+       Momentum = 2.06371 GeV
+       Position = -10.4583 12.747 -2.45435 cm
+>>> Track = 629, hits = 54, fitted = 1, converged = 1, chi2 = 34.3283, ndf = 103
+       Momentum = 2.09225 GeV
+       Position = -5.14655 15.6671 1.30006 cm
+>>> Track = 632, hits = 56, fitted = 1, converged = 1, chi2 = 29.2442, ndf = 107
+       Momentum = 1.67107 GeV
+       Position = -2.67585 19.8745 30.3172 cm
+>>> Track = 633, hits = 53, fitted = 1, converged = 1, chi2 = 34.7637, ndf = 101
+       Momentum = 2.03643 GeV
+       Position = 13.3746 -9.59042 -17.3179 cm
+>>> Track = 634, hits = 55, fitted = 1, converged = 1, chi2 = 37.7736, ndf = 105
+       Momentum = 1.96188 GeV
+       Position = 16.2199 2.97392 -14.1085 cm
+>>> Track = 635, hits = 55, fitted = 1, converged = 1, chi2 = 36.1832, ndf = 105
+       Momentum = 2.13534 GeV
+       Position = 16.2715 -2.66342 -13.8087 cm
+>>> Track = 637, hits = 24, fitted = 1, converged = 1, chi2 = 10.6269, ndf = 43
+       Momentum = 1.98256 GeV
+       Position = 10.8991 17.9083 -33.5966 cm
+>>> Track = 638, hits = 55, fitted = 1, converged = 1, chi2 = 35.217, ndf = 105
+       Momentum = 2.11015 GeV
+       Position = -14.6941 -7.46731 -14.0971 cm
+>>> Track = 639, hits = 55, fitted = 1, converged = 1, chi2 = 34.9872, ndf = 105
+       Momentum = 2.08135 GeV
+       Position = -15.4655 -5.72664 -4.2098 cm
+>>> Track = 640, hits = 55, fitted = 1, converged = 1, chi2 = 35.2963, ndf = 105
+       Momentum = 2.14257 GeV
+       Position = 4.57263 15.8355 0.935574 cm
+>>> Track = 641, hits = 55, fitted = 1, converged = 1, chi2 = 37.9021, ndf = 105
+       Momentum = 2.02657 GeV
+       Position = 6.81114 15.0165 12.0809 cm
+>>> Track = 642, hits = 54, fitted = 1, converged = 1, chi2 = 38.1468, ndf = 103
+       Momentum = 2.08264 GeV
+       Position = 3.81779 16.0413 4.14956 cm
+>>> Track = 643, hits = 53, fitted = 1, converged = 1, chi2 = 32.4989, ndf = 101
+       Momentum = 2.06166 GeV
+       Position = -11.916 11.4004 11.5878 cm
+>>> Track = 644, hits = 53, fitted = 1, converged = 1, chi2 = 31.1768, ndf = 101
+       Momentum = 2.00726 GeV
+       Position = -11.7496 11.5724 -1.89096 cm
+>>> Track = 645, hits = 53, fitted = 1, converged = 1, chi2 = 33.5425, ndf = 101
+       Momentum = 2.15458 GeV
+       Position = -15.5217 -5.54969 -0.370017 cm
+>>> Track = 646, hits = 55, fitted = 1, converged = 1, chi2 = 37.4815, ndf = 105
+       Momentum = 2.14354 GeV
+       Position = 8.32407 14.2308 -9.6318 cm
+>>> Track = 647, hits = 54, fitted = 1, converged = 1, chi2 = 34.8995, ndf = 103
+       Momentum = 1.97899 GeV
+       Position = 12.3788 10.8928 -0.501142 cm
+>>> Track = 648, hits = 53, fitted = 1, converged = 1, chi2 = 35.1645, ndf = 101
+       Momentum = 1.98241 GeV
+       Position = -7.66226 -14.6017 -5.07255 cm
+>>> Track = 649, hits = 55, fitted = 1, converged = 1, chi2 = 38.2108, ndf = 105
+       Momentum = 2.12861 GeV
+       Position = -15.4496 5.74319 8.55658 cm
+>>> Track = 650, hits = 54, fitted = 1, converged = 1, chi2 = 32.1634, ndf = 103
+       Momentum = 2.06802 GeV
+       Position = -3.21168 -16.167 11.1025 cm
+>>> Track = 651, hits = 54, fitted = 1, converged = 1, chi2 = 35.837, ndf = 103
+       Momentum = 2.05824 GeV
+       Position = -16.3953 1.78277 6.81885 cm
+>>> Track = 652, hits = 54, fitted = 1, converged = 1, chi2 = 34.1336, ndf = 103
+       Momentum = 2.18731 GeV
+       Position = 16.0582 -3.76296 14.1001 cm
+>>> Track = 654, hits = 53, fitted = 1, converged = 1, chi2 = 33.7519, ndf = 101
+       Momentum = 2.11161 GeV
+       Position = -16.0862 3.62506 4.78073 cm
+>>> Track = 655, hits = 46, fitted = 1, converged = 1, chi2 = 24.9626, ndf = 87
+       Momentum = 2.21448 GeV
+       Position = 9.4752 -14.6781 -20.0921 cm
+>>> Track = 656, hits = 54, fitted = 1, converged = 1, chi2 = 33.6493, ndf = 103
+       Momentum = 2.10712 GeV
+       Position = 1.45907 16.4216 1.9577 cm
+>>> Track = 657, hits = 54, fitted = 1, converged = 1, chi2 = 33.488, ndf = 103
+       Momentum = 2.11689 GeV
+       Position = -12.8583 -10.3263 -4.6517 cm
+>>> Track = 658, hits = 55, fitted = 1, converged = 1, chi2 = 33.1898, ndf = 105
+       Momentum = 2.15966 GeV
+       Position = -0.776597 -16.4688 11.398 cm
+>>> Track = 660, hits = 108, fitted = 1, converged = 1, chi2 = 73.2624, ndf = 211
+       Momentum = 2.27667 GeV
+       Position = 5.41683 -15.5729 -2.67239 cm
+>>> Track = 661, hits = 46, fitted = 1, converged = 1, chi2 = 27.6946, ndf = 87
+       Momentum = 1.9941 GeV
+       Position = 8.4132 15.2979 19.7803 cm
+>>> Track = 662, hits = 55, fitted = 1, converged = 1, chi2 = 34.5063, ndf = 105
+       Momentum = 2.0384 GeV
+       Position = 3.89151 -16.0218 -15.001 cm
+>>> Track = 663, hits = 55, fitted = 1, converged = 1, chi2 = 33.8619, ndf = 105
+       Momentum = 2.13496 GeV
+       Position = 8.16541 14.3215 10.2004 cm
+>>> Track = 664, hits = 55, fitted = 1, converged = 1, chi2 = 34.5774, ndf = 105
+       Momentum = 2.05292 GeV
+       Position = 4.19117 -15.9462 1.0326 cm
+>>> Track = 665, hits = 55, fitted = 1, converged = 1, chi2 = 32.7228, ndf = 105
+       Momentum = 2.2795 GeV
+       Position = -16.4761 -0.735841 7.72296 cm
+>>> Track = 666, hits = 55, fitted = 1, converged = 1, chi2 = 35.9853, ndf = 105
+       Momentum = 2.16664 GeV
+       Position = 4.61843 -15.8299 10.3073 cm
+>>> Track = 667, hits = 46, fitted = 1, converged = 1, chi2 = 25.2815, ndf = 87
+       Momentum = 2.02742 GeV
+       Position = 13.8697 -10.5916 19.9161 cm
+>>> Track = 668, hits = 53, fitted = 1, converged = 1, chi2 = 33.581, ndf = 101
+       Momentum = 1.99993 GeV
+       Position = -11.022 12.2608 -5.9547 cm
+>>> Track = 669, hits = 55, fitted = 1, converged = 1, chi2 = 33.7392, ndf = 105
+       Momentum = 1.99385 GeV
+       Position = 7.17337 -14.8435 -9.82708 cm
+>>> Track = 671, hits = 54, fitted = 1, converged = 1, chi2 = 34.4383, ndf = 103
+       Momentum = 1.95934 GeV
+       Position = 7.84736 14.5012 -6.15681 cm
+>>> Track = 672, hits = 49, fitted = 1, converged = 1, chi2 = 29.3529, ndf = 93
+       Momentum = 1.97522 GeV
+       Position = 14.0554 -7.78095 -17.729 cm
+>>> Track = 673, hits = 54, fitted = 1, converged = 1, chi2 = 36.5502, ndf = 103
+       Momentum = 2.10765 GeV
+       Position = 10.9806 -12.2984 8.14456 cm
+>>> Track = 674, hits = 54, fitted = 1, converged = 1, chi2 = 34.8429, ndf = 103
+       Momentum = 2.10659 GeV
+       Position = -12.7882 10.4023 14.6036 cm
+>>> Track = 675, hits = 55, fitted = 1, converged = 1, chi2 = 37.8514, ndf = 105
+       Momentum = 2.05068 GeV
+       Position = 2.34465 -16.3157 12.0104 cm
+>>> Track = 677, hits = 32, fitted = 1, converged = 1, chi2 = 15.7162, ndf = 59
+       Momentum = 2.06655 GeV
+       Position = -18.7831 3.69606 -27.052 cm
+>>> Track = 678, hits = 9, fitted = 1, converged = 1, chi2 = 4.60955, ndf = 13
+       Momentum = 11.9536 GeV
+       Position = -27.8602 9.73793 62.184 cm
+>>> Track = 679, hits = 54, fitted = 1, converged = 1, chi2 = 34.6502, ndf = 103
+       Momentum = 2.04864 GeV
+       Position = 0.0426762 -16.4915 5.24307 cm
+>>> Track = 680, hits = 54, fitted = 1, converged = 1, chi2 = 35.076, ndf = 103
+       Momentum = 2.03638 GeV
+       Position = 15.763 4.82659 6.79084 cm
+>>> Track = 681, hits = 51, fitted = 1, converged = 1, chi2 = 31.4366, ndf = 97
+       Momentum = 1.91706 GeV
+       Position = -12.369 10.8953 -12.2254 cm
+>>> Track = 682, hits = 55, fitted = 1, converged = 1, chi2 = 36.3998, ndf = 105
+       Momentum = 1.9885 GeV
+       Position = 7.32447 14.7709 10.6161 cm
+>>> Track = 684, hits = 5, fitted = 1, converged = 1, chi2 = 2.18265, ndf = 5
+       Momentum = 0.794973 GeV
+       Position = -28.119 -15.4115 74.4387 cm
+>>> Track = 685, hits = 55, fitted = 1, converged = 1, chi2 = 32.8631, ndf = 105
+       Momentum = 2.00068 GeV
+       Position = 0.890152 16.4622 -6.59878 cm
+>>> Track = 686, hits = 55, fitted = 1, converged = 1, chi2 = 34.0309, ndf = 105
+       Momentum = 2.01259 GeV
+       Position = 6.32251 -15.2185 -12.1692 cm
+>>> Track = 687, hits = 55, fitted = 1, converged = 1, chi2 = 32.8596, ndf = 105
+       Momentum = 2.2558 GeV
+       Position = -16.2154 -2.99917 6.03929 cm
+>>> Track = 688, hits = 55, fitted = 1, converged = 1, chi2 = 33.1681, ndf = 105
+       Momentum = 2.22372 GeV
+       Position = -11.7678 -11.5499 10.9343 cm
+>>> Track = 689, hits = 53, fitted = 1, converged = 1, chi2 = 35.6454, ndf = 101
+       Momentum = 2.38381 GeV
+       Position = 4.09018 -16.9762 -3.70417 cm
+>>> Track = 691, hits = 52, fitted = 1, converged = 1, chi2 = 31.8281, ndf = 99
+       Momentum = 2.01522 GeV
+       Position = 1.47711 -17.3998 -1.861 cm
+>>> Track = 692, hits = 52, fitted = 1, converged = 1, chi2 = 31.5921, ndf = 99
+       Momentum = 2.22177 GeV
+       Position = -15.0604 -6.70444 -2.33165 cm
+>>> Track = 693, hits = 54, fitted = 1, converged = 1, chi2 = 31.8405, ndf = 103
+       Momentum = 2.19552 GeV
+       Position = 9.10005 13.7563 -1.89488 cm
+>>> Track = 694, hits = 24, fitted = 1, converged = 1, chi2 = 12.5078, ndf = 43
+       Momentum = 1.77631 GeV
+       Position = -5.10788 -20.3159 -33.6286 cm
+>>> Track = 695, hits = 54, fitted = 1, converged = 1, chi2 = 32.0409, ndf = 103
+       Momentum = 2.24575 GeV
+       Position = 11.7488 11.5641 10.3621 cm
+>>> Track = 696, hits = 54, fitted = 1, converged = 1, chi2 = 35.8308, ndf = 103
+       Momentum = 2.05163 GeV
+       Position = -4.70614 -15.8016 -0.126562 cm
+>>> Track = 697, hits = 54, fitted = 1, converged = 1, chi2 = 37.0596, ndf = 103
+       Momentum = 2.1213 GeV
+       Position = 16.461 0.976802 -2.03313 cm
+>>> Track = 698, hits = 52, fitted = 1, converged = 1, chi2 = 31.5915, ndf = 99
+       Momentum = 2.04788 GeV
+       Position = 10.887 -12.3799 12.3979 cm
+>>> Track = 699, hits = 55, fitted = 1, converged = 1, chi2 = 37.41, ndf = 105
+       Momentum = 2.05622 GeV
+       Position = 16.1149 -3.4815 13.1205 cm
+>>> Track = 701, hits = 110, fitted = 1, converged = 1, chi2 = 75.1542, ndf = 215
+       Momentum = 2.00249 GeV
+       Position = 11.8821 11.4188 -15.1925 cm
+>>> Track = 702, hits = 55, fitted = 1, converged = 1, chi2 = 36.0321, ndf = 105
+       Momentum = 2.29584 GeV
+       Position = -1.70655 16.4028 10.6811 cm
+>>> Track = 703, hits = 55, fitted = 1, converged = 1, chi2 = 34.5509, ndf = 105
+       Momentum = 2.0487 GeV
+       Position = -10.3605 12.824 -16.5282 cm
+>>> Track = 704, hits = 53, fitted = 1, converged = 1, chi2 = 36.5874, ndf = 101
+       Momentum = 2.19435 GeV
+       Position = -9.95483 13.1436 -8.92075 cm
+>>> Track = 705, hits = 54, fitted = 1, converged = 1, chi2 = 35.1569, ndf = 103
+       Momentum = 2.17643 GeV
+       Position = -6.09696 -15.3202 -10.8244 cm
+>>> Track = 706, hits = 55, fitted = 1, converged = 1, chi2 = 34.3682, ndf = 105
+       Momentum = 2.11034 GeV
+       Position = -1.78113 16.3879 -9.66383 cm
+>>> Track = 707, hits = 54, fitted = 1, converged = 1, chi2 = 32.7867, ndf = 103
+       Momentum = 2.20006 GeV
+       Position = -3.58076 16.0939 -4.30647 cm
+>>> Track = 708, hits = 55, fitted = 1, converged = 1, chi2 = 37.0645, ndf = 105
+       Momentum = 1.95725 GeV
+       Position = 13.8025 -9.01988 2.57865 cm
+>>> Track = 709, hits = 53, fitted = 1, converged = 1, chi2 = 33.7292, ndf = 101
+       Momentum = 2.03646 GeV
+       Position = 0.475822 16.4839 -2.9857 cm
+>>> Track = 710, hits = 53, fitted = 1, converged = 1, chi2 = 33.906, ndf = 101
+       Momentum = 1.98983 GeV
+       Position = 15.3266 6.07583 -4.85012 cm
+>>> Track = 711, hits = 55, fitted = 1, converged = 1, chi2 = 31.6474, ndf = 105
+       Momentum = 1.96089 GeV
+       Position = -4.98513 -15.7129 -4.40706 cm
+>>> Track = 712, hits = 53, fitted = 1, converged = 1, chi2 = 30.7933, ndf = 101
+       Momentum = 2.12856 GeV
+       Position = 6.5575 15.1251 -5.16845 cm
+>>> Track = 713, hits = 54, fitted = 1, converged = 1, chi2 = 35.0039, ndf = 103
+       Momentum = 2.15717 GeV
+       Position = 0.743345 16.4674 -16.8933 cm
+>>> Track = 715, hits = 110, fitted = 1, converged = 1, chi2 = 71.7406, ndf = 215
+       Momentum = 2.12307 GeV
+       Position = 14.4588 -7.9255 7.94621 cm
+>>> Track = 716, hits = 30, fitted = 1, converged = 1, chi2 = 16.345, ndf = 55
+       Momentum = 2.26124 GeV
+       Position = -6.1977 -19.4324 29.5686 cm
+>>> Track = 717, hits = 55, fitted = 1, converged = 1, chi2 = 35.6945, ndf = 105
+       Momentum = 2.0122 GeV
+       Position = -16.4241 1.45615 3.94944 cm
+>>> Track = 718, hits = 11, fitted = 1, converged = 1, chi2 = 3.95432, ndf = 17
+       Momentum = 0.850081 GeV
+       Position = 7.98519 -27.1758 -57.2808 cm
+>>> Track = 719, hits = 54, fitted = 1, converged = 1, chi2 = 34.1863, ndf = 103
+       Momentum = 2.12588 GeV
+       Position = 16.0691 -3.71159 4.80805 cm
+>>> Track = 720, hits = 52, fitted = 1, converged = 1, chi2 = 30.7882, ndf = 99
+       Momentum = 2.19025 GeV
+       Position = 13.5615 9.10685 -17.4452 cm
+>>> Track = 721, hits = 55, fitted = 1, converged = 1, chi2 = 32.2816, ndf = 105
+       Momentum = 1.9687 GeV
+       Position = 15.9309 4.25084 0.288757 cm
+>>> Track = 722, hits = 53, fitted = 1, converged = 1, chi2 = 31.8199, ndf = 101
+       Momentum = 2.33697 GeV
+       Position = 16.1633 3.32537 5.36801 cm
+Skipping track 723 too many or too few hits 4
+>>> Track = 724, hits = 54, fitted = 1, converged = 1, chi2 = 34.9217, ndf = 103
+       Momentum = 2.01068 GeV
+       Position = -4.68602 15.8029 -12.6382 cm
+>>> Track = 725, hits = 55, fitted = 1, converged = 1, chi2 = 32.3339, ndf = 105
+       Momentum = 2.02884 GeV
+       Position = 16.4292 1.41065 3.14306 cm
+>>> Track = 726, hits = 53, fitted = 1, converged = 1, chi2 = 34.4868, ndf = 101
+       Momentum = 2.15913 GeV
+       Position = 15.2065 -6.35512 -2.80116 cm
+>>> Track = 727, hits = 42, fitted = 1, converged = 1, chi2 = 24.74, ndf = 79
+       Momentum = 1.9204 GeV
+       Position = 17.3403 -0.787697 -20.5322 cm
+>>> Track = 728, hits = 54, fitted = 1, converged = 1, chi2 = 32.1842, ndf = 103
+       Momentum = 2.09167 GeV
+       Position = -12.2481 11.0451 7.08863 cm
+>>> Track = 729, hits = 54, fitted = 1, converged = 1, chi2 = 34.1049, ndf = 103
+       Momentum = 2.0446 GeV
+       Position = -0.41887 -16.4846 1.4794 cm
+>>> Track = 730, hits = 53, fitted = 1, converged = 1, chi2 = 31.188, ndf = 101
+       Momentum = 2.14701 GeV
+       Position = -11.1811 -12.1274 10.5409 cm
+>>> Track = 731, hits = 54, fitted = 1, converged = 1, chi2 = 34.8038, ndf = 103
+       Momentum = 2.04163 GeV
+       Position = 1.40135 -16.4279 4.74641 cm
+>>> Track = 732, hits = 55, fitted = 1, converged = 1, chi2 = 31.1876, ndf = 105
+       Momentum = 1.93945 GeV
+       Position = -15.8275 -4.62091 5.80187 cm
+>>> Track = 733, hits = 55, fitted = 1, converged = 1, chi2 = 33.4409, ndf = 105
+       Momentum = 2.16104 GeV
+       Position = -16.4416 -1.16127 15.3205 cm
+>>> Track = 734, hits = 30, fitted = 1, converged = 1, chi2 = 16.2205, ndf = 55
+       Momentum = 2.47073 GeV
+       Position = 19.8315 4.42809 -29.935 cm
+>>> Track = 735, hits = 54, fitted = 1, converged = 1, chi2 = 35.9957, ndf = 103
+       Momentum = 2.06199 GeV
+       Position = 1.08172 -17.4306 -9.07084 cm
+>>> Track = 737, hits = 54, fitted = 1, converged = 1, chi2 = 35.8468, ndf = 103
+       Momentum = 2.08305 GeV
+       Position = 16.0387 3.79673 6.56349 cm
+>>> Track = 738, hits = 50, fitted = 1, converged = 1, chi2 = 34.8746, ndf = 95
+       Momentum = 2.10076 GeV
+       Position = 9.75754 13.1472 -17.3982 cm
+>>> Track = 739, hits = 54, fitted = 1, converged = 1, chi2 = 36.4855, ndf = 103
+       Momentum = 2.28524 GeV
+       Position = 12.2262 -11.0787 -16.4142 cm
+>>> Track = 740, hits = 54, fitted = 1, converged = 1, chi2 = 35.0619, ndf = 103
+       Momentum = 2.16988 GeV
+       Position = 15.3374 -6.05536 -8.91522 cm
+>>> Track = 741, hits = 54, fitted = 1, converged = 1, chi2 = 32.9672, ndf = 103
+       Momentum = 2.09261 GeV
+       Position = -8.7501 13.9788 -3.04949 cm
+>>> Track = 742, hits = 55, fitted = 1, converged = 1, chi2 = 36.4743, ndf = 105
+       Momentum = 2.16636 GeV
+       Position = -8.1391 14.3448 5.77335 cm
+>>> Track = 744, hits = 46, fitted = 1, converged = 1, chi2 = 25.5729, ndf = 87
+       Momentum = 2.42698 GeV
+       Position = -11.789 11.0749 17.5989 cm
+>>> Track = 745, hits = 53, fitted = 1, converged = 1, chi2 = 35.1891, ndf = 101
+       Momentum = 2.09051 GeV
+       Position = 15.9247 4.2648 4.95249 cm
+>>> Track = 748, hits = 55, fitted = 1, converged = 1, chi2 = 35.4829, ndf = 105
+       Momentum = 1.95704 GeV
+       Position = -16.1614 -3.28049 -1.30303 cm
+>>> Track = 750, hits = 108, fitted = 1, converged = 1, chi2 = 72.0634, ndf = 211
+       Momentum = 2.01845 GeV
+       Position = 12.1472 -11.1421 -5.35185 cm
+>>> Track = 752, hits = 62, fitted = 1, converged = 1, chi2 = 31.1968, ndf = 119
+       Momentum = 2.57107 GeV
+       Position = 17.0102 -8.48908 -27.2382 cm
+>>> Track = 753, hits = 46, fitted = 1, converged = 1, chi2 = 27.1801, ndf = 87
+       Momentum = 2.11586 GeV
+       Position = -13.1192 11.5291 20.1988 cm
+>>> Track = 754, hits = 53, fitted = 1, converged = 1, chi2 = 32.4243, ndf = 101
+       Momentum = 2.04002 GeV
+       Position = 3.53774 16.1104 7.9682 cm
+>>> Track = 755, hits = 13, fitted = 1, converged = 1, chi2 = 5.51887, ndf = 21
+       Momentum = 1.77445 GeV
+       Position = 26.6813 0.653709 53.3225 cm
+>>> Track = 756, hits = 14, fitted = 1, converged = 1, chi2 = 6.87154, ndf = 23
+       Momentum = 4.45099 GeV
+       Position = -18.6446 -17.6546 48.1594 cm
+>>> Track = 757, hits = 54, fitted = 1, converged = 1, chi2 = 35.8518, ndf = 103
+       Momentum = 2.14818 GeV
+       Position = 16.4374 1.35688 -3.38425 cm
+>>> Track = 758, hits = 54, fitted = 1, converged = 1, chi2 = 36.0842, ndf = 103
+       Momentum = 1.99521 GeV
+       Position = -10.9214 -12.3487 7.28861 cm
+>>> Track = 759, hits = 21, fitted = 1, converged = 1, chi2 = 10.0727, ndf = 37
+       Momentum = 1.68429 GeV
+       Position = 0.215173 -23.1376 -39.5691 cm
+>>> Track = 760, hits = 54, fitted = 1, converged = 1, chi2 = 36.2904, ndf = 103
+       Momentum = 2.26588 GeV
+       Position = -13.047 -10.0748 -2.42387 cm
+>>> Track = 761, hits = 55, fitted = 1, converged = 1, chi2 = 33.6818, ndf = 105
+       Momentum = 2.11054 GeV
+       Position = -13.915 8.84132 8.44326 cm
+>>> Track = 762, hits = 24, fitted = 1, converged = 1, chi2 = 12.526, ndf = 43
+       Momentum = 2.00825 GeV
+       Position = -12.9852 -18.1016 36.2462 cm
+>>> Track = 763, hits = 53, fitted = 1, converged = 1, chi2 = 33.2451, ndf = 101
+       Momentum = 2.0284 GeV
+       Position = 1.78116 16.393 -0.49211 cm
+>>> Track = 764, hits = 38, fitted = 1, converged = 1, chi2 = 21.8484, ndf = 71
+       Momentum = 2.12327 GeV
+       Position = -7.66165 -16.774 -23.1502 cm
+>>> Track = 765, hits = 55, fitted = 1, converged = 1, chi2 = 36.4246, ndf = 105
+       Momentum = 2.01469 GeV
+       Position = -1.72861 16.397 -1.9553 cm
+>>> Track = 766, hits = 55, fitted = 1, converged = 1, chi2 = 33.677, ndf = 105
+       Momentum = 2.10046 GeV
+       Position = -16.2584 2.72226 -3.99236 cm
+>>> Track = 767, hits = 22, fitted = 1, converged = 1, chi2 = 10.4886, ndf = 39
+       Momentum = 1.51349 GeV
+       Position = 11.1085 18.9171 -36.7758 cm
+>>> Track = 768, hits = 37, fitted = 1, converged = 1, chi2 = 18.3612, ndf = 69
+       Momentum = 2.1141 GeV
+       Position = 10.4929 14.713 24.0199 cm
+>>> Track = 769, hits = 54, fitted = 1, converged = 1, chi2 = 36.8873, ndf = 103
+       Momentum = 2.19157 GeV
+       Position = -3.98011 16.0032 -0.466878 cm
+>>> Track = 770, hits = 44, fitted = 1, converged = 1, chi2 = 27.0389, ndf = 83
+       Momentum = 1.94333 GeV
+       Position = 16.5125 -5.61749 20.4406 cm
+>>> Track = 771, hits = 55, fitted = 1, converged = 1, chi2 = 33.3695, ndf = 105
+       Momentum = 2.27501 GeV
+       Position = 6.52378 15.1436 -5.43911 cm
+>>> Track = 773, hits = 54, fitted = 1, converged = 1, chi2 = 30.3175, ndf = 103
+       Momentum = 2.23401 GeV
+       Position = -15.2186 -6.35907 -4.13427 cm
+>>> Track = 774, hits = 31, fitted = 1, converged = 1, chi2 = 15.6975, ndf = 57
+       Momentum = 1.93673 GeV
+       Position = 8.70107 17.0216 -27.0964 cm
+>>> Track = 775, hits = 55, fitted = 1, converged = 1, chi2 = 36.8642, ndf = 105
+       Momentum = 2.19403 GeV
+       Position = -16.4777 0.623509 4.43877 cm
+>>> Track = 777, hits = 110, fitted = 1, converged = 1, chi2 = 66.6481, ndf = 215
+       Momentum = 1.96275 GeV
+       Position = -10.2001 -12.9453 4.96922 cm
+>>> Track = 778, hits = 55, fitted = 1, converged = 1, chi2 = 34.4496, ndf = 105
+       Momentum = 1.96651 GeV
+       Position = -5.49712 15.5445 3.12295 cm
+>>> Track = 779, hits = 51, fitted = 1, converged = 1, chi2 = 33.6782, ndf = 97
+       Momentum = 1.97451 GeV
+       Position = 5.03754 -15.6986 -3.79786 cm
+>>> Track = 781, hits = 108, fitted = 1, converged = 1, chi2 = 69.8047, ndf = 211
+       Momentum = 2.19488 GeV
+       Position = -0.00281242 17.4624 -1.54125 cm
+>>> Track = 782, hits = 53, fitted = 1, converged = 1, chi2 = 34.1894, ndf = 101
+       Momentum = 2.03254 GeV
+       Position = -0.0661254 16.4817 13.4489 cm
+>>> Track = 783, hits = 46, fitted = 1, converged = 1, chi2 = 26.8145, ndf = 87
+       Momentum = 2.15079 GeV
+       Position = 14.3995 -9.90301 20.0703 cm
+>>> Track = 784, hits = 54, fitted = 1, converged = 1, chi2 = 33.2886, ndf = 103
+       Momentum = 2.07425 GeV
+       Position = -14.6555 -7.55755 -1.2759 cm
+>>> Track = 785, hits = 55, fitted = 1, converged = 1, chi2 = 36.0361, ndf = 105
+       Momentum = 2.00029 GeV
+       Position = -9.6529 13.363 7.42252 cm
+>>> Track = 786, hits = 54, fitted = 1, converged = 1, chi2 = 34.7909, ndf = 103
+       Momentum = 2.26612 GeV
+       Position = -16.4048 1.68105 -7.44687 cm
+>>> Track = 788, hits = 30, fitted = 1, converged = 1, chi2 = 13.9202, ndf = 55
+       Momentum = 1.66361 GeV
+       Position = -20.2796 -0.927263 -29.9535 cm
+>>> Track = 789, hits = 54, fitted = 1, converged = 1, chi2 = 37.0736, ndf = 103
+       Momentum = 2.07314 GeV
+       Position = 11.0218 -12.2604 -4.4185 cm
+>>> Track = 790, hits = 36, fitted = 1, converged = 1, chi2 = 19.4732, ndf = 67
+       Momentum = 2.28571 GeV
+       Position = 7.70921 -16.2795 24.0968 cm
+>>> Track = 791, hits = 55, fitted = 1, converged = 1, chi2 = 36.389, ndf = 105
+       Momentum = 2.06352 GeV
+       Position = -14.6463 7.56142 -1.63023 cm
+>>> Track = 792, hits = 55, fitted = 1, converged = 1, chi2 = 32.7111, ndf = 105
+       Momentum = 2.13417 GeV
+       Position = -8.94008 13.8537 5.28766 cm
+>>> Track = 793, hits = 54, fitted = 1, converged = 1, chi2 = 34.6885, ndf = 103
+       Momentum = 2.17495 GeV
+       Position = 7.42893 -14.7159 -5.80743 cm
+>>> Track = 794, hits = 55, fitted = 1, converged = 1, chi2 = 36.0601, ndf = 105
+       Momentum = 2.11525 GeV
+       Position = -9.18212 -13.6893 -16.4908 cm
+>>> Track = 795, hits = 52, fitted = 1, converged = 1, chi2 = 34.4332, ndf = 99
+       Momentum = 2.24664 GeV
+       Position = 15.5579 5.45529 -2.78415 cm
+>>> Track = 796, hits = 54, fitted = 1, converged = 1, chi2 = 35.938, ndf = 103
+       Momentum = 1.93811 GeV
+       Position = 16.2016 -3.0583 -0.468893 cm
+>>> Track = 797, hits = 55, fitted = 1, converged = 1, chi2 = 34.7975, ndf = 105
+       Momentum = 2.14466 GeV
+       Position = -16.1915 -3.0888 1.847 cm
+>>> Track = 798, hits = 15, fitted = 1, converged = 1, chi2 = 7.56458, ndf = 25
+       Momentum = 1.92882 GeV
+       Position = 24.3597 7.23197 -48.651 cm
+>>> Track = 799, hits = 78, fitted = 1, converged = 1, chi2 = 43.7256, ndf = 151
+       Momentum = 1.89318 GeV
+       Position = -7.41872 16.8743 -22.9682 cm
+>>> Track = 800, hits = 54, fitted = 1, converged = 1, chi2 = 34.0109, ndf = 103
+       Momentum = 2.07116 GeV
+       Position = 9.35587 -13.5799 1.9431 cm
+>>> Track = 801, hits = 53, fitted = 1, converged = 1, chi2 = 34.4033, ndf = 101
+       Momentum = 2.03712 GeV
+       Position = 8.13065 -14.3439 -12.5882 cm
+>>> Track = 802, hits = 54, fitted = 1, converged = 1, chi2 = 37.304, ndf = 103
+       Momentum = 1.93438 GeV
+       Position = -10.0632 13.0592 7.97644 cm
+>>> Track = 803, hits = 55, fitted = 1, converged = 1, chi2 = 33.8689, ndf = 105
+       Momentum = 2.13583 GeV
+       Position = 8.92844 13.865 -12.4248 cm
+>>> Track = 804, hits = 53, fitted = 1, converged = 1, chi2 = 37.5937, ndf = 101
+       Momentum = 2.11559 GeV
+       Position = -3.84923 -16.0254 6.74393 cm
+>>> Track = 805, hits = 44, fitted = 1, converged = 1, chi2 = 27.8179, ndf = 83
+       Momentum = 2.09889 GeV
+       Position = -16.4892 5.11202 20.6303 cm
+>>> Track = 806, hits = 54, fitted = 1, converged = 1, chi2 = 34.9157, ndf = 103
+       Momentum = 2.17005 GeV
+       Position = -10.6216 12.6056 -1.75273 cm
+>>> Track = 807, hits = 53, fitted = 1, converged = 1, chi2 = 35.2196, ndf = 101
+       Momentum = 2.14002 GeV
+       Position = -2.25749 -16.3344 7.68889 cm
+>>> Track = 808, hits = 55, fitted = 1, converged = 1, chi2 = 34.5806, ndf = 105
+       Momentum = 2.00771 GeV
+       Position = -8.36346 14.2108 1.79023 cm
+>>> Track = 809, hits = 54, fitted = 1, converged = 1, chi2 = 34.2605, ndf = 103
+       Momentum = 2.16051 GeV
+       Position = 7.43616 14.7185 3.13556 cm
+>>> Track = 810, hits = 53, fitted = 1, converged = 1, chi2 = 35.2923, ndf = 101
+       Momentum = 1.96431 GeV
+       Position = -16.4707 -0.761326 -3.50486 cm
+>>> Track = 812, hits = 54, fitted = 1, converged = 1, chi2 = 34.4588, ndf = 103
+       Momentum = 2.13591 GeV
+       Position = 15.3764 5.9613 9.05005 cm
+>>> Track = 814, hits = 55, fitted = 1, converged = 1, chi2 = 36.6191, ndf = 105
+       Momentum = 1.97447 GeV
+       Position = -4.22091 15.9386 4.42664 cm
+>>> Track = 816, hits = 55, fitted = 1, converged = 1, chi2 = 34.0467, ndf = 105
+       Momentum = 2.14241 GeV
+       Position = 5.72631 -15.4652 -8.02881 cm
+>>> Track = 817, hits = 18, fitted = 1, converged = 1, chi2 = 8.53643, ndf = 31
+       Momentum = 2.57658 GeV
+       Position = 18.3734 16.0502 43.5664 cm
+>>> Track = 818, hits = 106, fitted = 1, converged = 1, chi2 = 68.5821, ndf = 207
+       Momentum = 2.20636 GeV
+       Position = 8.50431 -14.1183 7.79786 cm
+>>> Track = 819, hits = 40, fitted = 1, converged = 1, chi2 = 23.9137, ndf = 75
+       Momentum = 2.36823 GeV
+       Position = 13.0831 -10.9574 -20.869 cm
+>>> Track = 820, hits = 54, fitted = 1, converged = 1, chi2 = 36.5282, ndf = 103
+       Momentum = 1.9668 GeV
+       Position = -3.72621 16.0525 -11.7603 cm
+>>> Track = 821, hits = 53, fitted = 1, converged = 1, chi2 = 32.9665, ndf = 101
+       Momentum = 2.16628 GeV
+       Position = -6.37107 15.212 -0.931721 cm
+>>> Track = 822, hits = 54, fitted = 1, converged = 1, chi2 = 34.2655, ndf = 103
+       Momentum = 2.19851 GeV
+       Position = -15.2811 -6.18029 3.55475 cm
+>>> Track = 823, hits = 54, fitted = 1, converged = 1, chi2 = 31.9092, ndf = 103
+       Momentum = 2.13983 GeV
+       Position = -3.26461 16.1634 -8.37033 cm
+>>> Track = 824, hits = 43, fitted = 1, converged = 1, chi2 = 24.7448, ndf = 81
+       Momentum = 2.25839 GeV
+       Position = -11.7358 -12.8269 -20.497 cm
+>>> Track = 825, hits = 54, fitted = 1, converged = 1, chi2 = 38.8632, ndf = 103
+       Momentum = 2.00512 GeV
+       Position = -9.48458 -13.4879 8.10822 cm
+>>> Track = 826, hits = 55, fitted = 1, converged = 1, chi2 = 34.7626, ndf = 105
+       Momentum = 2.01277 GeV
+       Position = 15.6967 5.02991 4.56735 cm
+>>> Track = 827, hits = 47, fitted = 1, converged = 1, chi2 = 27.7322, ndf = 89
+       Momentum = 2.10164 GeV
+       Position = 4.98888 16.7443 19.6143 cm
+>>> Track = 828, hits = 54, fitted = 1, converged = 1, chi2 = 34.2615, ndf = 103
+       Momentum = 2.07902 GeV
+       Position = 6.37888 -15.2126 9.82214 cm
+>>> Track = 829, hits = 53, fitted = 1, converged = 1, chi2 = 34.0597, ndf = 101
+       Momentum = 2.13832 GeV
+       Position = -15.6191 -5.24964 -17.2988 cm
+>>> Track = 830, hits = 54, fitted = 1, converged = 1, chi2 = 32.6093, ndf = 103
+       Momentum = 2.22419 GeV
+       Position = 4.06918 15.975 7.90003 cm
+>>> Track = 831, hits = 110, fitted = 1, converged = 1, chi2 = 69.2683, ndf = 215
+       Momentum = 2.01433 GeV
+       Position = 10.7244 -12.5171 3.14726 cm
+>>> Track = 832, hits = 54, fitted = 1, converged = 1, chi2 = 37.5487, ndf = 103
+       Momentum = 2.04611 GeV
+       Position = 15.2766 -6.20658 -4.40311 cm
+>>> Track = 833, hits = 54, fitted = 1, converged = 1, chi2 = 33.3447, ndf = 103
+       Momentum = 2.23201 GeV
+       Position = -8.37722 14.2009 13.175 cm
+>>> Track = 835, hits = 53, fitted = 1, converged = 1, chi2 = 34.1176, ndf = 101
+       Momentum = 1.96725 GeV
+       Position = -10.7886 12.4643 16.7488 cm
+>>> Track = 836, hits = 55, fitted = 1, converged = 1, chi2 = 32.5155, ndf = 105
+       Momentum = 2.06658 GeV
+       Position = 13.7732 -9.06911 -4.18774 cm
+>>> Track = 837, hits = 54, fitted = 1, converged = 1, chi2 = 33.3599, ndf = 103
+       Momentum = 2.0145 GeV
+       Position = 5.55025 15.5222 -14.2043 cm
+>>> Track = 838, hits = 44, fitted = 1, converged = 1, chi2 = 27.0971, ndf = 83
+       Momentum = 2.1732 GeV
+       Position = 14.7283 -9.39452 -20.4172 cm
+>>> Track = 839, hits = 54, fitted = 1, converged = 1, chi2 = 31.2489, ndf = 103
+       Momentum = 2.1365 GeV
+       Position = 14.3689 -8.07287 9.19502 cm
+>>> Track = 840, hits = 54, fitted = 1, converged = 1, chi2 = 34.6367, ndf = 103
+       Momentum = 2.0531 GeV
+       Position = -10.8514 12.4115 -7.86807 cm
+>>> Track = 841, hits = 54, fitted = 1, converged = 1, chi2 = 33.8037, ndf = 103
+       Momentum = 2.01305 GeV
+       Position = -15.4083 5.87292 11.9093 cm
+>>> Track = 843, hits = 51, fitted = 1, converged = 1, chi2 = 33.6454, ndf = 97
+       Momentum = 2.09487 GeV
+       Position = -13.4782 9.47432 -17.3015 cm
+>>> Track = 844, hits = 55, fitted = 1, converged = 1, chi2 = 39.5372, ndf = 105
+       Momentum = 2.05377 GeV
+       Position = 16.215 2.97508 12.8071 cm
+>>> Track = 845, hits = 53, fitted = 1, converged = 1, chi2 = 36.287, ndf = 101
+       Momentum = 2.11448 GeV
+       Position = -12.3708 10.8946 -9.87991 cm
+>>> Track = 846, hits = 32, fitted = 1, converged = 1, chi2 = 17.3929, ndf = 59
+       Momentum = 2.1972 GeV
+       Position = 1.57483 -19.2454 26.8261 cm
+>>> Track = 848, hits = 55, fitted = 1, converged = 1, chi2 = 31.7753, ndf = 105
+       Momentum = 2.02715 GeV
+       Position = -14.6555 -7.56277 -5.36835 cm
+>>> Track = 849, hits = 54, fitted = 1, converged = 1, chi2 = 38.4342, ndf = 103
+       Momentum = 2.04194 GeV
+       Position = 6.54103 15.1345 1.81834 cm
+>>> Track = 850, hits = 54, fitted = 1, converged = 1, chi2 = 34.4951, ndf = 103
+       Momentum = 2.16382 GeV
+       Position = 14.8806 -7.09947 2.13867 cm
+>>> Track = 851, hits = 54, fitted = 1, converged = 1, chi2 = 36.5531, ndf = 103
+       Momentum = 2.24019 GeV
+       Position = 6.01708 -15.3504 3.5356 cm
+>>> Track = 852, hits = 52, fitted = 1, converged = 1, chi2 = 33.4356, ndf = 99
+       Momentum = 1.99761 GeV
+       Position = -4.62284 -16.838 6.89821 cm
+>>> Track = 853, hits = 54, fitted = 1, converged = 1, chi2 = 33.7824, ndf = 103
+       Momentum = 2.12702 GeV
+       Position = 15.0829 -6.66826 -4.60865 cm
+>>> Track = 854, hits = 54, fitted = 1, converged = 1, chi2 = 35.7607, ndf = 103
+       Momentum = 1.96715 GeV
+       Position = -3.45957 -16.1185 14.5045 cm
+>>> Track = 857, hits = 54, fitted = 1, converged = 1, chi2 = 32.7664, ndf = 103
+       Momentum = 2.04673 GeV
+       Position = -5.47187 15.5537 7.58655 cm
+>>> Track = 858, hits = 55, fitted = 1, converged = 1, chi2 = 32.6896, ndf = 105
+       Momentum = 2.04486 GeV
+       Position = -16.4824 -0.296433 -13.1546 cm
+>>> Track = 859, hits = 32, fitted = 1, converged = 1, chi2 = 17.1374, ndf = 59
+       Momentum = 2.01598 GeV
+       Position = 7.82204 17.3555 27.1998 cm
+>>> Track = 860, hits = 54, fitted = 1, converged = 1, chi2 = 33.2906, ndf = 103
+       Momentum = 2.10275 GeV
+       Position = 1.36676 16.4275 -7.25362 cm
+>>> Track = 861, hits = 54, fitted = 1, converged = 1, chi2 = 35.3663, ndf = 103
+       Momentum = 2.04416 GeV
+       Position = -16.209 3.03071 -6.67228 cm
+>>> Track = 862, hits = 55, fitted = 1, converged = 1, chi2 = 38.8453, ndf = 105
+       Momentum = 2.11533 GeV
+       Position = 8.83674 -13.9252 -8.30127 cm
+>>> Track = 863, hits = 55, fitted = 1, converged = 1, chi2 = 35.8506, ndf = 105
+       Momentum = 2.01242 GeV
+       Position = 11.0178 12.2614 -12.3241 cm
+>>> Track = 864, hits = 54, fitted = 1, converged = 1, chi2 = 34.2207, ndf = 103
+       Momentum = 2.25771 GeV
+       Position = -1.38624 16.4369 -8.60453 cm
+>>> Track = 865, hits = 50, fitted = 1, converged = 1, chi2 = 32.6442, ndf = 95
+       Momentum = 2.07552 GeV
+       Position = -15.3614 5.23729 -17.5488 cm
+>>> Track = 866, hits = 55, fitted = 1, converged = 1, chi2 = 38.3065, ndf = 105
+       Momentum = 2.13393 GeV
+       Position = 14.2974 -8.20472 6.76524 cm
+>>> Track = 867, hits = 54, fitted = 1, converged = 1, chi2 = 34.0872, ndf = 103
+       Momentum = 2.13398 GeV
+       Position = 16.4746 0.742173 4.938 cm
+>>> Track = 868, hits = 54, fitted = 1, converged = 1, chi2 = 32.2762, ndf = 103
+       Momentum = 2.03966 GeV
+       Position = 16.2485 -2.79592 -8.29438 cm
+>>> Track = 869, hits = 53, fitted = 1, converged = 1, chi2 = 34.9105, ndf = 101
+       Momentum = 2.11615 GeV
+       Position = 7.74417 14.5555 -6.98378 cm
+>>> Track = 870, hits = 55, fitted = 1, converged = 1, chi2 = 38.5949, ndf = 105
+       Momentum = 1.99156 GeV
+       Position = 13.8289 -8.97936 -12.6711 cm
+>>> Track = 871, hits = 55, fitted = 1, converged = 1, chi2 = 36.3863, ndf = 105
+       Momentum = 2.219 GeV
+       Position = 1.55128 16.419 13.9677 cm
+>>> Track = 872, hits = 55, fitted = 1, converged = 1, chi2 = 34.6861, ndf = 105
+       Momentum = 2.13719 GeV
+       Position = 0.0559797 -16.4912 -16.5597 cm
+>>> Track = 874, hits = 54, fitted = 1, converged = 1, chi2 = 33.4683, ndf = 103
+       Momentum = 2.00699 GeV
+       Position = 16.4859 0.301989 -1.30153 cm
+>>> Track = 875, hits = 53, fitted = 1, converged = 1, chi2 = 36.1996, ndf = 101
+       Momentum = 2.20777 GeV
+       Position = -2.23043 -16.3362 0.790688 cm
+>>> Track = 877, hits = 55, fitted = 1, converged = 1, chi2 = 33.5254, ndf = 105
+       Momentum = 2.17362 GeV
+       Position = 3.61427 -16.0872 -4.49445 cm
+>>> Track = 878, hits = 25, fitted = 1, converged = 1, chi2 = 11.5575, ndf = 45
+       Momentum = 2.38779 GeV
+       Position = -14.9195 14.6226 33.7112 cm
+>>> Track = 879, hits = 54, fitted = 1, converged = 1, chi2 = 33.0815, ndf = 103
+       Momentum = 1.99908 GeV
+       Position = 13.9073 -8.85463 9.08214 cm
+>>> Track = 880, hits = 51, fitted = 1, converged = 1, chi2 = 32.5842, ndf = 97
+       Momentum = 2.0691 GeV
+       Position = 3.54863 -15.8353 -17.5525 cm
+>>> Track = 881, hits = 54, fitted = 1, converged = 1, chi2 = 36.8873, ndf = 103
+       Momentum = 2.13023 GeV
+       Position = 0.507052 -16.4801 17.0816 cm
+>>> Track = 882, hits = 32, fitted = 1, converged = 1, chi2 = 16.7337, ndf = 59
+       Momentum = 1.99948 GeV
+       Position = 5.75072 18.1747 -27.1601 cm
+>>> Track = 883, hits = 54, fitted = 1, converged = 1, chi2 = 35.8479, ndf = 103
+       Momentum = 2.11672 GeV
+       Position = -14.8546 7.15029 -3.42406 cm
+>>> Track = 885, hits = 54, fitted = 1, converged = 1, chi2 = 34.1792, ndf = 103
+       Momentum = 2.10357 GeV
+       Position = 7.04177 14.9053 2.09963 cm
+>>> Track = 886, hits = 54, fitted = 1, converged = 1, chi2 = 37.3283, ndf = 103
+       Momentum = 2.09118 GeV
+       Position = 12.0108 -11.2884 -16.6253 cm
+>>> Track = 887, hits = 55, fitted = 1, converged = 1, chi2 = 35.6181, ndf = 105
+       Momentum = 2.01433 GeV
+       Position = 6.13962 -15.2968 8.11237 cm
+>>> Track = 888, hits = 8, fitted = 1, converged = 1, chi2 = 3.28285, ndf = 11
+       Momentum = 0.750783 GeV
+       Position = -25.253 17.9277 -66.4475 cm
+>>> Track = 889, hits = 53, fitted = 1, converged = 1, chi2 = 36.9238, ndf = 101
+       Momentum = 2.1252 GeV
+       Position = 16.3714 1.99797 -6.18858 cm
+>>> Track = 890, hits = 23, fitted = 1, converged = 1, chi2 = 11.4799, ndf = 41
+       Momentum = 1.99149 GeV
+       Position = 13.8549 -17.1318 -36.6364 cm
+>>> Track = 891, hits = 22, fitted = 1, converged = 1, chi2 = 10.2817, ndf = 39
+       Momentum = 2.13037 GeV
+       Position = 21.7872 2.20798 36.8449 cm
+>>> Track = 892, hits = 9, fitted = 1, converged = 1, chi2 = 2.50443, ndf = 13
+       Momentum = 2.39929 GeV
+       Position = -22.8063 18.7354 62.157 cm
+Skipping track 894 too many or too few hits 4
+>>> Track = 895, hits = 5, fitted = 1, converged = 1, chi2 = 1.51586, ndf = 5
+       Momentum = 0.283297 GeV
+       Position = -32.0262 4.58304 73.7633 cm
+>>> Track = 896, hits = 54, fitted = 1, converged = 1, chi2 = 33.3497, ndf = 103
+       Momentum = 2.29703 GeV
+       Position = -13.5424 9.40822 -13.3813 cm
+>>> Track = 897, hits = 55, fitted = 1, converged = 1, chi2 = 34.2525, ndf = 105
+       Momentum = 2.09628 GeV
+       Position = -13.3057 9.73277 -10.4673 cm
+>>> Track = 898, hits = 54, fitted = 1, converged = 1, chi2 = 33.6588, ndf = 103
+       Momentum = 2.11338 GeV
+       Position = -2.3121 16.3254 -3.46348 cm
+>>> Track = 899, hits = 54, fitted = 1, converged = 1, chi2 = 33.326, ndf = 103
+       Momentum = 2.01926 GeV
+       Position = -10.6493 -12.593 6.15433 cm
+>>> Track = 900, hits = 55, fitted = 1, converged = 1, chi2 = 33.766, ndf = 105
+       Momentum = 1.97763 GeV
+       Position = 7.93823 14.4498 -5.30394 cm
+>>> Track = 902, hits = 55, fitted = 1, converged = 1, chi2 = 36.7759, ndf = 105
+       Momentum = 2.0337 GeV
+       Position = 10.0221 13.0943 2.21033 cm
+>>> Track = 903, hits = 54, fitted = 1, converged = 1, chi2 = 35.4298, ndf = 103
+       Momentum = 2.0051 GeV
+       Position = 15.0546 -6.70956 -16.6609 cm
+>>> Track = 904, hits = 53, fitted = 1, converged = 1, chi2 = 32.3729, ndf = 101
+       Momentum = 2.22712 GeV
+       Position = -0.202187 17.4562 2.57553 cm
+>>> Track = 905, hits = 55, fitted = 1, converged = 1, chi2 = 37.3382, ndf = 105
+       Momentum = 2.15806 GeV
+       Position = -7.90165 -14.473 -6.28445 cm
+>>> Track = 906, hits = 18, fitted = 1, converged = 1, chi2 = 7.67785, ndf = 31
+       Momentum = 1.16987 GeV
+       Position = 6.01257 -23.7139 -43.4195 cm
+>>> Track = 907, hits = 20, fitted = 1, converged = 1, chi2 = 9.05115, ndf = 35
+       Momentum = 1.76766 GeV
+       Position = -23.256 0.900787 -39.3567 cm
+>>> Track = 909, hits = 108, fitted = 1, converged = 1, chi2 = 67.2648, ndf = 211
+       Momentum = 2.21592 GeV
+       Position = 15.4617 5.69817 1.24893 cm
+>>> Track = 910, hits = 54, fitted = 1, converged = 1, chi2 = 33.9186, ndf = 103
+       Momentum = 2.00051 GeV
+       Position = -9.14391 -13.71 -12.0077 cm
+>>> Track = 911, hits = 54, fitted = 1, converged = 1, chi2 = 33.1789, ndf = 103
+       Momentum = 2.10438 GeV
+       Position = 11.9565 -11.3499 8.71965 cm
+>>> Track = 912, hits = 54, fitted = 1, converged = 1, chi2 = 34.6487, ndf = 103
+       Momentum = 2.07693 GeV
+       Position = -16.4846 0.354672 -1.39715 cm
+>>> Track = 914, hits = 54, fitted = 1, converged = 1, chi2 = 36.5473, ndf = 103
+       Momentum = 2.20375 GeV
+       Position = 15.8552 4.54987 -12.6264 cm
+>>> Track = 915, hits = 54, fitted = 1, converged = 1, chi2 = 36.7537, ndf = 103
+       Momentum = 2.02105 GeV
+       Position = -14.2743 -8.25614 0.446431 cm
+>>> Track = 916, hits = 55, fitted = 1, converged = 1, chi2 = 33.0742, ndf = 105
+       Momentum = 2.16116 GeV
+       Position = -15.0934 -6.6363 -10.4612 cm
+>>> Track = 917, hits = 55, fitted = 1, converged = 1, chi2 = 32.5167, ndf = 105
+       Momentum = 2.13343 GeV
+       Position = 15.1905 6.41254 6.04646 cm
+>>> Track = 918, hits = 54, fitted = 1, converged = 1, chi2 = 31.5137, ndf = 103
+       Momentum = 2.17347 GeV
+       Position = 16.4911 -0.176498 -14.0824 cm
+>>> Track = 919, hits = 24, fitted = 1, converged = 1, chi2 = 11.5983, ndf = 43
+       Momentum = 1.79106 GeV
+       Position = -10.9983 18.0488 33.3287 cm
+>>> Track = 921, hits = 53, fitted = 1, converged = 1, chi2 = 38.0498, ndf = 101
+       Momentum = 2.04171 GeV
+       Position = 15.2724 -6.21801 3.00871 cm
+>>> Track = 922, hits = 28, fitted = 1, converged = 1, chi2 = 14.5911, ndf = 51
+       Momentum = 1.65326 GeV
+       Position = -6.32882 19.0586 -30.2718 cm
+>>> Track = 924, hits = 108, fitted = 1, converged = 1, chi2 = 69.1197, ndf = 211
+       Momentum = 2.36918 GeV
+       Position = -12.1737 11.1287 0.451343 cm
+>>> Track = 925, hits = 53, fitted = 1, converged = 1, chi2 = 36.0875, ndf = 101
+       Momentum = 2.19775 GeV
+       Position = 13.0388 -10.0971 -1.30435 cm
+>>> Track = 926, hits = 55, fitted = 1, converged = 1, chi2 = 37.0185, ndf = 105
+       Momentum = 2.0665 GeV
+       Position = -0.560336 -16.4807 -11.4038 cm
+>>> Track = 927, hits = 54, fitted = 1, converged = 1, chi2 = 35.1631, ndf = 103
+       Momentum = 2.04479 GeV
+       Position = -13.7425 9.11231 -4.8941 cm
+>>> Track = 928, hits = 53, fitted = 1, converged = 1, chi2 = 34.4114, ndf = 101
+       Momentum = 2.34532 GeV
+       Position = -14.5971 7.65819 1.7657 cm
+>>> Track = 931, hits = 108, fitted = 1, converged = 1, chi2 = 69.9161, ndf = 211
+       Momentum = 2.17208 GeV
+       Position = 8.39586 -14.1892 0.787737 cm
+>>> Track = 932, hits = 54, fitted = 1, converged = 1, chi2 = 30.2251, ndf = 103
+       Momentum = 2.10532 GeV
+       Position = 14.4282 -7.9847 -6.81488 cm
+>>> Track = 933, hits = 41, fitted = 1, converged = 1, chi2 = 22.5753, ndf = 77
+       Momentum = 2.15093 GeV
+       Position = 16.9223 -7.2995 -22.2756 cm
+>>> Track = 934, hits = 34, fitted = 1, converged = 1, chi2 = 17.3716, ndf = 63
+       Momentum = 1.76359 GeV
+       Position = -2.27646 19.2669 26.7065 cm
+>>> Track = 935, hits = 54, fitted = 1, converged = 1, chi2 = 35.2082, ndf = 103
+       Momentum = 2.0066 GeV
+       Position = 13.9256 -8.81455 14.4634 cm
+>>> Track = 936, hits = 55, fitted = 1, converged = 1, chi2 = 36.5515, ndf = 105
+       Momentum = 1.92508 GeV
+       Position = 13.6591 9.23387 -13.6278 cm
+>>> Track = 938, hits = 30, fitted = 1, converged = 1, chi2 = 13.4034, ndf = 55
+       Momentum = 1.2808 GeV
+       Position = -25.4025 -0.411529 48.6475 cm
+>>> Track = 939, hits = 23, fitted = 1, converged = 1, chi2 = 11.7148, ndf = 41
+       Momentum = 1.7885 GeV
+       Position = 18.7326 -9.32039 33.6592 cm
+>>> Track = 940, hits = 15, fitted = 1, converged = 1, chi2 = 7.14726, ndf = 25
+       Momentum = 1.27546 GeV
+       Position = -13.9963 21.1017 -48.822 cm
+>>> Track = 941, hits = 54, fitted = 1, converged = 1, chi2 = 33.5013, ndf = 103
+       Momentum = 2.10059 GeV
+       Position = -7.92784 14.4556 -9.53458 cm
+>>> Track = 942, hits = 38, fitted = 1, converged = 1, chi2 = 21.0026, ndf = 71
+       Momentum = 2.18512 GeV
+       Position = -18.2359 -0.164818 23.804 cm
+>>> Track = 943, hits = 55, fitted = 1, converged = 1, chi2 = 37.243, ndf = 105
+       Momentum = 2.18127 GeV
+       Position = 0.613352 16.481 -2.30696 cm
+>>> Track = 944, hits = 51, fitted = 1, converged = 1, chi2 = 32.8927, ndf = 97
+       Momentum = 2.0461 GeV
+       Position = 7.49101 -14.5323 -17.4292 cm
+>>> Track = 945, hits = 54, fitted = 1, converged = 1, chi2 = 37.2418, ndf = 103
+       Momentum = 2.16115 GeV
+       Position = 3.80989 16.0452 -1.30029 cm
+>>> Track = 948, hits = 110, fitted = 1, converged = 1, chi2 = 64.815, ndf = 215
+       Momentum = 2.23609 GeV
+       Position = -7.82982 14.5051 15.6773 cm
+>>> Track = 949, hits = 54, fitted = 1, converged = 1, chi2 = 33.2692, ndf = 103
+       Momentum = 2.34254 GeV
+       Position = 13.5659 9.37923 6.10995 cm
+>>> Track = 951, hits = 53, fitted = 1, converged = 1, chi2 = 34.9207, ndf = 101
+       Momentum = 2.06292 GeV
+       Position = 6.65962 -15.0834 -0.124211 cm
+>>> Track = 952, hits = 55, fitted = 1, converged = 1, chi2 = 37.9144, ndf = 105
+       Momentum = 2.11778 GeV
+       Position = 2.58088 -16.289 -3.61551 cm
+>>> Track = 953, hits = 52, fitted = 1, converged = 1, chi2 = 33.3474, ndf = 99
+       Momentum = 2.16559 GeV
+       Position = 15.8334 -4.57744 -14.3848 cm
+>>> Track = 954, hits = 13, fitted = 1, converged = 1, chi2 = 6.49349, ndf = 21
+       Momentum = 2.67721 GeV
+       Position = 9.55983 25.243 52.7294 cm
+>>> Track = 955, hits = 55, fitted = 1, converged = 1, chi2 = 35.6914, ndf = 105
+       Momentum = 2.10961 GeV
+       Position = -10.8482 -12.417 13.5545 cm
+>>> Track = 956, hits = 51, fitted = 1, converged = 1, chi2 = 35.9754, ndf = 97
+       Momentum = 2.12002 GeV
+       Position = -15.9086 4.34351 10.4015 cm
+>>> Track = 958, hits = 55, fitted = 1, converged = 1, chi2 = 34.3379, ndf = 105
+       Momentum = 2.07516 GeV
+       Position = 16.2712 2.68008 -13.3276 cm
+>>> Track = 959, hits = 54, fitted = 1, converged = 1, chi2 = 35.8395, ndf = 103
+       Momentum = 2.31173 GeV
+       Position = -0.673082 16.4827 -2.91938 cm
+>>> Track = 960, hits = 53, fitted = 1, converged = 1, chi2 = 33.1647, ndf = 101
+       Momentum = 2.1601 GeV
+       Position = 3.5493 16.1027 -8.9135 cm
+>>> Track = 961, hits = 53, fitted = 1, converged = 1, chi2 = 31.1131, ndf = 101
+       Momentum = 1.94495 GeV
+       Position = -12.3522 10.9217 -0.509659 cm
+>>> Track = 962, hits = 55, fitted = 1, converged = 1, chi2 = 34.3934, ndf = 105
+       Momentum = 1.99518 GeV
+       Position = -8.59377 -14.067 2.08355 cm
+>>> Track = 963, hits = 51, fitted = 1, converged = 1, chi2 = 30.1806, ndf = 97
+       Momentum = 2.24038 GeV
+       Position = -1.57404 -16.1323 -17.573 cm
+>>> Track = 964, hits = 44, fitted = 1, converged = 1, chi2 = 28.2618, ndf = 83
+       Momentum = 2.00451 GeV
+       Position = -11.5424 -12.9397 20.5462 cm
+>>> Track = 965, hits = 55, fitted = 1, converged = 1, chi2 = 34.6372, ndf = 105
+       Momentum = 2.2015 GeV
+       Position = 9.06795 13.7771 -15.138 cm
+>>> Track = 966, hits = 54, fitted = 1, converged = 1, chi2 = 34.8171, ndf = 103
+       Momentum = 2.09276 GeV
+       Position = 12.5295 10.7094 -7.5437 cm
+>>> Track = 969, hits = 34, fitted = 1, converged = 1, chi2 = 18.0431, ndf = 63
+       Momentum = 2.00221 GeV
+       Position = -16.8525 9.63129 26.7026 cm
+>>> Track = 970, hits = 55, fitted = 1, converged = 1, chi2 = 33.4607, ndf = 105
+       Momentum = 2.00877 GeV
+       Position = -9.72179 13.3111 16.2603 cm
+>>> Track = 971, hits = 11, fitted = 1, converged = 1, chi2 = 4.86154, ndf = 17
+       Momentum = 1.86022 GeV
+       Position = 2.0174 28.2618 57.2631 cm
+>>> Track = 972, hits = 54, fitted = 1, converged = 1, chi2 = 32.1035, ndf = 103
+       Momentum = 2.02099 GeV
+       Position = 15.8346 4.59648 -2.62034 cm
+>>> Track = 974, hits = 110, fitted = 1, converged = 1, chi2 = 68.0237, ndf = 215
+       Momentum = 2.1364 GeV
+       Position = -9.79485 13.2671 -6.23851 cm
+>>> Track = 975, hits = 52, fitted = 1, converged = 1, chi2 = 33.4384, ndf = 99
+       Momentum = 2.0835 GeV
+       Position = 15.4506 5.73386 0.730884 cm
+>>> Track = 976, hits = 52, fitted = 1, converged = 1, chi2 = 35.3373, ndf = 99
+       Momentum = 2.14058 GeV
+       Position = 16.462 0.931016 -9.17664 cm
+>>> Track = 977, hits = 55, fitted = 1, converged = 1, chi2 = 33.8296, ndf = 105
+       Momentum = 2.16458 GeV
+       Position = 16.487 -0.169947 -5.73127 cm
+>>> Track = 978, hits = 51, fitted = 1, converged = 1, chi2 = 31.5529, ndf = 97
+       Momentum = 2.10202 GeV
+       Position = 7.88641 14.3511 -17.4053 cm
+>>> Track = 979, hits = 35, fitted = 1, converged = 1, chi2 = 19.6868, ndf = 65
+       Momentum = 2.20426 GeV
+       Position = 17.5355 8.33221 -26.1901 cm
+>>> Track = 980, hits = 55, fitted = 1, converged = 1, chi2 = 33.5165, ndf = 105
+       Momentum = 2.12699 GeV
+       Position = 7.3145 -14.7687 16.8315 cm
+>>> Track = 981, hits = 54, fitted = 1, converged = 1, chi2 = 33.8544, ndf = 103
+       Momentum = 2.08971 GeV
+       Position = 5.46168 -15.5554 -1.36199 cm
+>>> Track = 982, hits = 54, fitted = 1, converged = 1, chi2 = 34.6859, ndf = 103
+       Momentum = 2.04875 GeV
+       Position = -16.3615 -1.97501 -1.28429 cm
+>>> Track = 983, hits = 47, fitted = 1, converged = 1, chi2 = 30.3524, ndf = 89
+       Momentum = 1.90206 GeV
+       Position = -12.687 11.9907 19.8326 cm
+>>> Track = 984, hits = 55, fitted = 1, converged = 1, chi2 = 34.3006, ndf = 105
+       Momentum = 2.10554 GeV
+       Position = 12.895 10.2756 15.3185 cm
+>>> Track = 985, hits = 54, fitted = 1, converged = 1, chi2 = 35.8083, ndf = 103
+       Momentum = 2.02477 GeV
+       Position = -8.82425 -13.9262 4.99535 cm
+>>> Track = 986, hits = 55, fitted = 1, converged = 1, chi2 = 32.7168, ndf = 105
+       Momentum = 2.02034 GeV
+       Position = 15.569 5.43014 -14.8224 cm
+>>> Track = 987, hits = 55, fitted = 1, converged = 1, chi2 = 38.2011, ndf = 105
+       Momentum = 2.06392 GeV
+       Position = 0.477879 16.4808 -10.4166 cm
+>>> Track = 988, hits = 55, fitted = 1, converged = 1, chi2 = 34.6978, ndf = 105
+       Momentum = 2.14863 GeV
+       Position = -6.60627 15.1065 -7.23966 cm
+>>> Track = 989, hits = 52, fitted = 1, converged = 1, chi2 = 33.4228, ndf = 99
+       Momentum = 2.14332 GeV
+       Position = 11.9728 11.3394 1.36427 cm
+>>> Track = 990, hits = 54, fitted = 1, converged = 1, chi2 = 36.258, ndf = 103
+       Momentum = 2.22319 GeV
+       Position = 4.2249 15.9429 -8.62251 cm
+>>> Track = 991, hits = 55, fitted = 1, converged = 1, chi2 = 34.2644, ndf = 105
+       Momentum = 2.1738 GeV
+       Position = 7.46786 -14.6936 7.1774 cm
+>>> Track = 992, hits = 52, fitted = 1, converged = 1, chi2 = 31.4319, ndf = 99
+       Momentum = 2.12791 GeV
+       Position = 2.34546 -16.3206 -8.51627 cm
+>>> Track = 993, hits = 55, fitted = 1, converged = 1, chi2 = 34.4491, ndf = 105
+       Momentum = 2.0362 GeV
+       Position = -13.5486 9.39777 1.92288 cm
+>>> Track = 994, hits = 55, fitted = 1, converged = 1, chi2 = 34.4777, ndf = 105
+       Momentum = 2.24614 GeV
+       Position = 14.5546 -7.74783 2.06398 cm
+>>> Track = 996, hits = 110, fitted = 1, converged = 1, chi2 = 72.2623, ndf = 215
+       Momentum = 2.05149 GeV
+       Position = -16.3308 -2.24945 -13.8231 cm
+>>> Track = 997, hits = 55, fitted = 1, converged = 1, chi2 = 32.9979, ndf = 105
+       Momentum = 2.08456 GeV
+       Position = -0.255892 -16.4817 7.05226 cm
+>>> Track = 998, hits = 49, fitted = 1, converged = 1, chi2 = 28.6652, ndf = 93
+       Momentum = 2.16449 GeV
+       Position = -8.29821 13.7214 17.7509 cm
+>>> Track = 999, hits = 55, fitted = 1, converged = 1, chi2 = 32.8405, ndf = 105
+       Momentum = 2.0695 GeV
+       Position = -16.4877 0.25651 14.1809 cm
+==================================================

@@ -1,16 +1,21 @@
 #!/bin/bash
 
-FILEPATH="$HOME/Desktop/Belle II/Python/root"
+FILEPATH="$HOME/Desktop/Belle II/Python/"
 
 # Command-line args
 FILENAME="$0"
 SEED="$1"
 
+# Remove old files
 rm *.csv
 rm *.root
+rm *.gas
 
 make
 echo "i,numWires,r1,r2" > layer_radius.csv
+
+cp ../gas_files/he_50_c2h6_50.gas .
+./DriftTimes he_50_c2h6_50.gas IonMobility_He+_He.txt 1
 
 if [ "$SEED" ]; then
    echo "============ Random generator seed detected ============"
@@ -22,7 +27,8 @@ fi
 ln -s libDriftChamberlib.dylib libDriftChamberlib.so
 
 # Copy data to storage location
-cp particle_and_track_data.root "$FILEPATH/"
-cp libDriftChamberlib.so "$FILEPATH/"
+cp particle_and_track_data.root "$FILEPATH/root/"
+cp libDriftChamberlib.so "$FILEPATH/root/"
+cp drift_times_lookup.csv "$FILEPATH/csv/drifting/"
 
 rm *.so
