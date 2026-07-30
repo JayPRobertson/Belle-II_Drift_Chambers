@@ -6,6 +6,7 @@ This simulation creates a Geant4 geometry modelled off of the current Belle II C
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Toolkit Installations</span></summary>
+<br>
 
 This simulation utilizes various toolkits that must be installed before attempting to run. The following are instructions for installing the necessary versions.
 
@@ -39,7 +40,7 @@ This simulation uses the [nlohmann C++ json parser](https://github.com/nlohmann/
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Running Files</span></summary>
-
+<br>
 
 Once the directory is replaced, set up the environmental variables for Garfield++, Geant4, and ROOT. An example of this may look like:
 ```
@@ -56,10 +57,14 @@ chmod +x run_DCSim.sh
 ./run_DCSim.sh
 ```
 
-The initial momentum of each simulated particle is generated randomly. The seed for the random geenrator can be optionally set by passing it as a command line argument, e.g. `./run_DCSim.sh 12345`
+### Random Seed
+The initial momentum of each simulated particle is generated randomly. The seed for the random generator can be optionally set by passing it as a command line argument, e.g. `./run_DCSim.sh 12345`
+
+### Gas Files
+To run the Garfield++ section of the simulation, a `.gas` file is needed describing the properties of the gas mixture specified in `geometry.json`. Some sample files have been provided in `gas_files` and additional gas files can be made by modifying and running Garfield++'s [GasFile example](https://gitlab.cern.ch/garfield/garfieldpp/-/blob/master/Examples/GasFile/generate.C). This process takes approximately 2 hours to complete. 
 
 ### Warning
-After the trajectories have loaded in the GUI, do NOT close the GUI window until the GUI menu info has printed to the terminal. This will start with:
+After the trajectories have loaded in the GUI, do NOT close the GUI window until the GUI menu info has printed to the terminal. This is the section of the output that begins with:
 ```
 #
 # This file permits to customize, with commands,
@@ -77,10 +82,11 @@ If the window is closed early, a segmentation fault will occur and no data will 
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Output</span></summary>
+<br>
 
 The simulation outputs three data files. `run_DCSim.sh` provides an option to save these outputs to a filepath provided at the top of that file.
 
-- `drift_times_lookup.csv` - a lookup table of sample drift times \[ns\] of electrons originating at various positions in a drift cell; each cell of the csv file correponds to a 1mm x 1mm section of the drift cell
+- `drift_times_lookup.csv` - a lookup table of sample drift times (in ns) of electrons originating at various positions in a drift cell; each cell of the csv file correponds to a 1mm x 1mm section of the drift cell
 - `particle_and_track_data.root` - data about each particle sent through the drift chamber during the simulation, including the particle's initial position and momentum, as well as the times, energies, and positions of the particle as it passed through each layer in the cell. Includes a separate branch for delta rays.
 - `libDriftChamberlib.so` - record of the necessary ROOT libraries
 
@@ -90,6 +96,7 @@ Sample data output can be found in `SampleData`.
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Analysis</span></summary>
+<br>
 
 `KalmanFit` is a tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. The project Makefile generates an executable for this tool that can be run using `./kalman`. All data will be output to the terminal (a sample output can be found in `SampleData/kalmanFit_output.txt`)
 
@@ -104,6 +111,7 @@ TBrowser b
 
 <details>
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Licenses and Disclaimers</span></summary>
+<br>
 
 The following disclaimer was removed from all file headers, but its validity still holds for any use of the software found in this directory:
 

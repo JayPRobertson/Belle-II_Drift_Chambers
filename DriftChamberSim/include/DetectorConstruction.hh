@@ -19,7 +19,7 @@ class G4GlobalMagFieldMessenger;
 
 namespace DriftChamberSim{
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 class DetectorMessenger;
 class DetectorConstruction : public G4VUserDetectorConstruction {

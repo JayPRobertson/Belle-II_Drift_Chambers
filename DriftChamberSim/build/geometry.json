@@ -61,8 +61,10 @@
     "num_of_superlayers": 9,
     "wire_info": {
       "use_wire_materials": true,
+      "cell_length_mm": 18.0,
       "sense_wires": {
         "radius_mm": 0.03,
+	"voltage_kV": 2.73,
         "mixture": {
           "tungsten": {
             "equation": {
@@ -82,6 +84,7 @@
       },
       "ground_wires": {
         "radius_mm": 0.126,
+	"voltage_kV": 0.0,
         "mixture": {
           "aluminum": {
             "equation": {
@@ -143,6 +146,7 @@
   },
   "particle": {
       "particle_type":"mu-",
+      "particle_name":"muon",
       "energy_GeV":2.0
   }
 }
