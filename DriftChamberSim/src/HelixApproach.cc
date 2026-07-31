@@ -1,4 +1,5 @@
 #include "HelixApproach.hh"
+
 #include "G4ThreeVector.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
@@ -14,23 +15,25 @@ HelixApproach::HelixApproach(
     
     fMomentum = momentum;
         
-    G4double B = magneticField.mag();   // magentic field strength
-    G4double q = charge * eplus * -1;   // particle charge
-    G4double p = momentum.mag();        // magnitude of momentum
+    G4double B = magneticField.mag();   // Magentic field strength
+    G4double q = charge * eplus * -1;   // Particle charge
+    G4double p = momentum.mag();        // Magnitude of momentum
     
-    fEnergy = std::sqrt(p*p + mass*mass);   // initial energy
-    G4double beta = p / fEnergy;            // particle speed as fraction of light speed
-    fSpeed = beta * c_light;                // particle speed
+    fEnergy = std::sqrt(p*p + mass*mass);   // Initial energy
+    G4double beta = p / fEnergy;            // Particle speed as fraction of c
+    fSpeed = beta * c_light;                // Particle speed
 
-    fFieldAxis = magneticField.unit();      // axis of the magnetic field
-    G4ThreeVector dir = RotateToFieldAxis(momentum.unit());     // momentum direction 
-
-    fVparallel = fSpeed * dir.z();  // particle velocity parallel to B field
-    fVperp = fSpeed * dir.rho();    // particle velocity perpendicular to B field
+    fFieldAxis = magneticField.unit();      // Magnetic field axis
     
-    fOmega = (q * B * c_light * c_light) / fEnergy;           // cyclotron angular frequency of particle
-    fRadius = (p * dir.rho()) / (std::abs(q) * B*c_light);   // cyclotron radius
-    fAlpha = std::atan2(-dir.x(), dir.y());                  // cyclotron azimuthal angle
+    G4ThreeVector dir = RotateToFieldAxis(momentum.unit());  // Momentum direction 
+
+    fVparallel = fSpeed * dir.z();  // Particle velocity parallel to B field
+    fVperp = fSpeed * dir.rho();    // Particle velocity perpendicular to B field
+    
+    // Cyclotron constants
+    fOmega = (q * B * c_light * c_light) / fEnergy;          // Angular frequency
+    fRadius = (p * dir.rho()) / (std::abs(q) * B*c_light);   // Rdius
+    fAlpha = std::atan2(-dir.x(), dir.y());                  // Azimuthal angle
 
     fHelixCentre = G4ThreeVector(
         -fRadius * std::cos(fAlpha),

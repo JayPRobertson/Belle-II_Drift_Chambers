@@ -1,22 +1,11 @@
 #include "SteppingAction.hh"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include "G4RunManager.hh"
 #include "G4StepPoint.hh"
 #include "G4VPhysicalVolume.hh"
 #include "EventAction.hh"
 #include "G4ThreeVector.hh"
 
-#include "G4SystemOfUnits.hh"
-#include "G4PhysicalConstants.hh"
-#include "G4DynamicParticle.hh"
-#include <cmath>
-
-#include "G4EmCalculator.hh"
-#include "G4ParticleTable.hh"
 #include "G4Track.hh"
 #include "G4VProcess.hh"
 
@@ -31,7 +20,7 @@ SteppingAction::SteppingAction(DriftChamberSim::EventAction* eventAction)
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     
-    //_________ Checking if particle is delta ray _________
+    //_________ Check if particle is delta ray _________
     
     const G4RunManager* runManager = G4RunManager::GetRunManager();
     const DriftChamberSim::DetectorConstruction* detectorConstruction = dynamic_cast<const DriftChamberSim::DetectorConstruction*>(runManager->GetUserDetectorConstruction());

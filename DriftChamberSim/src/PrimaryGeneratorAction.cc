@@ -1,19 +1,13 @@
 #include "PrimaryGeneratorAction.hh"
 
-#include "G4Box.hh"
-#include "G4LogicalVolume.hh"
-#include "G4LogicalVolumeStore.hh"
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
 #include "G4SystemOfUnits.hh"
-#include "globals.hh"
 #include "HelixApproach.hh"
 #include "G4RunManager.hh"
 
 #include "Randomize.hh"
 #include <cmath>
-#include <string>
-#include <nlohmann/json.hpp>
 
 #include "EventAction.hh"
 #include "DetectorConstruction.hh"
@@ -21,6 +15,8 @@
 namespace DriftChamberSim {
   
 PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEventAction(eventAction){
+  
+  // Create a particle gun to shoot one particle per action through the volume
   G4int nofParticles = 1;
   fParticleGun = new G4ParticleGun(nofParticles);
   
@@ -29,6 +25,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEvent
 
   G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle(detectorConstruction->GetParticleType());
 
+  // Set particle information in the particle gun
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleEnergy(detectorConstruction->GetParticleEnergy() * GeV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0,0,0));
@@ -57,13 +54,11 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
 
     G4ThreeVector direction(px, py, pz);
     direction = direction.unit();
-
+    
     fParticleGun->SetParticleMomentumDirection(direction);
     fParticleGun->GeneratePrimaryVertex(event);
-
-    G4ThreeVector entry;
-    G4ThreeVector exit;
     
+    // Define particle information locally
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition* particle = particleTable->FindParticle(detectorConstruction->GetParticleType());
     G4double particleMass = particle->GetPDGMass() *MeV;
@@ -77,14 +72,19 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     
     G4double charge = fParticleGun->GetParticleDefinition()->GetPDGCharge()/CLHEP::eplus;
 
+    // Use particle info to create a predicted particle trajectory
     HelixApproach helix( currentPos, momentum, magneticField, particleMass, charge);
     
     G4double length = detectorConstruction->GetLength(); 
     G4double rInner = detectorConstruction->GetRInner();  
     G4double rOuter = detectorConstruction->GetROuter();
-
+    
+    // Get the predicted entry and exits points to the volume
+    G4ThreeVector entry;
+    G4ThreeVector exit;
     helix.FindGasVolumeCrossings(rInner, rOuter, length/2, entry, exit);
     
+    // Define global constants
     fEventAction->SetPredictedEntry(entry);
     fEventAction->SetPredictedExit(exit);
     fEventAction->SetInitMomentum(momentum);

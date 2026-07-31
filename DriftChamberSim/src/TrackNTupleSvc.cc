@@ -17,6 +17,7 @@ TrackNTupleSvc::~TrackNTupleSvc(){
     delete m_deltaPtr;
 }
 
+// Write out data and free memory
 void TrackNTupleSvc::fileClose(){
     if (!m_file) return;
 
@@ -36,6 +37,7 @@ TrackNTupleSvc& TrackNTupleSvc::instance() {
     return instance; 
 }
 
+// Open a ROOT file and add new branches
 void TrackNTupleSvc::fileOpen( const std::string& fileName ){
     m_file = new TFile( fileName.c_str(), "RECREATE" );
     
@@ -48,7 +50,7 @@ void TrackNTupleSvc::fileOpen( const std::string& fileName ){
     m_tree->Branch("DeltaRay",&m_deltaPtr); 
 }
 
-
+// Find the TrackedParticle object with a given trackID
 const TrackedParticle* TrackNTupleSvc::getParticle( const size_t trackID ) const { 
     auto primaryIterator = m_primaryParticles.find( trackID );
 
@@ -58,16 +60,19 @@ const TrackedParticle* TrackNTupleSvc::getParticle( const size_t trackID ) const
     return nullptr;
 }
 
+// Add a particle to a collection organized by trackID
 void TrackNTupleSvc::addParticle( const size_t trackID, 
                                   const TrackedParticle& particle ){ 
     m_primaryParticles[ trackID ] = particle; 
 }
 
+// Add a track segment to a collection organized by trackID
 void TrackNTupleSvc::addTrackSegment( const size_t trackID,
                                  const TrackSegment& trackSegment ){
     m_trackSegments[ trackID ].emplace_back( trackSegment );
 }
 
+// Order the track segments by increasing radial distance
 void TrackNTupleSvc::sortTrackSegments(){ 
     for ( auto & [ id, segmentList ]: m_trackSegments ){
         std::sort( segmentList.begin(), segmentList.end(), 
@@ -80,6 +85,7 @@ void TrackNTupleSvc::sortTrackSegments(){
     return; 
 }
 
+// Add the collected particle and track segment data to the ROOT tree 
 void TrackNTupleSvc::fillTree(){
     int count = 0;
     

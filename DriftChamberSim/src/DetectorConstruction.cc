@@ -1,5 +1,9 @@
 #include "DetectorConstruction.hh"
 
+#include <iostream>
+#include <cmath>
+#include <fstream>
+
 #include "G4Box.hh"
 #include "G4Tubs.hh"
 #include "G4Colour.hh"
@@ -19,13 +23,9 @@
 #include "TrackerSD.hh"
 #include "G4UserLimits.hh"
 
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <fstream>
-
 namespace DriftChamberSim {
 
+// Reads in the dimensions and materials of the drift chamber
 void DetectorConstruction::ReadGeometryFile() {
     std::ifstream geomFile("geometry.json");
 
@@ -43,6 +43,7 @@ void DetectorConstruction::ReadGeometryFile() {
     }
 }
 
+// Create the compositions of the needed materials
 G4Material* DetectorConstruction::CreateMaterialFromJson(G4NistManager* nist, json mixture){
   std::vector<G4Material*> materialList;
   G4double densityMix = 0;
@@ -84,6 +85,7 @@ G4Material* DetectorConstruction::CreateMaterialFromJson(G4NistManager* nist, js
   return materialMix;
 }
 
+// Define and assign the needed materials as mixture objects
 void DetectorConstruction::DefineMaterials(){
   G4NistManager* nist = G4NistManager::Instance();
   
@@ -112,8 +114,8 @@ void DetectorConstruction::DefineMaterials(){
   
 }
 
+// Build the drift chamber
 G4VPhysicalVolume* DetectorConstruction::Construct(){
-  ReadGeometryFile();
   DefineMaterials();
   G4NistManager* nist = G4NistManager::Instance();
   
@@ -182,14 +184,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4Box* worldS = new G4Box("world", worldLength/2, worldLength/2, worldLength/2);
   G4LogicalVolume* worldLV = new G4LogicalVolume(worldS, fWorldMaterial, "World");
 
-  auto worldPV = new G4PVPlacement(nullptr,          // no rotation
-                                   G4ThreeVector(),  // at (0,0,0)
-                                   worldLV,          // its logical volume
-                                   "World",          // its name
-                                   nullptr,          // its mother volume
-                                   false,            // no bool operations
-                                   0,                // copy number
-                                   true);            // checking overlaps
+  auto worldPV = new G4PVPlacement(nullptr,          // No rotation
+                                   G4ThreeVector(),  // Centre at (0,0,0)
+                                   worldLV,          // Logical volume
+                                   "World",          // Volume name ame
+                                   nullptr,          // Mother volume
+                                   false,            // No bool operations
+                                   0,                // Copy number
+                                   true);            // Check overlaps
   
   // ___________________ Define Chamber Size ____________________ //
   
@@ -221,10 +223,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4double prevSpacing = curSpacing;
   G4double curThickness = curSpacing/std::tan(longAngle);
   
-  bool isSwitched = false;
-  G4double r1;
-  G4double r2 = rInner;
-  G4double thickness = z1;
+  bool isSwitched = false;     // Whether z2 has been reached
+  G4double r1;                 // Layer inner radius
+  G4double r2 = rInner;        // Layer outer radius
+  G4double thickness = z1;     // Length of layer along z
   
   for (int i = 0; i < maxI; i++) {
     r1 = r2;
@@ -237,7 +239,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     }
     
     thickness += curThickness;
-    
     curSublayer++;
     G4int curNumSublayers = numSublayers[curSuperlayer];
     
@@ -299,10 +300,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     cylRingLog->SetVisAttributes(gasVisAtt);
     cylRingLog->SetUserLimits(fStepLimit);
     
+    // Place gas layer centred at the origin
     new G4PVPlacement(nullptr, G4ThreeVector(0, 0, 0), cylRingLog, "GasLayerRing", worldLV, false, 20000+i, false);
     
+    // Assign a sensitive detector to the gas layer
     SetSensitiveDetector(cylRingLog, trackerSD);
     
+    // Add endplates to volume
     if (thickness >= z2){
       G4Tubs* ringSolid = new G4Tubs("RingSolid", r1, r2, thicknessEndplate, startAngle, spanAngle);
       G4LogicalVolume* ringLog = new G4LogicalVolume(ringSolid, fEndplateMaterial, "RingLog");
@@ -311,6 +315,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       
       G4double pos = thickness + curThickness;
       
+      // Place end plate layer at both ends of the chamber
       new G4PVPlacement(nullptr, G4ThreeVector(0, 0, pos), ringLog, "EndplateRing_Pos", worldLV, false, 30000+i, false);
       new G4PVPlacement(nullptr, G4ThreeVector(0, 0, -pos), ringLog, "EndplateRing_Neg", worldLV, false, 40000+i, false);
     }
@@ -339,18 +344,20 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   
   // ___________________ Visualization ____________________ //
   
-  shellVisAtt->SetVisibility(true);
+  shellVisAtt->SetVisibility(true); // Make chamber walls visible
+  gasVisAtt->SetVisibility(true);   // Make gas visible
   
-  gasVisAtt->SetVisibility(true);
   shellCylLog->SetVisAttributes(shellVisAtt);
   inShellLog->SetVisAttributes(shellVisAtt);
   
-  shellVisAtt->SetForceSolid(true);
+  shellVisAtt->SetForceSolid(true); // Render as solid, not wire frame
   
+  // Make world volume transparent
   G4VisAttributes* worldVisAtts = new G4VisAttributes(G4Color(1.0, 1.0, 1.0, 0.2)); 
   worldVisAtts->SetVisibility(false);
   worldLV->SetVisAttributes(worldVisAtts);
   
+  // Define global constants
   volumeLength = length;
   volumeROuter = rOuter;
   volumeRInner = rInner;
@@ -358,45 +365,38 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   return worldPV;
 }
 
+// Set the largest allowable step size
 void DetectorConstruction::SetMaxStep(G4double maxStep){
   if ((fStepLimit) && (maxStep > 0.)) fStepLimit->SetMaxAllowedStep(maxStep);
 }
 
-void DetectorConstruction::SetTargetMaterial(G4String materialName){}
-
-void DetectorConstruction::SetChamberMaterial(G4String materialName){}
-
 DetectorConstruction::DetectorConstruction(){
+  
+  // Drift Chamber dimensions and gas mixture
   ReadGeometryFile(); 
   
   // Particle information
   particleType = jsonData["particle"]["particle_type"];
   particleEnergy = jsonData["particle"]["energy_GeV"].get<G4double>();
-  ReadGeometryFile(); 
-  
-  // Particle information
-  particleType = jsonData["particle"]["particle_type"];
-  particleEnergy = jsonData["particle"]["energy_GeV"].get<G4double>();
-  }
+}
 
+// Free heap memory
 DetectorConstruction::~DetectorConstruction(){  delete fStepLimit; }
 
+// Creates a constant magnetic field in the volume
 void DetectorConstruction::ConstructSDandField(){
-  
   json bFieldData = jsonData["magnetic_field_teslas"];
 
-  // Create constant magentic field
   G4double x = bFieldData["x"].get<G4double>() * tesla;
   G4double y = bFieldData["y"].get<G4double>() * tesla;
   G4double z = bFieldData["z"].get<G4double>() * tesla;
 
   magneticField = G4ThreeVector(x, y, z);
-
                                            
   auto fMagFieldMessenger = new G4GlobalMagFieldMessenger(magneticField);
   fMagFieldMessenger->SetVerboseLevel(1);
   
-  // Register the field messenger for deleting
+  // Register the field messenger for deletion
   G4AutoDelete::Register(fMagFieldMessenger);
 }
 

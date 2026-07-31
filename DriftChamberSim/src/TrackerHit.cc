@@ -16,6 +16,7 @@ G4bool TrackerHit::operator==(const TrackerHit& right) const {
   return (this == &right) ? true : false;
 }
 
+// Draw the trajectory in the GUI
 void TrackerHit::Draw(){
   G4VVisManager* pVVisManager = G4VVisManager::GetConcreteInstance();
   if (pVVisManager) {
@@ -28,6 +29,7 @@ void TrackerHit::Draw(){
   }
 }
 
+// Print hit information
 void TrackerHit::Print(){
   G4cout << "  trackID: " << fTrackID << " chamberNb: " << fChamberNb << "Edep: " << std::setw(7)
          << G4BestUnit(fEdep, "Energy") << " Position: " << std::setw(7)

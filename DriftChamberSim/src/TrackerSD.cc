@@ -24,7 +24,7 @@ void TrackerSD::Initialize(G4HCofThisEvent* hce){
 
 
 G4bool TrackerSD::ProcessHits(G4Step* step, G4TouchableHistory*){
-  // energy deposit
+  // Energy deposit
   G4double edep = step->GetTotalEnergyDeposit();
   if (edep == 0.) return false;
     
@@ -67,6 +67,7 @@ G4bool TrackerSD::ProcessHits(G4Step* step, G4TouchableHistory*){
   return true;
 }
 
+// Print hits collection data
 void TrackerSD::EndOfEvent(G4HCofThisEvent*){
   if (verboseLevel > 1) {
     std::size_t nofHits = fHitsCollection->entries();

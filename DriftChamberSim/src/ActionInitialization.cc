@@ -7,11 +7,12 @@
 
 namespace DriftChamberSim {
 
+// Actions taken by the master thread
 void ActionInitialization::BuildForMaster() const{
   SetUserAction(new RunAction);
 }
 
-
+// Actions taken by the worker threads
 void ActionInitialization::Build() const{
     auto eventAction = new EventAction;
     SetUserAction(eventAction);

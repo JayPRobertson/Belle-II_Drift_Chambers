@@ -34,22 +34,19 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4Material* CreateMaterialFromJson(G4NistManager* nist, json mixture);
 
     // Set methods
-    void SetTargetMaterial(G4String);
-    void SetChamberMaterial(G4String);
     void SetMaxStep(G4double);
     void SetCheckOverlaps(G4bool);
+    void SetSeed(int seed) { fSeed = seed; }
     
+    // Get methods
     G4ThreeVector GetMagneticField() const { return magneticField; }
     G4double GetLength() const { return volumeLength; }
     G4double GetROuter() const { return volumeROuter; }
     G4double GetRInner() const { return volumeRInner; }
-    
+    int GetSeed() const { return fSeed; }
     std::string GetParticleType() const { return particleType; }
     G4double GetParticleEnergy() const { return particleEnergy; }
     
-    void SetSeed(int seed) { fSeed = seed; }
-    int GetSeed() const { return fSeed; }
-
   private:
     void DefineMaterials();
     G4VPhysicalVolume* DefineVolumes();

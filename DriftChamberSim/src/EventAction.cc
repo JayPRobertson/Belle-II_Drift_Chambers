@@ -1,31 +1,18 @@
 #include "EventAction.hh"
 
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <map>
 #include <vector>
 #include <algorithm>
-#include <exception>
-#include <cmath>
 
-#include "G4SystemOfUnits.hh"
 #include "G4ThreeVector.hh"
 #include "G4Event.hh"
-#include "G4TrajectoryContainer.hh"
 #include "globals.hh"
 #include "TrackerHit.hh"
 #include "G4SDManager.hh"
-#include "HelixApproach.hh"
-#include "DetectorConstruction.hh"
 #include "G4RunManager.hh"
 
 #include "TrackSegment.hh"
 #include "TrackNTupleSvc.hh"
-#include <MaterialEffects.h>
-
-#include <FieldManager.h>
-#include <ConstField.h>
 
 namespace DriftChamberSim{
   
@@ -36,6 +23,7 @@ void EventAction::BeginOfEventAction(const G4Event*) {
         fTrackerHCID = G4SDManager::GetSDMpointer()->GetCollectionID("TrackerHitsCollection");
   }
   
+  // Reset tracking variables
   curIndex = -1;
   fParticleID++;
   enteredGas = false;
@@ -43,32 +31,30 @@ void EventAction::BeginOfEventAction(const G4Event*) {
 
 void EventAction::EndOfEventAction(const G4Event* event){
     G4int eventID = event->GetEventID();
-
+    
+    // Print run update every 100 events after the first 100
     if (eventID < 10 || eventID % 100 == 0) {
         G4cout << ">>> Event " << eventID << G4endl;
     }
-
+    
+    // Get all collections of hit events
     auto hce = event->GetHCofThisEvent();
     if (!hce) return;
-
+        
+    // Get a specific hit collection
     auto hc = hce->GetHC(fTrackerHCID);
     if (!hc) return;
-
     auto hitsCollection = static_cast<TrackerHitsCollection*>(hc);
     if (hitsCollection->GetSize() == 0) return;
-
+        
+    // Get all hits from collection and organize by hit id
     std::map<int, std::vector<TrackerHit*> > tracks;
-
     for (size_t i = 0; i < hitsCollection->GetSize(); i++) {
         auto* hit = static_cast<TrackerHit*>(hitsCollection->GetHit(i));
         if (!hit) continue;
             
         tracks[hit->GetTrackID()].push_back(hit);
     }
-    
-    // Get the vector of how many wires are in each layer read in from json
-    const G4RunManager* runManager = G4RunManager::GetRunManager();
-    const DriftChamberSim::DetectorConstruction* detectorConstruction = dynamic_cast<const DriftChamberSim::DetectorConstruction*>(runManager->GetUserDetectorConstruction());
     
     for (auto& entry : tracks) {
         int trackID = entry.first;
@@ -115,6 +101,7 @@ void EventAction::EndOfEventAction(const G4Event* event){
                 return a.first->GetChamberNb() < b.first->GetChamberNb(); 
         });
         
+        // Add layer hits as track segments for the current particle
         for (const auto& hitPair : sortedHits){
             TrackerHit* entryHit = hitPair.first;
             TrackerHit* exitHit = hitPair.second;

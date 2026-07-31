@@ -2,12 +2,10 @@
 #include <fstream>
 #include <sstream>
 
-#include <TGenericClassInfo.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TTreeReader.h>
 #include <TTreeReaderValue.h>
-#include <TTreeReaderArray.h>
 
 #include <TVector3.h>
 #include <TVectorD.h>
@@ -183,6 +181,7 @@ std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedH
     return detectedWirePos;
 }
 
+// Gets the Kalman fit of a track based on its layer hits
 void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID, xyzVector initMomentum){
     
     std::sort(detectedWirePos.begin(), detectedWirePos.end(), 
