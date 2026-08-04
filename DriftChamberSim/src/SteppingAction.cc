@@ -83,10 +83,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
                     initMomentum.y(),
                     initMomentum.z(),
                     fEventAction->GetInitEnergy()
-         );
-      
-      DriftChamberSim::TrackedParticle tParticle(id, entryPos, mom, !isMuon);
-      DriftChamberSim::TrackNTupleSvc::instance().addParticle( id, tParticle );
+        );
+         
+        G4double mass = fEventAction->GetMass();
+         
+        DriftChamberSim::TrackedParticle tParticle(id, entryPos, mom, !isMuon, mass);
+        DriftChamberSim::TrackNTupleSvc::instance().addParticle( id, tParticle );
       
   }
     

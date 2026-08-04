@@ -43,6 +43,9 @@ class EventAction : public G4UserEventAction{
     
     bool GetGasStatus() { return enteredGas; }
     void SetGasStatus(bool status) { enteredGas = status; }
+    
+    void SetMass(G4double mass) { fMass = mass; }
+    G4double GetMass() { return fMass; }
 
 private:
     G4int curIndex = 0;
@@ -56,6 +59,8 @@ private:
     
     G4ThreeVector initMomentum;
     G4double fInitEnergy = 0.0;
+    
+    G4double fMass = 0.0;
     
     bool enteredGas = false; 
 };

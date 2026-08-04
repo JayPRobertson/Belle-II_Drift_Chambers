@@ -194,9 +194,11 @@ int main(int argc, char* argv[]) {
 
     const double tstep = 0.5;
     const double tmin = -0.5 * tstep;
-    const unsigned int nbins = 1000;
+    const unsigned int nbins = 8000;
+    
     sensor.SetTimeWindow(tmin, tstep, nbins);
     if (!readTransferFunction(sensor)) return 1;
+    sensor.ClearSignal();
         
     // Define a particle to be sent through the volume along a track
     TrackHeed track;
@@ -204,8 +206,12 @@ int main(int argc, char* argv[]) {
     track.SetEnergy(geomInfo["particle"]["energy_GeV"].get<double>() * 1.e9); 
     track.SetSensor(&sensor);
 
+    // RKF integration
     DriftLineRKF drift(&sensor);
     drift.SetGainFluctuationsPolya(10., 20000.);
+    
+    // Plot signal
+    //TCanvas* cS = new TCanvas("cS", "", 600, 600);
 
     const double stepSize = 0.1;
     const int totalBins = static_cast<int>(std::ceil(2 * maxL / stepSize));
@@ -224,8 +230,12 @@ int main(int argc, char* argv[]) {
         double dy = 0.;
         track.NewTrack(x, curY, 0., 0., dx, dy, 0.);
         
+        std::vector<double> times;
+        
         // Look at the ionization clusters along the track
         for (const auto& cluster : track.GetClusters()) {
+            times.push_back(cluster.t);
+            
             for (const auto& electron : cluster.electrons) {
                 drift.DriftElectron(electron.x, electron.y, electron.z, electron.t);
                 
@@ -244,7 +254,37 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
-
+        
+        sensor.ConvoluteSignals();
+        
+        int nt = 0;
+        
+        /*
+        // Write out signal data for a single track
+        if (rowCount == 3){
+          std::ofstream csvFile;
+          csvFile.open("signal_data.csv");
+          csvFile << "time_ns,signal\n";
+          if (!sensor.ComputeThresholdCrossings(-2., "s", nt)) continue;
+              
+          sensor.PlotSignal("s", cS);
+          
+          for (std::size_t i = 0; i < nbins; ++i) {
+            const double t = (i + 0.5) * tstep; 
+            const double signal = sensor.GetSignal("s", i);
+            csvFile << t << "," << signal << "\n";
+          }
+          csvFile.close();
+          
+          // Write out actual cluster times
+          csvFile.open("actual_cluster_times.txt");
+          for (const auto& time : times){
+              csvFile << time << "\n";
+          }
+          csvFile.close();
+        }
+        */
+        
         std::cout << "Row altitude Y = " << curY << " processed (Step #" << ++rowCount << ")\n";
 
     }
@@ -263,6 +303,7 @@ int main(int argc, char* argv[]) {
     }
     
     lookupFile.close();
+    //app.Run(kTRUE);
     
     return 0;
 }

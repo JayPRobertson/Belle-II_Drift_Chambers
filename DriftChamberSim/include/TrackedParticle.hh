@@ -21,7 +21,8 @@ public:
     TrackedParticle( const int id, 
               const ROOT::Math::XYZVector& position, 
               const ROOT::Math::PxPyPzEVector& momentum,
-              const bool isDelta); 
+              const bool isDelta,
+              const double mass); 
     
     TrackedParticle( const TrackedParticle& other ) = default; 
 
@@ -33,11 +34,13 @@ public:
     XYZVector getMomentum() const { return m_momentum.Vect(); }
     PxPyPzEVector getFourMomentum() const { return m_momentum; }
     bool getIfDelta() const { return m_isDelta; }
+    double getMass() const { return m_mass; }
 
     void setID( const int id ){ m_id = id; }
     void setPosition( const XYZVector& position ){ m_position = position; }
     void setMomentum( const PxPyPzEVector& momentum ){m_momentum = momentum; }
     void setIfDelta( const bool isDelta ) { m_isDelta = isDelta; }
+    void setMass( const double mass) { m_mass =  mass; }
 
     void addTrackSegments( const std::vector< TrackSegment >& segments ){
         m_trackSegments = segments; 
@@ -58,6 +61,7 @@ private:
     ROOT::Math::XYZVector     m_position{0,0,0}; 
     ROOT::Math::PxPyPzEVector m_momentum{0,0,0,0}; 
     bool m_isDelta = false;
+    double m_mass = 0.0;
 
     std::vector< TrackSegment > m_trackSegments; 
 

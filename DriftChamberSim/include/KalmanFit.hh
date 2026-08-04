@@ -13,20 +13,20 @@ namespace DriftChamberSim {
 class KalmanFit {
 public:
     struct Point {
-        double x, y;
+        double x, y, z;
     };
     
     struct Intersection {
         bool valid = false;
         double t = 0.0;   
-        Point p{0.0, 0.0};
+        Point p{0.0, 0.0, 0.0};
     };
     
     struct CellCrossing {
         bool crossed = false;
     
-        Point entry{0.0, 0.0};
-        Point exit{0.0, 0.0};
+        Point entry{0.0, 0.0, 0.0};
+        Point exit{0.0, 0.0, 0.0};
     
         double length = 0.0;
     };
@@ -58,7 +58,7 @@ public:
     Intersection isIntersect(Point a, Point b, Point c, Point d);
     std::vector<Intersection> isIntersectArc(Point p1, Point p2, 
                          double R, double thetaMin, double thetaMax);
-    CellCrossing isInCell(Point p1, Point p2, double rMin, 
+    CellCrossing isInCell(LayerHit hit, double rMin, 
                          double rMax, double thetaMin, double thetaMax);
     
     std::map<int, int> GetWiresPerLayer(); 
@@ -69,6 +69,7 @@ public:
 
 private:
     const double avgNumClusters = 109.68 /10.; // clusters per mm
+    double particleMass = 0.0;
 };
 
 } // namespace

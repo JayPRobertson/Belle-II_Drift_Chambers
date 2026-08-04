@@ -103,6 +103,7 @@ void TrackNTupleSvc::fillTree(){
         cur_ptr->setID( particle.getID() );
         cur_ptr->setPosition( particle.getPosition() );
         cur_ptr->setMomentum( particle.getFourMomentum() );
+        cur_ptr->setMass( particle.getMass() );
         cur_ptr->clearTrackSegments();
 
         auto segmentIterator = m_trackSegments.find( id );

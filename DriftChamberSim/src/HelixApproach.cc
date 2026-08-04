@@ -11,7 +11,7 @@ HelixApproach::HelixApproach(
     const G4ThreeVector& momentum,
     const G4ThreeVector& magneticField,
     G4double mass,
-    G4double charge) : fInitialPosition(position) {
+    G4double charge) : fInitialPosition(position){
     
     fMomentum = momentum;
         
@@ -40,6 +40,18 @@ HelixApproach::HelixApproach(
         -fRadius * std::sin(fAlpha),
         0.0);
 }
+
+HelixApproach::HelixApproach(
+    const G4ThreeVector& momentum,
+    G4double mass){
+        
+    G4double p = momentum.mag();
+    
+    fEnergy = std::sqrt(p*p + mass*mass);
+    G4double beta = p / fEnergy;
+    fSpeed = beta * c_light;
+}
+
 
 // Rotates vector to magnetic field frame
 G4ThreeVector HelixApproach::RotateToFieldAxis(const G4ThreeVector& v) const {
@@ -97,6 +109,11 @@ G4ThreeVector HelixApproach::Direction(G4double t) const {
             -fVperp*std::sin(fOmega*t + fAlpha)/fSpeed,
              fVperp*std::cos(fOmega*t + fAlpha)/fSpeed,
              fVparallel/fSpeed));
+}
+
+// Gets the length of the track travelled between t1 and t2
+G4double HelixApproach::TrackLength(double t1, double t2) const {
+    return fSpeed * std::abs(t2 - t1);
 }
 
 // Gets the time a particle travelling in a helix would reach a position on the radius of a cylinder

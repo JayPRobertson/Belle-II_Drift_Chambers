@@ -13,11 +13,17 @@ public:
         const G4ThreeVector& magneticField,
         G4double mass,
         G4double charge);
+    
+    // Smaller checkout    
+    HelixApproach(
+        const G4ThreeVector& momentum,
+        G4double mass);
 
     G4ThreeVector Position(G4double t) const;
     G4ThreeVector Velocity(G4double t) const;
     G4ThreeVector Direction(G4double t) const;
     G4double TimeAtCylinderRadius(G4double radius) const;
+    G4double TrackLength(G4double t1, G4double t2) const;
 
     void FindGasVolumeCrossings(
         G4double innerRadius,

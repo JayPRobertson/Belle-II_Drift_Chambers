@@ -23,8 +23,11 @@
 #include <FieldManager.h>
 #include <ConstField.h>
 
+#include "G4ThreeVector.hh"
+
 #include "KalmanFit.hh"
 #include "TrackedParticle.hh"
+#include "HelixApproach.hh"
 
 using Point = DriftChamberSim::KalmanFit::Point;
 using Intersection = DriftChamberSim::KalmanFit::Intersection;
@@ -65,6 +68,7 @@ void KalmanFit::ProcessParticleTracks(){
     // Create a map of track ids and vectors with layer hit data
     while (reader.Next()) {
         int trackID = particle->getID();
+        particleMass = particle->getMass();
             
         xyzVector initMom = {particle->getMomentum().X(), particle->getMomentum().Y(), particle->getMomentum().Z()};
         momMap[trackID] = initMom;
@@ -130,9 +134,6 @@ std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedH
         // Alternate layers are staggered by half a cell
         double offset = (layerIndex % 2 == 0) ? 0.0 : delta / 2.0;
     
-        Point p1{entryPos.X(), entryPos.Y()};
-        Point p2{exitPos.X(),  exitPos.Y()};
-    
         for (int i = 0; i < n; ++i){  
             double t1 = offset + i * delta;
             double t2 = offset + (i + 1) * delta;
@@ -140,7 +141,7 @@ std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedH
             double thetaMin = std::atan2(std::sin(t1), std::cos(t1));
             double thetaMax = std::atan2(std::sin(t2), std::cos(t2));
         
-            CellCrossing crossing = isInCell(p1, p2, r1, r2, thetaMin, thetaMax);
+            CellCrossing crossing = isInCell(layerHit, r1, r2, thetaMin, thetaMax);
         
             if(crossing.crossed){
                 double tc = offset + (i + 0.5) * delta; // Cell centre
@@ -279,7 +280,7 @@ void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID
 bool KalmanFit::isAngleInRange(double theta, double thetaMin, double thetaMax){
     auto wrap = [](double a) { return std::remainder(a, DriftChamberSim::TWOPI); };
 
-    theta     = wrap(theta);
+    theta = wrap(theta);
     thetaMin = wrap(thetaMin);
     thetaMax = wrap(thetaMax);
 
@@ -362,10 +363,13 @@ std::vector<Intersection> KalmanFit::isIntersectArc(
     return intersections;
 }
 
-CellCrossing KalmanFit::isInCell(Point p1, Point p2, double rMin, 
+CellCrossing KalmanFit::isInCell(LayerHit hit, double rMin, 
                       double rMax, double thetaMin, double thetaMax){
 
     std::vector<Intersection> intersections;
+    
+    Point p1{hit.entryPos.X(), hit.entryPos.Y(), hit.entryPos.Z()};
+    Point p2{hit.exitPos.X(),  hit.exitPos.Y(), hit.exitPos.Z()};
 
     // Add start and end points if  already inside the cell
     if (isPointInRegion(p1, rMin, rMax, thetaMin, thetaMax)){
@@ -415,9 +419,11 @@ CellCrossing KalmanFit::isInCell(Point p1, Point p2, double rMin,
     Point entry = intersections.front().p;
     Point exit  = intersections.back().p;
 
-    double dx = exit.x - entry.x;
-    double dy = exit.y - entry.y;
-    double length = std::sqrt(dx*dx + dy*dy);
+    xyzVector initMom = hit.initMom;
+    G4ThreeVector initMomVec(initMom.x(), initMom.y(), initMom.z());
+    
+    HelixApproach helix( initMomVec, particleMass );
+    double length = helix.TrackLength(hit.entryTime, hit.exitTime);
 
     return { true, entry, exit, length};
 }
