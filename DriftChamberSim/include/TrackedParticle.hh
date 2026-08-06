@@ -1,5 +1,5 @@
 #ifndef DCTrackedParticle_H
-#define DCTrackedParticle_H 
+#define DCTrackedParticle_H 1
 
 #include "TrackSegment.hh"
 
@@ -19,10 +19,11 @@ public:
     TrackedParticle() = default;
 
     TrackedParticle( const int id, 
-              const ROOT::Math::XYZVector& position, 
-              const ROOT::Math::PxPyPzEVector& momentum,
+              const XYZVector& position, 
+              const PxPyPzEVector& momentum,
               const bool isDelta,
-              const double mass); 
+              const double mass,
+              const XYZVector& magneticField); 
     
     TrackedParticle( const TrackedParticle& other ) = default; 
 
@@ -35,12 +36,14 @@ public:
     PxPyPzEVector getFourMomentum() const { return m_momentum; }
     bool getIfDelta() const { return m_isDelta; }
     double getMass() const { return m_mass; }
+    XYZVector getBField() const { return m_magneticField; }
 
     void setID( const int id ){ m_id = id; }
     void setPosition( const XYZVector& position ){ m_position = position; }
     void setMomentum( const PxPyPzEVector& momentum ){m_momentum = momentum; }
     void setIfDelta( const bool isDelta ) { m_isDelta = isDelta; }
     void setMass( const double mass) { m_mass =  mass; }
+    void setBField( const XYZVector Bfield) { m_magneticField = Bfield; }
 
     void addTrackSegments( const std::vector< TrackSegment >& segments ){
         m_trackSegments = segments; 
@@ -55,11 +58,55 @@ public:
     }
     
     double getEnergyLoss() const; 
+           
+    struct LayerHit: public TObject {
+        XYZVector entryPos;
+        XYZVector initMom;
+        XYZVector exitPos;
+        XYZVector postMom;
+        double entryTime;
+        double exitTime;
+        double edep;
+        int layerID;
+        
+        LayerHit() : entryTime(0), exitTime(0), edep(0), layerID(0) {}
+    
+        XYZVector getEntryPosition() const { return entryPos; }
+        XYZVector getExitPosition() const { return exitPos; }
+        XYZVector getEntryMomentum() const { return initMom; }
+        XYZVector getExitMomentum() const { return postMom; }
+        double getEntryTime() const { return entryTime; }
+        double getExitTime() const { return exitTime; }
+        double getEnergyDeposition() const { return edep; }
+        int getLayerID() const { return layerID; } 
+        
+        ClassDefNV(LayerHit, 1); 
+    };
+
+    struct KalmanHit: public TObject {
+        XYZVector hitPos;
+        XYZVector hitMom;
+        double chi2;
+        int trackID;
+        double ndf;
+            
+        KalmanHit() : chi2(0), trackID(0), ndf(0) {}
+    
+        XYZVector getPosition() const { return hitPos; }
+        XYZVector getMomentum() const { return hitMom; }
+        double getChi2() const { return chi2; }
+        int getTrackID() const { return trackID; }
+        double getDegFreedom() const { return ndf; }
+        
+        ClassDefNV(KalmanHit, 1);   
+    };
 
 private: 
     int m_id = 0; 
-    ROOT::Math::XYZVector     m_position{0,0,0}; 
-    ROOT::Math::PxPyPzEVector m_momentum{0,0,0,0}; 
+    XYZVector     m_position{0,0,0}; 
+    PxPyPzEVector m_momentum{0,0,0,0}; 
+    XYZVector     m_magneticField{0,0,0}; 
+    
     bool m_isDelta = false;
     double m_mass = 0.0;
 

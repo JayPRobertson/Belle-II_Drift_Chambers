@@ -61,8 +61,8 @@ message(STATUS "GenFit2 library: ${GENFIT2_LIBRARY}")
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 
-list(REMOVE_ITEM SOURCES "${PROJECT_SOURCE_DIR}/src/KalmanFit.cc")
-list(REMOVE_ITEM HEADERS "${PROJECT_SOURCE_DIR}/include/KalmanFit.hh")
+#list(REMOVE_ITEM SOURCES "${PROJECT_SOURCE_DIR}/src/KalmanFit.cc")
+#list(REMOVE_ITEM HEADERS "${PROJECT_SOURCE_DIR}/include/KalmanFit.hh")
 
 #----------------------------------------------------------------------------
 # ROOT dictionary
@@ -169,4 +169,3 @@ endforeach()
 foreach(_file dt_elx_delta.txt)
   configure_file(${_file} ${CMAKE_CURRENT_BINARY_DIR}/${_file} COPYONLY)
 endforeach()
-

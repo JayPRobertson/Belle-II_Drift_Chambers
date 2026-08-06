@@ -90,7 +90,7 @@ The simulation outputs three data files. `run_DCSim.sh` provides an option to sa
 - `particle_and_track_data.root` - data about each particle sent through the drift chamber during the simulation, including the particle's initial position and momentum, as well as the times, energies, and positions of the particle as it passed through each layer in the cell. Includes a separate branch for delta rays.
 - `libDriftChamberlib.so` - record of the necessary ROOT libraries
 
-Sample data output can be found in `SampleData`.
+Sample output can be found in `SampleData`.
 
 </details>
 
@@ -98,14 +98,21 @@ Sample data output can be found in `SampleData`.
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Analysis</span></summary>
 <br>
 
-`KalmanFit` is a tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. The project Makefile generates an executable for this tool that can be run using `./kalman`. All data will be output to the terminal (a sample output can be found in `SampleData/kalmanFit_output.txt`)
-
 To inspect the simulation data, a ROOT TBrowser can be opened using the following:
 ```
 root particle_and_track_data.root
 gSystem->Load("libDriftChamberlib.so");
 TBrowser b
 ```
+
+### KalmanFit
+`KalmanFit` is a tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. The project Makefile generates an executable for this tool that can be run using `./kalman`. 
+
+All reconstructed Kalman fit data will be output to the terminal (a sample output can be found in `SampleData/kalmanFit_output.txt`) and saved to a ROOT file:
+
+`kalman_output.root` - Outputs the position and momentum data of the particle points along its trajectory. Includes two branches: one for the actual simulation data and one for the reconstructed Kalman fitted data. 
+
+This output can be opened in a TBrowser using the same method as above, loading the same library before opening. Sample output can be found in `SampleData`.
 
 </details>
 

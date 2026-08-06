@@ -76,8 +76,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
         fEventAction->SetActualEntry(postStepPoint->GetPosition());
     
         // Create instance of current particle in ROOT file
-        G4ThreeVector fActEntry  = fEventAction->GetActualEntry();
+        G4ThreeVector fActEntry = fEventAction->GetActualEntry();
         xyzVector entryPos{fActEntry.x(), fActEntry.y(), fActEntry.z()};
+    
         ROOT::Math::PxPyPzEVector mom(
                     initMomentum.x(),
                     initMomentum.y(),
@@ -86,8 +87,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
         );
          
         G4double mass = fEventAction->GetMass();
+        
+        G4ThreeVector Bfield = detectorConstruction->GetMagneticField();
+        xyzVector magField{Bfield.x(), Bfield.y(), Bfield.z()};
          
-        DriftChamberSim::TrackedParticle tParticle(id, entryPos, mom, !isMuon, mass);
+        DriftChamberSim::TrackedParticle tParticle(id, entryPos, mom, !isMuon, mass, magField);
         DriftChamberSim::TrackNTupleSvc::instance().addParticle( id, tParticle );
       
   }

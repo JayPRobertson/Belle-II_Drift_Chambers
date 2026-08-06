@@ -6,15 +6,17 @@ namespace DriftChamberSim {
 ClassImp(TrackedParticle)
 
 TrackedParticle::TrackedParticle( const int id, 
-                    const ROOT::Math::XYZVector& position, 
-                    const ROOT::Math::PxPyPzEVector& momentum,
+                    const XYZVector& position, 
+                    const PxPyPzEVector& momentum,
                     const bool isDeltaRay,
-                    const double mass) : 
+                    const double mass,
+                    const XYZVector& magneticField) : 
     m_id( id ), 
     m_position( position ), 
     m_momentum( momentum ),
     m_isDelta( isDeltaRay ),
-    m_mass( mass ){};
+    m_mass( mass ),
+    m_magneticField( magneticField ){};
 
 double TrackedParticle::getEnergyLoss() const { 
 

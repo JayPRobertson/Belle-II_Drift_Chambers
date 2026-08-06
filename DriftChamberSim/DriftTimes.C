@@ -208,7 +208,8 @@ int main(int argc, char* argv[]) {
 
     // RKF integration
     DriftLineRKF drift(&sensor);
-    drift.SetGainFluctuationsPolya(10., 20000.);
+    drift.SetGainFluctuationsPolya(geomInfo["polya"]["shape_param_m"].get<double>(), 
+                                   geomInfo["polya"]["mean_gain_G"].get<double>());
     
     // Plot signal
     //TCanvas* cS = new TCanvas("cS", "", 600, 600);

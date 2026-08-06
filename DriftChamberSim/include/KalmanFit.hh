@@ -5,8 +5,13 @@
 #include <map>
 #include "globals.hh"
 #include "Math/Vector3D.h"
+#include "TObject.h"
+
+#include "TrackedParticle.hh"
 
 using xyzVector = ROOT::Math::XYZVector;
+using LayerHit = DriftChamberSim::TrackedParticle::LayerHit;
+using KalmanHit = DriftChamberSim::TrackedParticle::KalmanHit;
 
 namespace DriftChamberSim {
 
@@ -40,17 +45,6 @@ public:
         Point exit;
     };
     
-    struct LayerHit {
-        xyzVector entryPos;
-        xyzVector initMom;
-        xyzVector exitPos;
-        xyzVector postMom;
-        double entryTime;
-        double exitTime;
-        double edep;
-        int layerID;
-    };
-    
     bool isAngleInRange(double theta, double thetaMin, double thetaMax);
     bool isPointInRegion(Point p, double rMin, double rMax, 
                          double thetaMin, double thetaMax);
@@ -70,6 +64,9 @@ public:
 private:
     const double avgNumClusters = 109.68 /10.; // clusters per mm
     double particleMass = 0.0;
+    std::map<int, int> numWiresPerLayer;
+    
+    std::vector<KalmanHit> kalmanHits;
 };
 
 } // namespace

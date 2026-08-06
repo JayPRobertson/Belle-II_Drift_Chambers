@@ -26,37 +26,48 @@
 #include "G4ThreeVector.hh"
 
 #include "KalmanFit.hh"
-#include "TrackedParticle.hh"
 #include "HelixApproach.hh"
 
 using Point = DriftChamberSim::KalmanFit::Point;
 using Intersection = DriftChamberSim::KalmanFit::Intersection;
 using CellCrossing = DriftChamberSim::KalmanFit::CellCrossing;
 using CellHit = DriftChamberSim::KalmanFit::CellHit;
-using LayerHit = DriftChamberSim::KalmanFit::LayerHit;
 
 namespace DriftChamberSim {
     
 const double TWOPI = 2. * M_PI;
-std::map<int, int> numWiresPerLayer;
 
 void KalmanFit::ProcessParticleTracks(){
     
-    // Open ROOT file
-    TFile *file = TFile::Open("particle_and_track_data.root");
+    // Open ROOT files
+    TFile* file = TFile::Open("particle_and_track_data.root");    // in
+    TFile* outFile = new TFile("kalman_output.root", "RECREATE");  // out
+    
     if (!file || file->IsZombie()) {
         std::cerr << "Error opening file particle_and_track_data.root" << std::endl;
         return;
+    } else if (!outFile || outFile->IsZombie()) {
+        std::cerr << "Error opening file kalman_output.root" << std::endl;
+        if (file) file->Close();
+        return;
     }
     
-    // Initialize GenFit
-    std::cout << "Initializing GenFit field" << std::endl;
-    genfit::FieldManager::getInstance()->init(new genfit::ConstField(0,0,15.0));
-    genfit::MaterialEffects::getInstance()->setNoEffects();
+    TTree* outTree = new TTree("Particles", "Particles");
+    
+    // Set up ROOT tree branches
+    std::vector<LayerHit> actualHits;
+    outTree->Branch("KalmanFitted", &kalmanHits); 
+    outTree->Branch("Actual", &actualHits);
     
     // Get number of wires in each layer of detector
     numWiresPerLayer = GetWiresPerLayer();
-    if (!numWiresPerLayer.size()) return;
+    if (!numWiresPerLayer.size()) {
+        file->Close();
+        outFile->Close();
+        delete file;
+        delete outFile;
+        return;
+    }
     
     TTree* rootTree = (TTree*)file->Get("Particles");
     TTreeReader reader(rootTree);
@@ -65,48 +76,75 @@ void KalmanFit::ProcessParticleTracks(){
     std::map<int, std::vector<LayerHit>> trackMap;
     std::map<int, xyzVector> momMap;
     
-    // Create a map of track ids and vectors with layer hit data
+    xyzVector BField;
+    
+    // Process input data
     while (reader.Next()) {
         int trackID = particle->getID();
         particleMass = particle->getMass();
+        
+        BField = {particle->getBField().X(),
+                  particle->getBField().Y(),
+                  particle->getBField().Z()};
             
-        xyzVector initMom = {particle->getMomentum().X(), particle->getMomentum().Y(), particle->getMomentum().Z()};
+        xyzVector initMom = {particle->getMomentum().X(), 
+                             particle->getMomentum().Y(), 
+                             particle->getMomentum().Z()};
         momMap[trackID] = initMom;
  
         for (const auto& seg : particle->getTrackSegments()) {
             LayerHit hit;
-            
-            hit.entryPos = {seg.getEntryPosition().X(), seg.getEntryPosition().Y(), seg.getEntryPosition().Z()};
-            
-            hit.initMom = {seg.getEntryMomentum().X(), seg.getEntryMomentum().Y(), seg.getEntryMomentum().Z()};
-            
-            hit.exitPos = {seg.getExitPosition().X(), seg.getExitPosition().Y(), seg.getExitPosition().Z()};
-            
-            hit.postMom = {seg.getExitMomentum().X(), seg.getExitMomentum().Y(), seg.getExitMomentum().Z()};
-            
+            hit.entryPos = {seg.getEntryPosition().X(), 
+                            seg.getEntryPosition().Y(), 
+                            seg.getEntryPosition().Z()};
+            hit.initMom = { seg.getEntryMomentum().X(), 
+                            seg.getEntryMomentum().Y(), 
+                            seg.getEntryMomentum().Z()};
+            hit.exitPos = { seg.getExitPosition().X(), 
+                            seg.getExitPosition().Y(), 
+                            seg.getExitPosition().Z()};
+            hit.postMom = { seg.getExitMomentum().X(), 
+                            seg.getExitMomentum().Y(), 
+                            seg.getExitMomentum().Z()};
+                                
             hit.entryTime = seg.getEntryTime();
             hit.exitTime = seg.getExitTime();
             hit.edep = seg.getEnergyLoss();
             hit.layerID = seg.getLayerIndex();
             
             trackMap[trackID].push_back(hit);
+            actualHits.push_back(hit);
         }
     }
     
+    // Initialize GenFit
+    std::cout << "Initializing GenFit field" << std::endl;
+    genfit::FieldManager::getInstance()->init(new genfit::ConstField(BField.X() *10.,
+                                                                     BField.Y() *10.,
+                                                                     BField.Z() *10.)); 
+    genfit::MaterialEffects::getInstance()->setNoEffects();
+    
+    // Perform fits and write out complete rows
     for (auto& pair : trackMap) {
-            int i = pair.first;
-            auto& hits = pair.second;
+        int i = pair.first;
+        auto& hits = pair.second;
 
-            // Sort by increasing layerID
-            std::sort(hits.begin(), hits.end(), [](const LayerHit& a, const LayerHit& b) {
+        std::sort(hits.begin(), hits.end(), 
+           [](const LayerHit& a, const LayerHit& b) {
                 return a.layerID < b.layerID;
-            });
+        });
 
-            std::vector<xyzVector> detectedWirePos = GetDetectedWires(hits);
-            GetKalmanFit(detectedWirePos, i, momMap[i]);
+        std::vector<xyzVector> detectedWirePos = GetDetectedWires(hits);
+        GetKalmanFit(detectedWirePos, i, momMap[i]);
     }
     
+    outTree->Fill();
+    outTree->Write();
+    outFile->Close();
     file->Close();
+    
+    delete file;
+    delete outFile;
 }
 
 std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedHits){
@@ -166,12 +204,6 @@ std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedH
                     cellAdded = true;
                 }
                 cellCount++;
-                
-                //std::cout << "      Layer = " << layerIndex
-                          //<< ", cell = " << i
-                          //<< ", length = " << crossing.length << " mm" 
-                          //<< ", clusters = " << crossing.length * avgNumClusters
-                          //<< std::endl;
                        
             } else if(cellAdded){
                 break;
@@ -214,7 +246,6 @@ void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID
         direction.Z()*momentum
     );
 
-    
     auto* rep = new genfit::RKTrackRep(13);
     auto* gfTrack = new genfit::Track(rep, initPos, initMom);
 
@@ -257,24 +288,55 @@ void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID
                   << ", converged = " << status->isFitConverged()
                   << ", chi2 = " << status->getChi2()
                   << ", ndf = " << status->getNdf() << std::endl;
+                  
+       if (status->isFitConverged()) {
+           genfit::MeasuredStateOnPlane state = gfTrack->getFittedState();
 
-        if (status->isFitConverged()) {
-            genfit::MeasuredStateOnPlane state = gfTrack->getFittedState();
-            
-            // Print Kalman fitting data
-            G4cout << "       Momentum = " << state.getMom().Mag() << " GeV" << G4endl;
-            G4cout << "       Position = " << state.getPos().X() << " "
-                                    << state.getPos().Y() << " "
-                                    << state.getPos().Z() << " cm" << G4endl;
-        }  
+           double s = 200.;
+           bool passedOrigin = false;
+           const double epsilon = 1; 
+           while (!passedOrigin && std::abs(s) < 800.) {
+               genfit::MeasuredStateOnPlane sampleState(state);
+               
+               try {
+                   rep->extrapolateBy(sampleState, s);
+                   TVector3 pos, mom;
+                   sampleState.getPosMom(pos, mom);
+                
+                   // Check if cur pos is ~origin
+                   if (std::abs(pos.X()) < epsilon && 
+                        std::abs(pos.Y()) < epsilon && 
+                        std::abs(pos.Z()) < epsilon) {
+                        passedOrigin = true;
+                   }
         
+                   KalmanHit kHit;
+        
+                   kHit.hitPos.SetXYZ(pos.X() *10., pos.Y() *10., pos.Z() *10.);       //mm
+                   kHit.hitMom.SetXYZ(mom.X() *1000., mom.Y() *1000., mom.Z() *1000.); //MeV
+                   kHit.chi2 = status->getChi2();
+                   kHit.ndf = status->getNdf();
+                   kHit.trackID = trackID;
+            
+                   kalmanHits.push_back(kHit);
+                
+               } catch (genfit::Exception& e) {
+                   G4cerr << "GenFit exception: " << e.what() << G4endl;
+                   break; // Exit loop if extrapolation fails
+               } catch (std::exception& e) {
+                   G4cerr << "Standard exception: " << e.what() << G4endl;
+                   break;
+               } 
+               
+               s -= 2.0; 
+           }
+        }    
     }catch (genfit::Exception& e) {
         G4cerr << "GenFit exception: " << e.what() << G4endl;
     }catch (std::exception& e) {
         G4cerr << "Standard exception: " << e.what() << G4endl;
     }
-    
-    delete gfTrack;
+    delete gfTrack; 
 }
 
 bool KalmanFit::isAngleInRange(double theta, double thetaMin, double thetaMax){

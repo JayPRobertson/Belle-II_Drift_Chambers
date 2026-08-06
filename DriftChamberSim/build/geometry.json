@@ -145,8 +145,12 @@
     }
   },
   "particle": {
-      "particle_type":"mu-",
-      "particle_name":"muon",
-      "energy_GeV":2.0
+      "particle_type": "mu-",
+      "particle_name": "muon",
+      "energy_GeV": 2.0
+  },
+  "polya": {
+      "shape_param_m": 10.0,
+      "mean_gain_G": 20000.0
   }
 }
