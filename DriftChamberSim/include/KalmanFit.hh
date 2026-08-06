@@ -12,6 +12,7 @@
 using xyzVector = ROOT::Math::XYZVector;
 using LayerHit = DriftChamberSim::TrackedParticle::LayerHit;
 using KalmanHit = DriftChamberSim::TrackedParticle::KalmanHit;
+using IndexMap = std::vector<std::vector<std::string>>;
 
 namespace DriftChamberSim {
 
@@ -45,6 +46,9 @@ public:
         Point exit;
     };
     
+    IndexMap GetLookupTable(std::string fileName);
+    std::map<int, int> GetWiresPerLayer(); 
+    
     bool isAngleInRange(double theta, double thetaMin, double thetaMax);
     bool isPointInRegion(Point p, double rMin, double rMax, 
                          double thetaMin, double thetaMax);
@@ -55,9 +59,8 @@ public:
     CellCrossing isInCell(LayerHit hit, double rMin, 
                          double rMax, double thetaMin, double thetaMax);
     
-    std::map<int, int> GetWiresPerLayer(); 
-    
-    std::vector<xyzVector> GetDetectedWires(std::vector<LayerHit> sortedHits);
+    std::pair<std::vector<xyzVector>, std::vector<CellHit>> GetDetectedWires(std::vector<LayerHit> sortedHits);
+    void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
     void GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID, xyzVector initMomentum);
     void ProcessParticleTracks();
 

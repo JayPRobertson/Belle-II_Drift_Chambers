@@ -14,6 +14,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <algorithm>
+#include <TRandom3.h>
 
 #include <SpacepointMeasurement.h>
 #include <Track.h>
@@ -124,6 +125,11 @@ void KalmanFit::ProcessParticleTracks(){
                                                                      BField.Z() *10.)); 
     genfit::MaterialEffects::getInstance()->setNoEffects();
     
+    IndexMap timeTable = GetLookupTable("drift_times_lookup.csv");
+    IndexMap diffusionTable = GetLookupTable("diffusion_lookup.csv");
+    
+    int count = 0;
+    
     // Perform fits and write out complete rows
     for (auto& pair : trackMap) {
         int i = pair.first;
@@ -134,20 +140,29 @@ void KalmanFit::ProcessParticleTracks(){
                 return a.layerID < b.layerID;
         });
 
-        std::vector<xyzVector> detectedWirePos = GetDetectedWires(hits);
+        auto [detectedWirePos, detectedCells] = GetDetectedWires(hits);
+        
+        if (count == 2){
+            GetClusterInfo(detectedCells, timeTable, diffusionTable);
+        }
+        count++;
+        
         GetKalmanFit(detectedWirePos, i, momMap[i]);
     }
     
     outTree->Fill();
     outTree->Write();
+    
+    // Free up memory
     outFile->Close();
     file->Close();
-    
+
     delete file;
     delete outFile;
 }
 
-std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedHits){
+std::pair<std::vector<xyzVector>, std::vector<CellHit>> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedHits){
+    
     std::vector<xyzVector> detectedWirePos;
     std::vector<CellHit> detectedCells;
   
@@ -211,8 +226,54 @@ std::vector<xyzVector> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedH
         }
     }
     
-    return detectedWirePos;
+    return std::make_pair(detectedWirePos, detectedCells);
 }
+
+void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
+    TRandom3 rnd; 
+    
+    // Look at the track segment through each cell it hits
+    for (auto cell : detectedCells){
+        int numClusters = std::lround(cell.length * avgNumClusters);
+        xyzVector origin = cell.wirePos;
+        Point p1{cell.entry.x - origin.X(), cell.entry.y - origin.Y()};
+        Point p2{cell.exit.x - origin.X(), cell.exit.y - origin.y()};
+        
+        // Randomly generate clusters along the track in the cur cell
+        for (int i=0; i < numClusters; i++){
+            double u = rnd.Uniform(0, 1);
+            
+            Point clusterOrigin = {((1.-u)*p1.x + u*p2.x), ((1.-u)*p1.y + u*p2.y)};
+            
+            int curi = static_cast<int>(std::round(clusterOrigin.x));
+            int curj = static_cast<int>(std::round(clusterOrigin.y));
+            
+            // Make positive index starting at 0
+            curi *= (curi > 0) ? 2 : -1;
+            curj *= (curj > 0) ? 2 : -1;
+            
+            // Get the two diffusion values stored in the lookup table string
+            std::string diffusion = diffusionTable[curi][curj];
+            if (diffusion.empty()) continue;
+
+            std::stringstream ss(diffusion);
+            std::string token;
+            std::vector<std::string> diffusions;
+
+            while (std::getline(ss, token, '|')) {
+                diffusions.push_back(token);
+            }
+            
+            if (diffusions.size() < 2) continue;
+                
+            // Get info about the cur cluster
+            double driftTime = std::stod(timeTable[curi][curj]);
+            double longDiffusion = std::stod(diffusions[0]);
+            double transDiffusion = std::stod(diffusions[1]);
+        }
+    }
+}
+
 
 // Gets the Kalman fit of a track based on its layer hits
 void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID, xyzVector initMomentum){
@@ -337,6 +398,29 @@ void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID
         G4cerr << "Standard exception: " << e.what() << G4endl;
     }
     delete gfTrack; 
+}
+
+IndexMap KalmanFit::GetLookupTable(std::string fileName){
+    std::ifstream file(fileName);
+    std::string line;
+    IndexMap lookupTable;
+    
+    // Read file line by line
+    while (std::getline(file, line)) {
+        std::vector<std::string> row;
+        std::stringstream ss(line);
+        std::string cell;
+
+        // Split the line by commas
+        while (std::getline(ss, cell, ',')) {
+            row.push_back(cell);
+        }
+        
+        lookupTable.push_back(row);
+    }
+    
+    file.close();
+    return lookupTable;
 }
 
 bool KalmanFit::isAngleInRange(double theta, double thetaMin, double thetaMax){
@@ -530,6 +614,3 @@ int main(int argc, char** argv) {
     std::cout << "==================================================" << std::endl;
     return 0;
 }
-
-
-

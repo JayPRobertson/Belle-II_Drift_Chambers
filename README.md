@@ -84,9 +84,10 @@ If the window is closed early, a segmentation fault will occur and no data will 
 <summary>&nbsp<span style="font-size: 20px; font-weight: bold;">Output</span></summary>
 <br>
 
-The simulation outputs three data files. `run_DCSim.sh` provides an option to save these outputs to a filepath provided at the top of that file.
+The simulation outputs four data files. `run_DCSim.sh` provides an option to save these outputs to a filepath provided at the top of that file.
 
 - `drift_times_lookup.csv` - a lookup table of sample drift times (in ns) of electrons originating at various positions in a drift cell; each cell of the csv file correponds to a 1mm x 1mm section of the drift cell
+- `drift_times_lookup.csv` - a lookup table of sample diffusion coefficients (in sqrt(cm)) of electrons originating at various positions in a drift cell; each cell of the csv file contains two values separated by a bar ( *longitudinal diffusion*|*transverse diffusion* ) correponds to a 1mm x 1mm section of the drift cell 
 - `particle_and_track_data.root` - data about each particle sent through the drift chamber during the simulation, including the particle's initial position and momentum, as well as the times, energies, and positions of the particle as it passed through each layer in the cell. Includes a separate branch for delta rays.
 - `libDriftChamberlib.so` - record of the necessary ROOT libraries
 

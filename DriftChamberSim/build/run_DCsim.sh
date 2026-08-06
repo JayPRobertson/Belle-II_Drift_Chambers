@@ -29,6 +29,7 @@ ln -s libDriftChamberlib.dylib libDriftChamberlib.so
 cp particle_and_track_data.root "$FILEPATH/root/"
 cp libDriftChamberlib.so "$FILEPATH/root/"
 cp drift_times_lookup.csv "$FILEPATH/csv/drifting/"
+cp diffusion_lookup.csv "$FILEPATH/csv/drifting/"
 
 # Clean directory
 rm *.so

@@ -10,6 +10,7 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <TApplication.h>
+#include "Math/Vector3D.h"
 
 #include "Garfield/ComponentAnalyticField.hh"
 #include "Garfield/MediumMagboltz.hh"
@@ -21,6 +22,7 @@
 
 using namespace Garfield;
 using json = nlohmann::ordered_json;
+using xyzVector = ROOT::Math::XYZVector;
 
 // Analytic fallback response function
 auto response = [](double t) {
@@ -116,6 +118,26 @@ std::pair<std::string, std::string> getFileNames(json geomInfo){
     return std::make_pair(gasStr, ionMobility);
 }
 
+// Get the diffusion constants
+std::pair<double, double> getDiffusion(Sensor* sensor, ComponentAnalyticField* cmp, MediumMagboltz* gas, xyzVector pos){
+    
+    double bx = 0.0, by = 0.0, bz = 0.0; // Tesla
+    double ex = 0.0, ey = 0.0, ez = 0.0; // V/cm
+    double v = 0.0;                      // V
+    Medium* medium = nullptr;
+    int status = 0;
+        
+    // Get the electric and magnetic fields
+    sensor->ElectricField(pos.X(), pos.Y(), pos.Z(), ex, ey, ez, v, medium, status);
+    cmp->MagneticField(pos.X(), pos.Y(), pos.Z(), bx, by, bz, status);
+    
+    // Get the diffusion values
+    double dl = 0.0, dt = 0.0; // sqrt(cm)
+    gas->ElectronDiffusion(ex, ey, ez, bx, by, bz, dl, dt);
+    
+    return std::make_pair(dl, dt);
+}
+
 int main(int argc, char* argv[]) {
     // Read information about the drift chamber geometry
     json geomInfo = readGeometryFile();
@@ -147,7 +169,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     gas.LoadIonMobility(fullPath);
-    
+
     // Create a gas volume
     ComponentAnalyticField cmp;
     cmp.SetMedium(&gas);
@@ -219,15 +241,19 @@ int main(int argc, char* argv[]) {
     
     // Create a maxL x maxL table of drift times at locations in drift cell
     std::vector<std::vector<double>> lookupTable(totalBins, std::vector<double>(totalBins, -1.0));
+    std::vector<std::vector<std::pair<double, double>>> diffusionTable(
+    totalBins, std::vector<std::pair<double, double>>(totalBins, { -1.0, -1.0 }));
+
 
     int rowCount = 0;
+    double offset = 0.05; // Offset position from ground wire coord
     
     // Create a maxL x maxL grid of particle tracks
-    for (double curY = maxL; curY >= -maxL-0.05; curY -= stepSize) {
+    for (double curY = maxL; curY >= -maxL-offset; curY -= stepSize) {
         sensor.ClearSignal();
         
-        double x = -maxL-0.05;
-        double dx = 2 * (maxL+0.05);
+        double x = -maxL-offset;
+        double dx = 2 * (maxL+offset);
         double dy = 0.;
         track.NewTrack(x, curY, 0., 0., dx, dy, 0.);
         
@@ -250,7 +276,13 @@ int main(int argc, char* argv[]) {
                 
                 if (curi >= 0 && curi < totalBins && curj >= 0 && curj < totalBins) {
                     if (lookupTable[curi][curj] == -1.) {
-                        lookupTable[curi][curj] = tf - electron.t; 
+                        lookupTable[curi][curj] = tf - electron.t;
+                        
+                        xyzVector position = {xf +offset, yf +offset, zf +offset};
+                        
+                        // Get diffusion constants for this cell
+                        std::pair<double, double> diffusion = getDiffusion(&sensor, &cmp, &gas, position);
+                        diffusionTable[curi][curj] = diffusion;
                     }
                 }
             }
@@ -290,20 +322,30 @@ int main(int argc, char* argv[]) {
 
     }
     
-    std::ofstream lookupFile;
-    lookupFile.open("drift_times_lookup.csv");
+    std::ofstream lookupFile("drift_times_lookup.csv");
+    std::ofstream diffusionFile("diffusion_lookup.csv");
     
     // Save lookup table data to csv file
     for (int i=0; i<totalBins; i++){
         std::string rowData = "";
-        for (int j=0; j<totalBins; j++){
+        std::string diffRowData = "";
+        
+        // Column 1 has junk in it so start at j=1
+        for (int j=1; j<totalBins-1; j++){
             rowData += std::to_string(lookupTable[i][j]);
             if (j != (totalBins-1)) rowData += ",";
+                
+            auto [dl, dt]  = diffusionTable[i][j];
+            diffRowData += std::to_string(dl) + "|" + std::to_string(dt);
+            if (j != (totalBins-1)) diffRowData += ",";
         }
         lookupFile << rowData << "\n";
+        diffusionFile << diffRowData << "\n";
     }
     
     lookupFile.close();
+    diffusionFile.close();
+    
     //app.Run(kTRUE);
     
     return 0;
