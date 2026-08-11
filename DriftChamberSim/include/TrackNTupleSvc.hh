@@ -11,6 +11,8 @@
 #include <string>
 #include <vector> 
 
+using pConstants = DriftChamberSim::TrackedParticle::ParticleConstants;
+
 namespace DriftChamberSim {
     
 class TrackNTupleSvc { 
@@ -32,12 +34,16 @@ public:
 
     void addTrackSegment( const size_t trackID, 
                           const TrackSegment& trackSegment ); 
+                          
+    void addConstants(const pConstants constants);
 
     const TrackedParticle* getParticle( const size_t trackID ) const;
         
 private:
     TFile* m_file{nullptr}; 
     TTree* m_tree{nullptr};
+    
+    pConstants m_constants;
 
     TrackedParticle* m_particlePtr{nullptr}; 
     TrackedParticle* m_deltaPtr{nullptr}; 

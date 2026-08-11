@@ -8,15 +8,12 @@ ClassImp(TrackedParticle)
 TrackedParticle::TrackedParticle( const int id, 
                     const XYZVector& position, 
                     const PxPyPzEVector& momentum,
-                    const bool isDeltaRay,
-                    const double mass,
-                    const XYZVector& magneticField) : 
+                    const bool isDeltaRay
+                    ) : 
     m_id( id ), 
     m_position( position ), 
     m_momentum( momentum ),
-    m_isDelta( isDeltaRay ),
-    m_mass( mass ),
-    m_magneticField( magneticField ){};
+    m_isDelta( isDeltaRay ){};
 
 double TrackedParticle::getEnergyLoss() const { 
 

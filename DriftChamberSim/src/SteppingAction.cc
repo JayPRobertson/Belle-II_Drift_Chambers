@@ -14,6 +14,7 @@
 #include "TrackedParticle.hh"
 
 using xyzVector = ROOT::Math::XYZVector;
+using pConstants = DriftChamberSim::TrackedParticle::ParticleConstants;
 
 SteppingAction::SteppingAction(DriftChamberSim::EventAction* eventAction)
  : fEventAction(eventAction){}
@@ -33,6 +34,22 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     if (creatorProcess) {
       G4String procName = creatorProcess->GetProcessName();
       if (procName.substr(procName.length() - 4) == "Ioni") isMuon = false; 
+    }
+    
+    // Add particle constants to ROOT file once
+    if (!id){
+        G4double mass = fEventAction->GetMass();
+        G4double charge = fEventAction->GetCharge();
+        
+        G4ThreeVector Bfield = detectorConstruction->GetMagneticField();
+        xyzVector magField{Bfield.x(), Bfield.y(), Bfield.z()};
+        
+        pConstants conInstance;
+        conInstance.magneticField = Bfield;
+        conInstance.mass = mass;
+        conInstance.charge = charge;
+        
+        DriftChamberSim::TrackNTupleSvc::instance().addConstants(conInstance);
     }
     
     //_____________ Collect stepping data ______________
@@ -70,7 +87,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     }
     
     // Get point particle enters gas volume
-    if (preVol->GetName() != "GasLayerRing" &&
+    if (preVol->GetName() != "GasLayerRing" &&g
         postVol->GetName() == "GasLayerRing"){
 
         fEventAction->SetActualEntry(postStepPoint->GetPosition());
@@ -86,14 +103,14 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
                     fEventAction->GetInitEnergy()
         );
          
+        DriftChamberSim::TrackedParticle tParticle(id, entryPos, mom, !isMuon);
+        DriftChamberSim::TrackNTupleSvc::instance().addParticle( id, tParticle );
+        
+        //Add constants to ROOT file
         G4double mass = fEventAction->GetMass();
         
         G4ThreeVector Bfield = detectorConstruction->GetMagneticField();
         xyzVector magField{Bfield.x(), Bfield.y(), Bfield.z()};
-         
-        DriftChamberSim::TrackedParticle tParticle(id, entryPos, mom, !isMuon, mass, magField);
-        DriftChamberSim::TrackNTupleSvc::instance().addParticle( id, tParticle );
-      
   }
     
     if(preVol->GetName() == "GasLayerRing" &&

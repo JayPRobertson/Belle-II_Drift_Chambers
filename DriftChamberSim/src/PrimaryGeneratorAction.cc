@@ -6,13 +6,16 @@
 #include "HelixApproach.hh"
 #include "G4RunManager.hh"
 
-#include "Randomize.hh"
 #include <cmath>
+#include "Randomize.hh"
 
 #include "EventAction.hh"
 #include "DetectorConstruction.hh"
+#include "RandomGenerator.hh"
 
 namespace DriftChamberSim {
+  
+auto ranInstance = RandomGenerator::instance();
   
 PrimaryGeneratorAction::PrimaryGeneratorAction(EventAction* eventAction): fEventAction(eventAction){
   
@@ -37,21 +40,20 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
   
     // Set seed of the ran generator
     int seed = detectorConstruction->GetSeed();
-    if (seed >= 0) G4Random::setTheSeed(seed + fPrimaryCount);
+    if (seed >= 0) ranInstance.setSeed(seed + fPrimaryCount);
     if (!fPrimaryCount) G4cout << "SEED = " << seed << G4endl;
     fPrimaryCount++;
     
     // Generate a track starting at the origin going in a random direction
-    
-    G4double cosTheta = 2.0*G4UniformRand() - 1.0;
+    G4double cosTheta = 2.0 * ranInstance.fromUniform(0.,1.) - 1.0;
     G4double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
 
-    G4double phi = 2.0*CLHEP::pi*G4UniformRand();
+    G4double phi = 2.0 * CLHEP::pi * ranInstance.fromUniform(0,1);
 
     G4double px = sinTheta*std::cos(phi);
     G4double py = sinTheta*std::sin(phi);
     G4double pz = cosTheta;
-
+    
     G4ThreeVector direction(px, py, pz);
     direction = direction.unit();
     
@@ -89,6 +91,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event){
     fEventAction->SetPredictedExit(exit);
     fEventAction->SetInitMomentum(momentum);
     fEventAction->SetMass(particleMass);
+    fEventAction->SetCharge(charge);
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction(){

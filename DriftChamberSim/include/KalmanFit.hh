@@ -39,11 +39,14 @@ public:
     
     struct CellHit {
         xyzVector wirePos;
+        xyzVector initMom;
         double length;
         int layer;
         int cell;
         Point entry;
         Point exit;
+        double t1;
+        double t2;
     };
     
     IndexMap GetLookupTable(std::string fileName);
@@ -66,10 +69,13 @@ public:
 
 private:
     const double avgNumClusters = 109.68 /10.; // clusters per mm
-    double particleMass = 0.0;
     std::map<int, int> numWiresPerLayer;
     
     std::vector<KalmanHit> kalmanHits;
+    
+    xyzVector BField;
+    double particleCharge;
+    double particleMass;
 };
 
 } // namespace

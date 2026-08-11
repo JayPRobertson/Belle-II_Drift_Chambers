@@ -21,9 +21,7 @@ public:
     TrackedParticle( const int id, 
               const XYZVector& position, 
               const PxPyPzEVector& momentum,
-              const bool isDelta,
-              const double mass,
-              const XYZVector& magneticField); 
+              const bool isDelta); 
     
     TrackedParticle( const TrackedParticle& other ) = default; 
 
@@ -35,16 +33,12 @@ public:
     XYZVector getMomentum() const { return m_momentum.Vect(); }
     PxPyPzEVector getFourMomentum() const { return m_momentum; }
     bool getIfDelta() const { return m_isDelta; }
-    double getMass() const { return m_mass; }
-    XYZVector getBField() const { return m_magneticField; }
 
     void setID( const int id ){ m_id = id; }
     void setPosition( const XYZVector& position ){ m_position = position; }
     void setMomentum( const PxPyPzEVector& momentum ){m_momentum = momentum; }
     void setIfDelta( const bool isDelta ) { m_isDelta = isDelta; }
-    void setMass( const double mass) { m_mass =  mass; }
-    void setBField( const XYZVector Bfield) { m_magneticField = Bfield; }
-
+    
     void addTrackSegments( const std::vector< TrackSegment >& segments ){
         m_trackSegments = segments; 
     }
@@ -100,15 +94,27 @@ public:
         
         ClassDefNV(KalmanHit, 1);   
     };
+    
+    struct ParticleConstants: public TObject {
+        XYZVector magneticField;
+        double mass;
+        double charge;
+        
+        ParticleConstants() : mass(0), charge(0) {}
+      
+        XYZVector getBField() const { return magneticField; }
+        double getMass() const { return mass; }
+        double getCharge() const { return charge; }
+        
+        ClassDefNV(ParticleConstants, 1); 
+    };
 
 private: 
     int m_id = 0; 
     XYZVector     m_position{0,0,0}; 
     PxPyPzEVector m_momentum{0,0,0,0}; 
-    XYZVector     m_magneticField{0,0,0}; 
     
     bool m_isDelta = false;
-    double m_mass = 0.0;
 
     std::vector< TrackSegment > m_trackSegments; 
 

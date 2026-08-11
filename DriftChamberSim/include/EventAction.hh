@@ -46,6 +46,9 @@ class EventAction : public G4UserEventAction{
     
     void SetMass(G4double mass) { fMass = mass; }
     G4double GetMass() { return fMass; }
+    
+    void SetCharge(G4double charge) { fCharge = charge; }
+    G4double GetCharge() { return fCharge; }
 
 private:
     G4int curIndex = 0;
@@ -61,6 +64,7 @@ private:
     G4double fInitEnergy = 0.0;
     
     G4double fMass = 0.0;
+    G4double fCharge = 0.0;
     
     bool enteredGas = false; 
 };

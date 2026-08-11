@@ -9,7 +9,7 @@ ClassImp(TrackNTupleSvc)
 
 TrackNTupleSvc::TrackNTupleSvc() 
     : m_particlePtr( new TrackedParticle ), 
-      m_deltaPtr( new TrackedParticle ) 
+      m_deltaPtr( new TrackedParticle )
 {}
 
 TrackNTupleSvc::~TrackNTupleSvc(){
@@ -48,6 +48,7 @@ void TrackNTupleSvc::fileOpen( const std::string& fileName ){
     m_tree = new TTree( "Particles", "Particles");
     m_tree->Branch("Particle",&m_particlePtr); 
     m_tree->Branch("DeltaRay",&m_deltaPtr); 
+    m_tree->Branch("Constants",&m_constants);
 }
 
 // Find the TrackedParticle object with a given trackID
@@ -70,6 +71,13 @@ void TrackNTupleSvc::addParticle( const size_t trackID,
 void TrackNTupleSvc::addTrackSegment( const size_t trackID,
                                  const TrackSegment& trackSegment ){
     m_trackSegments[ trackID ].emplace_back( trackSegment );
+}
+
+// Update the fields that are constant between all particles
+void TrackNTupleSvc::addConstants(const pConstants constants){
+    m_constants.magneticField = constants.magneticField;
+    m_constants.mass = constants.mass;
+    m_constants.charge = constants.charge;
 }
 
 // Order the track segments by increasing radial distance
@@ -103,7 +111,6 @@ void TrackNTupleSvc::fillTree(){
         cur_ptr->setID( particle.getID() );
         cur_ptr->setPosition( particle.getPosition() );
         cur_ptr->setMomentum( particle.getFourMomentum() );
-        cur_ptr->setMass( particle.getMass() );
         cur_ptr->clearTrackSegments();
 
         auto segmentIterator = m_trackSegments.find( id );

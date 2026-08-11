@@ -28,11 +28,13 @@
 
 #include "KalmanFit.hh"
 #include "HelixApproach.hh"
+#include "RandomGenerator.hh"
 
 using Point = DriftChamberSim::KalmanFit::Point;
 using Intersection = DriftChamberSim::KalmanFit::Intersection;
 using CellCrossing = DriftChamberSim::KalmanFit::CellCrossing;
 using CellHit = DriftChamberSim::KalmanFit::CellHit;
+using ParticleConstants = DriftChamberSim::TrackedParticle::ParticleConstants;
 
 namespace DriftChamberSim {
     
@@ -72,21 +74,25 @@ void KalmanFit::ProcessParticleTracks(){
     
     TTree* rootTree = (TTree*)file->Get("Particles");
     TTreeReader reader(rootTree);
-    TTreeReaderValue<TrackedParticle> particle(reader, "Particle");
     
     std::map<int, std::vector<LayerHit>> trackMap;
     std::map<int, xyzVector> momMap;
     
-    xyzVector BField;
+    TTreeReaderValue<ParticleConstants> constants(reader, "Constants");
+    
+    while (reader.Next()) {
+        BField = {constants->getBField().X(), constants->getBField().Y(), constants->getBField().Z()};
+        particleMass = constants->getMass();
+        particleCharge = constants->getCharge();
+        break;
+    }
+    
+    reader.Restart();
+    TTreeReaderValue<TrackedParticle> particle(reader, "Particle");            
     
     // Process input data
     while (reader.Next()) {
         int trackID = particle->getID();
-        particleMass = particle->getMass();
-        
-        BField = {particle->getBField().X(),
-                  particle->getBField().Y(),
-                  particle->getBField().Z()};
             
         xyzVector initMom = {particle->getMomentum().X(), 
                              particle->getMomentum().Y(), 
@@ -120,9 +126,9 @@ void KalmanFit::ProcessParticleTracks(){
     
     // Initialize GenFit
     std::cout << "Initializing GenFit field" << std::endl;
-    genfit::FieldManager::getInstance()->init(new genfit::ConstField(BField.X() *10.,
-                                                                     BField.Y() *10.,
-                                                                     BField.Z() *10.)); 
+    genfit::FieldManager::getInstance()->init(new genfit::ConstField(BField.X() *10.e4,
+                                                                     BField.Y() *10.e4,
+                                                                     BField.Z() *10.e4)); 
     genfit::MaterialEffects::getInstance()->setNoEffects();
     
     IndexMap timeTable = GetLookupTable("drift_times_lookup.csv");
@@ -211,7 +217,10 @@ std::pair<std::vector<xyzVector>, std::vector<CellHit>> KalmanFit::GetDetectedWi
                         layerIndex,
                         i,
                         crossing.entry,
-                        crossing.exit
+                        crossing.exit,
+                        t1,
+                        t2,
+                        sortedHits.initMom
                 });
         
                 if(!cellAdded){
@@ -230,23 +239,31 @@ std::pair<std::vector<xyzVector>, std::vector<CellHit>> KalmanFit::GetDetectedWi
 }
 
 void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
-    TRandom3 rnd; 
+    auto ranInstance = RandomGenerator::instance();
     
     // Look at the track segment through each cell it hits
     for (auto cell : detectedCells){
-        int numClusters = std::lround(cell.length * avgNumClusters);
+        int numClusters = ranInstance.fromPoisson(cell.length * avgNumClusters);
         xyzVector origin = cell.wirePos;
-        Point p1{cell.entry.x - origin.X(), cell.entry.y - origin.Y()};
-        Point p2{cell.exit.x - origin.X(), cell.exit.y - origin.y()};
+        
+        // Get a helix trajectory over the cell
+        G4ThreeVector entryPoint = {cell.entry.x - origin.X(),
+                                    cell.entry.y - origin.Y(),
+                                    cell.entry.z - origin.Z()}  
+        G4ThreeVector entryMom = {cell.initMom.x, cell.initMom.y, cell.initMom.z};
+        G4ThreeVector magField = {BField.x, BField.y, BField.z};
+        
+        HelixApproach helix(entryPoint, entryMom, magField, particleMass, particleCharge);
         
         // Randomly generate clusters along the track in the cur cell
         for (int i=0; i < numClusters; i++){
-            double u = rnd.Uniform(0, 1);
             
-            Point clusterOrigin = {((1.-u)*p1.x + u*p2.x), ((1.-u)*p1.y + u*p2.y)};
+            // Find position along helix at time ut
+            double ut = ranInstance.fromUniform(0., cell.t2-cell.t1); 
+            G4ThreeVector clusterOrigin = helix.Position(ut);
             
-            int curi = static_cast<int>(std::round(clusterOrigin.x));
-            int curj = static_cast<int>(std::round(clusterOrigin.y));
+            int curi = static_cast<int>(std::round(clusterOrigin.x()));
+            int curj = static_cast<int>(std::round(clusterOrigin.y()));
             
             // Make positive index starting at 0
             curi *= (curi > 0) ? 2 : -1;
@@ -353,10 +370,10 @@ void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID
        if (status->isFitConverged()) {
            genfit::MeasuredStateOnPlane state = gfTrack->getFittedState();
 
-           double s = 200.;
+           double s = 100.;
            bool passedOrigin = false;
-           const double epsilon = 1; 
-           while (!passedOrigin && std::abs(s) < 800.) {
+           const double epsilon = 5; 
+           while (!passedOrigin && std::abs(s) < 200.) {
                genfit::MeasuredStateOnPlane sampleState(state);
                
                try {

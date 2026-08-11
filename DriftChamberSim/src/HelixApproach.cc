@@ -41,6 +41,7 @@ HelixApproach::HelixApproach(
         0.0);
 }
 
+// Minimal version to get track length after time
 HelixApproach::HelixApproach(
     const G4ThreeVector& momentum,
     G4double mass){
