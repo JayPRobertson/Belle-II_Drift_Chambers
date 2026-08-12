@@ -1,5 +1,7 @@
 #include "RandomGenerator.hh"
 
+namespace DriftChamberSim {
+
 RandomGenerator& RandomGenerator::instance() { 
     static RandomGenerator instance;
     return instance; 
@@ -46,3 +48,5 @@ int RandomGenerator::fromRange( const int range_min,
     std::uniform_int_distribution<> distribution( range_min, range_max );
     return distribution( m_random );
 }
+
+} // namespace

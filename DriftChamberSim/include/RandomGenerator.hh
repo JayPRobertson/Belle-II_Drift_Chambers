@@ -1,7 +1,9 @@
 #ifndef RANDOMGENERATOR_H
-#define RANDOMGENERATOR_H
+#define RANDOMGENERATOR_H 1
 
 #include <random>
+
+namespace DriftChamberSim {
 
 class RandomGenerator { 
     public:
@@ -27,5 +29,6 @@ class RandomGenerator {
         std::mt19937 m_random{ std::random_device()() }; 
 };
 
+} // namespace
 
 #endif 

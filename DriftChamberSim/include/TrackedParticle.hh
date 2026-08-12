@@ -62,8 +62,9 @@ public:
         double exitTime;
         double edep;
         int layerID;
+        int trackID;
         
-        LayerHit() : entryTime(0), exitTime(0), edep(0), layerID(0) {}
+        LayerHit() : entryTime(0), exitTime(0), edep(0), layerID(0), trackID(0) {}
     
         XYZVector getEntryPosition() const { return entryPos; }
         XYZVector getExitPosition() const { return exitPos; }
@@ -73,6 +74,7 @@ public:
         double getExitTime() const { return exitTime; }
         double getEnergyDeposition() const { return edep; }
         int getLayerID() const { return layerID; } 
+        int getTrackID() const { return trackID; } 
         
         ClassDefNV(LayerHit, 1); 
     };

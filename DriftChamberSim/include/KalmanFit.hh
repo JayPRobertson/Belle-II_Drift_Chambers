@@ -8,6 +8,7 @@
 #include "TObject.h"
 
 #include "TrackedParticle.hh"
+#include "HelixApproach.hh"
 
 using xyzVector = ROOT::Math::XYZVector;
 using LayerHit = DriftChamberSim::TrackedParticle::LayerHit;
@@ -52,19 +53,20 @@ public:
     IndexMap GetLookupTable(std::string fileName);
     std::map<int, int> GetWiresPerLayer(); 
     
-    bool isAngleInRange(double theta, double thetaMin, double thetaMax);
-    bool isPointInRegion(Point p, double rMin, double rMax, 
+    HelixApproach GetHelix(CellHit cell);
+    bool IsAngleInRange(double theta, double thetaMin, double thetaMax);
+    bool IsPointInRegion(Point p, double rMin, double rMax, 
                          double thetaMin, double thetaMax);
-    bool onSegment(Point p, Point q, Point r);
-    Intersection isIntersect(Point a, Point b, Point c, Point d);
-    std::vector<Intersection> isIntersectArc(Point p1, Point p2, 
+    bool OnSegment(Point p, Point q, Point r);
+    Intersection IsIntersect(Point a, Point b, Point c, Point d);
+    std::vector<Intersection> IsIntersectArc(Point p1, Point p2, 
                          double R, double thetaMin, double thetaMax);
-    CellCrossing isInCell(LayerHit hit, double rMin, 
+    CellCrossing IsInCell(LayerHit hit, double rMin, 
                          double rMax, double thetaMin, double thetaMax);
     
-    std::pair<std::vector<xyzVector>, std::vector<CellHit>> GetDetectedWires(std::vector<LayerHit> sortedHits);
+    std::vector<CellHit> GetDetectedWires(const std::vector<LayerHit>& sortedHits);
     void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
-    void GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID, xyzVector initMomentum);
+    void GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xyzVector initMomentum);
     void ProcessParticleTracks();
 
 private:

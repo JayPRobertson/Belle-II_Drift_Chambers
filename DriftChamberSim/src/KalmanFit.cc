@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <TRandom3.h>
 
-#include <SpacepointMeasurement.h>
+#include <WireMeasurementNew.h>
 #include <Track.h>
 #include <RKTrackRep.h>
 #include <KalmanFitterRefTrack.h>
@@ -25,9 +25,9 @@
 #include <ConstField.h>
 
 #include "G4ThreeVector.hh"
+#include "TVector3.h"
 
 #include "KalmanFit.hh"
-#include "HelixApproach.hh"
 #include "RandomGenerator.hh"
 
 using Point = DriftChamberSim::KalmanFit::Point;
@@ -43,7 +43,7 @@ const double TWOPI = 2. * M_PI;
 void KalmanFit::ProcessParticleTracks(){
     
     // Open ROOT files
-    TFile* file = TFile::Open("particle_and_track_data.root");    // in
+    TFile* file = TFile::Open("particle_and_track_data.root");     // in
     TFile* outFile = new TFile("kalman_output.root", "RECREATE");  // out
     
     if (!file || file->IsZombie()) {
@@ -118,6 +118,7 @@ void KalmanFit::ProcessParticleTracks(){
             hit.exitTime = seg.getExitTime();
             hit.edep = seg.getEnergyLoss();
             hit.layerID = seg.getLayerIndex();
+            hit.trackID = trackID;
             
             trackMap[trackID].push_back(hit);
             actualHits.push_back(hit);
@@ -126,13 +127,18 @@ void KalmanFit::ProcessParticleTracks(){
     
     // Initialize GenFit
     std::cout << "Initializing GenFit field" << std::endl;
-    genfit::FieldManager::getInstance()->init(new genfit::ConstField(BField.X() *10.e4,
-                                                                     BField.Y() *10.e4,
-                                                                     BField.Z() *10.e4)); 
+    genfit::FieldManager::getInstance()->init(new genfit::ConstField(BField.X() *1.e4,
+                                                                     BField.Y() *1.e4,
+                                                                     BField.Z() *1.e4)); 
     genfit::MaterialEffects::getInstance()->setNoEffects();
     
     IndexMap timeTable = GetLookupTable("drift_times_lookup.csv");
     IndexMap diffusionTable = GetLookupTable("diffusion_lookup.csv");
+    
+    // Setup outfile
+    std::ofstream chiFile("chi2.csv");
+    chiFile << "chi2,ndf\n";
+    chiFile.close();
     
     int count = 0;
     
@@ -146,16 +152,16 @@ void KalmanFit::ProcessParticleTracks(){
                 return a.layerID < b.layerID;
         });
 
-        auto [detectedWirePos, detectedCells] = GetDetectedWires(hits);
+        std::vector<CellHit> detectedCells = GetDetectedWires(hits);
         
         if (count == 2){
             GetClusterInfo(detectedCells, timeTable, diffusionTable);
         }
         count++;
         
-        GetKalmanFit(detectedWirePos, i, momMap[i]);
+        GetKalmanFit(detectedCells, i, momMap[i]);
     }
-    
+
     outTree->Fill();
     outTree->Write();
     
@@ -167,75 +173,75 @@ void KalmanFit::ProcessParticleTracks(){
     delete outFile;
 }
 
-std::pair<std::vector<xyzVector>, std::vector<CellHit>> KalmanFit::GetDetectedWires(std::vector<LayerHit> sortedHits){
-    
-    std::vector<xyzVector> detectedWirePos;
+std::vector<CellHit> KalmanFit::GetDetectedWires(const std::vector<LayerHit>& sortedHits){
     std::vector<CellHit> detectedCells;
-  
+
     for (const auto& layerHit : sortedHits) {
         
         // Entry and exit positions and radii
-        xyzVector entryPos = layerHit.entryPos;
-        xyzVector exitPos  = layerHit.exitPos;
+        const xyzVector& entryPos = layerHit.entryPos;
+        const xyzVector& exitPos  = layerHit.exitPos;
+
         double r1 = std::hypot(entryPos.X(), entryPos.Y());
         double r2 = std::hypot(exitPos.X(), exitPos.Y());
-    
+            
         // Midpoint radius
         double r = 0.5 * (r1 + r2);
-            
+
         int layerIndex = layerHit.layerID - 20000;
-        int n = numWiresPerLayer[layerIndex];
-        double delta = DriftChamberSim::TWOPI / static_cast<double>(n);
-        
-        bool cellAdded = false;
-        int cellCount = 0;
-    
-        // Alternate layers are staggered by half a cell
+
+        auto it = numWiresPerLayer.find(layerIndex);
+        if (it == numWiresPerLayer.end()) {
+            std::cerr << "Warning: no wire count for layer "
+                      << layerIndex << std::endl;
+            continue;
+        }
+
+        int n = it->second;
+        double delta = TWOPI / static_cast<double>(n);
+
+        // Alternate layers are staggered by half a cell.
         double offset = (layerIndex % 2 == 0) ? 0.0 : delta / 2.0;
-    
-        for (int i = 0; i < n; ++i){  
+
+        for (int i = 0; i < n; ++i) {
+
             double t1 = offset + i * delta;
             double t2 = offset + (i + 1) * delta;
-        
+
             double thetaMin = std::atan2(std::sin(t1), std::cos(t1));
+
             double thetaMax = std::atan2(std::sin(t2), std::cos(t2));
-        
-            CellCrossing crossing = isInCell(layerHit, r1, r2, thetaMin, thetaMax);
-        
-            if(crossing.crossed){
-                double tc = offset + (i + 0.5) * delta; // Cell centre
-                
-                double wireX = r * std::cos(tc);
-                double wireY = r * std::sin(tc);
-                double wireZ = 0.5 * (entryPos.Z()+exitPos.Z());
-        
-                xyzVector wirePosition(wireX, wireY, wireZ);
-        
-                detectedCells.push_back({
-                        wirePosition,
-                        crossing.length,
-                        layerIndex,
-                        i,
-                        crossing.entry,
-                        crossing.exit,
-                        t1,
-                        t2,
-                        sortedHits.initMom
-                });
-        
-                if(!cellAdded){
-                    detectedWirePos.push_back(wirePosition);
-                    cellAdded = true;
-                }
-                cellCount++;
-                       
-            } else if(cellAdded){
-                break;
-            }
+
+            CellCrossing crossing = IsInCell(layerHit, r1, r2, thetaMin, thetaMax);
+
+            if (!crossing.crossed)
+                continue;
+
+            double tc = offset + (i + 0.5) * delta; // Cell centre
+
+            double wireX = r * std::cos(tc);
+            double wireY = r * std::sin(tc);
+            double wireZ = 0.5 * (entryPos.Z() + exitPos.Z());
+
+            xyzVector wirePosition(wireX, wireY, wireZ);
+
+            detectedCells.push_back({
+                wirePosition,
+                layerHit.initMom,
+                crossing.length,
+                layerIndex,
+                i,
+                crossing.entry,
+                crossing.exit,
+                t1,
+                t2
+            });
+
+            break;
         }
     }
-    
-    return std::make_pair(detectedWirePos, detectedCells);
+
+    return detectedCells;
 }
 
 void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
@@ -244,16 +250,8 @@ void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap time
     // Look at the track segment through each cell it hits
     for (auto cell : detectedCells){
         int numClusters = ranInstance.fromPoisson(cell.length * avgNumClusters);
-        xyzVector origin = cell.wirePos;
         
-        // Get a helix trajectory over the cell
-        G4ThreeVector entryPoint = {cell.entry.x - origin.X(),
-                                    cell.entry.y - origin.Y(),
-                                    cell.entry.z - origin.Z()}  
-        G4ThreeVector entryMom = {cell.initMom.x, cell.initMom.y, cell.initMom.z};
-        G4ThreeVector magField = {BField.x, BField.y, BField.z};
-        
-        HelixApproach helix(entryPoint, entryMom, magField, particleMass, particleCharge);
+        HelixApproach helix = GetHelix(cell);
         
         // Randomly generate clusters along the track in the cur cell
         for (int i=0; i < numClusters; i++){
@@ -293,127 +291,169 @@ void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap time
 
 
 // Gets the Kalman fit of a track based on its layer hits
-void KalmanFit::GetKalmanFit(std::vector<xyzVector> detectedWirePos, int trackID, xyzVector initMomentum){
+void KalmanFit::GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xyzVector initMomentum){
     
-    std::sort(detectedWirePos.begin(), detectedWirePos.end(), 
-         [](const xyzVector& v1, const xyzVector& v2) {
-                return v1.R() < v2.R(); 
+    // Sort measurements from inner radius to outer radius.
+    std::sort(detectedCells.begin(), detectedCells.end(),
+        [](const CellHit& a, const CellHit& b) {
+            return a.wirePos.perp2() < b.wirePos.perp2();
     });
-        
-    if(detectedWirePos.size() > 300 || detectedWirePos.size() < 5){
+
+    if(detectedCells.size() > 300 || detectedCells.size() < 5){
         std::cout << "Skipping track " << trackID 
-                  << " too many or too few hits " << detectedWirePos.size() 
+                  << " too many or too few hits " << detectedCells.size() 
                   << std::endl;
     
         return;
     }
 
-    xyzVector p1 = detectedWirePos.front();
-    
+    const xyzVector& p1 = detectedCells.front().wirePos;
+
     TVector3 initPos(p1.X()/10., p1.Y()/10., p1.Z()/10.); //[cm]
-    size_t directionIndex = std::min((size_t)5, detectedWirePos.size()-1);
-    
-    xyzVector p2 = detectedWirePos[directionIndex];
+    size_t directionIndex = std::min(static_cast<size_t>(5), detectedCells.size()-1);
+
+    const xyzVector& p2 = detectedCells[directionIndex].wirePos;
     xyzVector direction = (p2-p1).unit();
-    
-    double momentum = initMomentum.R()/1000.0; //[GeV]
+
+    double momentum = initMomentum.R() / 1000.; //[GeV]
 
     TVector3 initMom(
-        direction.X()*momentum,
-        direction.Y()*momentum,
-        direction.Z()*momentum
+        direction.X() * momentum,
+        direction.Y() * momentum,
+        direction.Z() * momentum
     );
 
+    // Create genfit track
     auto* rep = new genfit::RKTrackRep(13);
     auto* gfTrack = new genfit::Track(rep, initPos, initMom);
 
     int hitID = 0;
-    for (auto pos : detectedWirePos){
-        TVectorD coords(3);
-        coords[0] = pos.X()/10.; //[cm]
-        coords[1] = pos.Y()/10.; //[cm]
-        coords[2] = pos.Z()/10.; //[cm]
+    const double wireHalfLength = 1000.; //Arbitrary length
 
-        // Measurement uncertainties
-        double sigmaXY = 0.5;
-        double sigmaZ = 0.5; 
+    for (const auto& cell : detectedCells) {
+                                  
+        // Convert positions to [cm]
+        const double wireX = cell.wirePos.X() / 10.; 
+        const double wireY = cell.wirePos.Y() / 10.;
+        const double wireZ = cell.wirePos.Z() / 10.;
         
-        TMatrixDSym cov(3);
-        cov.Zero();
+         // Find shortest drift distance between track in the cell and wire
+        HelixApproach helix = GetHelix(cell);
+        double increment = (cell.t2 - cell.t1)/1000.;
+        double driftDistance = 1000.; 
+        bool isIncreasing = false;
         
-        cov(0,0)=sigmaXY*sigmaXY;
-        cov(1,1)=sigmaXY*sigmaXY;
-        cov(2,2)=sigmaZ*sigmaZ;
+        for (double t = cell.t1; t < cell.t2; t+=increment){
+            G4ThreeVector pos = helix.Position(t);
+            
+            double curDistance = std::hypot(pos.x()/10. - wireX, 
+                                            pos.y()/10. - wireY,
+                                            pos.z()/10. - wireZ);
+                
+            if (curDistance < driftDistance){
+                driftDistance = curDistance;
+            }else{
+                isIncreasing = true;
+            }
+            if (isIncreasing) break;
+        }
+        
+        const double driftDistanceError = 1.0 * driftDistance;
+        
+        TVector3 endPoint1(wireX, wireY, wireZ - wireHalfLength);
+        TVector3 endPoint2(wireX, wireY, wireZ + wireHalfLength);
 
-        auto* measurement = new genfit::SpacepointMeasurement(
-            coords, cov, 0, hitID, nullptr );
+        auto* measurement = new genfit::WireMeasurementNew(
+                driftDistance,
+                driftDistanceError,
+                endPoint1,
+                endPoint2,
+                0,           // detID
+                hitID,       // hitID         
+                nullptr      // trackPoint
+        );
 
         gfTrack->insertMeasurement(measurement);
-        hitID++;
+
+        ++hitID;
     }
 
     genfit::KalmanFitterRefTrack fitter;
+
     fitter.setMaxIterations(100);
+    fitter.setMultipleMeasurementHandling(
+        genfit::EMultipleMeasurementHandling::unweightedClosestToReferenceWire
+    );
 
     try {
         fitter.processTrack(gfTrack);
         auto* status = gfTrack->getFitStatus(rep);
-        
-        // Print out fitting status
+
         std::cout << ">>> Track = " << trackID
-                  << ", hits = " << detectedWirePos.size()
+                  << ", hits = " << detectedCells.size()
                   << ", fitted = " << status->isFitted()
                   << ", converged = " << status->isFitConverged()
                   << ", chi2 = " << status->getChi2()
-                  << ", ndf = " << status->getNdf() << std::endl;
-                  
-       if (status->isFitConverged()) {
-           genfit::MeasuredStateOnPlane state = gfTrack->getFittedState();
+                  << ", ndf = " << status->getNdf() 
+                  << ", X2v = " << status->getChi2()/status->getNdf() << std::endl;
+        
+        // Write out chi2 data        
+        std::ofstream chiFile("chi2.csv", std::ios_base::app);
+        chiFile << status->getChi2() << "," << status->getNdf() << "\n";
+        chiFile.close();
 
-           double s = 100.;
-           bool passedOrigin = false;
-           const double epsilon = 5; 
-           while (!passedOrigin && std::abs(s) < 200.) {
-               genfit::MeasuredStateOnPlane sampleState(state);
-               
-               try {
-                   rep->extrapolateBy(sampleState, s);
-                   TVector3 pos, mom;
-                   sampleState.getPosMom(pos, mom);
-                
-                   // Check if cur pos is ~origin
-                   if (std::abs(pos.X()) < epsilon && 
+        if (status->isFitConverged()) {
+            genfit::MeasuredStateOnPlane state = gfTrack->getFittedState();
+
+            double s = 100.;
+            bool passedOrigin = false;
+            const double epsilon = 5.;
+
+            while (!passedOrigin && std::abs(s) < 200.) {
+                genfit::MeasuredStateOnPlane sampleState(state);
+
+                try {
+                    rep->extrapolateBy(sampleState, s);
+                    TVector3 pos, mom;
+                    sampleState.getPosMom(pos, mom);
+
+                    // Check if cur pos is ~origin
+                    if (std::abs(pos.X()) < epsilon && 
                         std::abs(pos.Y()) < epsilon && 
                         std::abs(pos.Z()) < epsilon) {
                         passedOrigin = true;
-                   }
-        
-                   KalmanHit kHit;
-        
-                   kHit.hitPos.SetXYZ(pos.X() *10., pos.Y() *10., pos.Z() *10.);       //mm
-                   kHit.hitMom.SetXYZ(mom.X() *1000., mom.Y() *1000., mom.Z() *1000.); //MeV
-                   kHit.chi2 = status->getChi2();
-                   kHit.ndf = status->getNdf();
-                   kHit.trackID = trackID;
-            
-                   kalmanHits.push_back(kHit);
-                
-               } catch (genfit::Exception& e) {
+                    }
+
+                    KalmanHit kHit;
+                    
+                    // Convert data to Geant4 units ([mm] and [MeV])
+                    kHit.hitPos.SetXYZ(pos.X() *10., pos.Y() *10., pos.Z() *10.);
+                    kHit.hitMom.SetXYZ(mom.X() *1000., mom.Y() *1000., mom.Z() *1000.);
+
+                    kHit.chi2 = status->getChi2();
+                    kHit.ndf = status->getNdf();
+                    kHit.trackID = trackID;
+
+                    kalmanHits.push_back(kHit);
+                    
+                } catch (genfit::Exception& e) {
                    G4cerr << "GenFit exception: " << e.what() << G4endl;
-                   break; // Exit loop if extrapolation fails
-               } catch (std::exception& e) {
+                   break;
+                } catch (std::exception& e) {
                    G4cerr << "Standard exception: " << e.what() << G4endl;
                    break;
-               } 
-               
-               s -= 2.0; 
-           }
-        }    
+                } 
+
+                s -= 2.0;
+            }
+        }
+        
     }catch (genfit::Exception& e) {
         G4cerr << "GenFit exception: " << e.what() << G4endl;
     }catch (std::exception& e) {
         G4cerr << "Standard exception: " << e.what() << G4endl;
     }
+      
     delete gfTrack; 
 }
 
@@ -440,7 +480,21 @@ IndexMap KalmanFit::GetLookupTable(std::string fileName){
     return lookupTable;
 }
 
-bool KalmanFit::isAngleInRange(double theta, double thetaMin, double thetaMax){
+// Returns the helix of the track across the cell
+HelixApproach KalmanFit::GetHelix(CellHit cell){
+    xyzVector origin = cell.wirePos;
+    G4ThreeVector entryPoint = {cell.entry.x - origin.X(),
+                                cell.entry.y - origin.Y(),
+                                cell.entry.z - origin.Z()};  
+                                    
+    G4ThreeVector entryMom = {cell.initMom.X(), cell.initMom.Y(), cell.initMom.Z()};
+    G4ThreeVector magField = {BField.X(), BField.Y(), BField.Z()};
+        
+    HelixApproach helix(entryPoint, entryMom, magField, particleMass, particleCharge);
+    return helix;
+}
+
+bool KalmanFit::IsAngleInRange(double theta, double thetaMin, double thetaMax){
     auto wrap = [](double a) { return std::remainder(a, DriftChamberSim::TWOPI); };
 
     theta = wrap(theta);
@@ -456,21 +510,21 @@ bool KalmanFit::isAngleInRange(double theta, double thetaMin, double thetaMax){
     return rel <= span;
 }
 
-bool KalmanFit::isPointInRegion(Point p, double rMin, double rMax, double thetaMin, double thetaMax){
+bool KalmanFit::IsPointInRegion(Point p, double rMin, double rMax, double thetaMin, double thetaMax){
     double r2 = p.x*p.x + p.y*p.y;
     if (r2 < rMin * rMin || r2 > rMax * rMax) return false;
     
     double theta = std::atan2(p.y, p.x);
-    return isAngleInRange(theta, thetaMin, thetaMax);
+    return IsAngleInRange(theta, thetaMin, thetaMax);
 }
 
-bool KalmanFit::onSegment(Point p, Point q, Point r) {
+bool KalmanFit::OnSegment(Point p, Point q, Point r) {
     return q.x <= std::max(p.x, r.x) && q.x >= std::min(p.x, r.x) &&
            q.y <= std::max(p.y, r.y) && q.y >= std::min(p.y, r.y);
 }
 
 // Check line segments intersect
-Intersection KalmanFit::isIntersect(Point a, Point b, Point c, Point d) {
+Intersection KalmanFit::IsIntersect(Point a, Point b, Point c, Point d) {
     double dx1 = b.x - a.x;
     double dy1 = b.y - a.y;
     double dx2 = d.x - c.x;
@@ -490,7 +544,7 @@ Intersection KalmanFit::isIntersect(Point a, Point b, Point c, Point d) {
     return {true, t, intersection};
 }
 
-std::vector<Intersection> KalmanFit::isIntersectArc(
+std::vector<Intersection> KalmanFit::IsIntersectArc(
         Point p1, Point p2, double R, double thetaMin, double thetaMax){
 
     std::vector<Intersection> intersections;
@@ -518,7 +572,7 @@ std::vector<Intersection> KalmanFit::isIntersectArc(
 
         Point p { p1.x + t * dx, p1.y + t * dy };
 
-        if (isAngleInRange(std::atan2(p.y, p.x), thetaMin, thetaMax)) {
+        if (IsAngleInRange(std::atan2(p.y, p.x), thetaMin, thetaMax)) {
             intersections.push_back({true, t, p});
         }
     }
@@ -526,7 +580,7 @@ std::vector<Intersection> KalmanFit::isIntersectArc(
     return intersections;
 }
 
-CellCrossing KalmanFit::isInCell(LayerHit hit, double rMin, 
+CellCrossing KalmanFit::IsInCell(LayerHit hit, double rMin, 
                       double rMax, double thetaMin, double thetaMax){
 
     std::vector<Intersection> intersections;
@@ -535,23 +589,22 @@ CellCrossing KalmanFit::isInCell(LayerHit hit, double rMin,
     Point p2{hit.exitPos.X(),  hit.exitPos.Y(), hit.exitPos.Z()};
 
     // Add start and end points if  already inside the cell
-    if (isPointInRegion(p1, rMin, rMax, thetaMin, thetaMax)){
+    if (IsPointInRegion(p1, rMin, rMax, thetaMin, thetaMax)){
         intersections.push_back({true, 0.0, p1});
     }
-    if (isPointInRegion(p2, rMin, rMax, thetaMin,thetaMax)){
+    if (IsPointInRegion(p2, rMin, rMax, thetaMin,thetaMax)){
         intersections.push_back({true, 1.0, p2});
     }
 
     // Check intersections with the two radial boundaries
-    Intersection radialMin = isIntersect( p1, p2,
+    Intersection radialMin = IsIntersect( p1, p2,
             {rMin * std::cos(thetaMin),
              rMin * std::sin(thetaMin)},
             {rMax * std::cos(thetaMin),
              rMax * std::sin(thetaMin)}
         );
 
-    Intersection radialMax =
-        isIntersect( p1, p2,
+    Intersection radialMax = IsIntersect( p1, p2,
             {rMin * std::cos(thetaMax),
              rMin * std::sin(thetaMax)},
             {rMax * std::cos(thetaMax),
@@ -562,8 +615,8 @@ CellCrossing KalmanFit::isInCell(LayerHit hit, double rMin,
     if(radialMax.valid)  intersections.push_back(radialMax);
 
     // Check intersections with the two circular boundaries
-    auto innerArc = isIntersectArc(p1, p2, rMin, thetaMin,thetaMax);
-    auto outerArc = isIntersectArc(p1, p2, rMax,thetaMin, thetaMax);
+    auto innerArc = IsIntersectArc(p1, p2, rMin, thetaMin,thetaMax);
+    auto outerArc = IsIntersectArc(p1, p2, rMax,thetaMin, thetaMax);
 
     for(auto& x : innerArc)
         intersections.push_back(x);
