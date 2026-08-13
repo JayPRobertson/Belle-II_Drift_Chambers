@@ -7,15 +7,8 @@ namespace DriftChamberSim {
 
 ClassImp(TrackNTupleSvc)
 
-TrackNTupleSvc::TrackNTupleSvc() 
-    : m_particlePtr( new TrackedParticle ), 
-      m_deltaPtr( new TrackedParticle )
-{}
-
-TrackNTupleSvc::~TrackNTupleSvc(){
-    delete m_particlePtr;
-    delete m_deltaPtr;
-}
+TrackNTupleSvc::TrackNTupleSvc(){}
+TrackNTupleSvc::~TrackNTupleSvc(){}
 
 // Write out data and free memory
 void TrackNTupleSvc::fileClose(){
@@ -46,9 +39,9 @@ void TrackNTupleSvc::fileOpen( const std::string& fileName ){
     }
         
     m_tree = new TTree( "Particles", "Particles");
-    m_tree->Branch("Particle",&m_particlePtr); 
-    m_tree->Branch("DeltaRay",&m_deltaPtr); 
-    m_tree->Branch("Constants",&m_constants);
+    m_tree->Branch("Particle", &m_particlesVec); 
+    m_tree->Branch("DeltaRay", &m_deltasVec); 
+    m_tree->Branch("Constants", &m_constants);
 }
 
 // Find the TrackedParticle object with a given trackID
@@ -97,29 +90,22 @@ void TrackNTupleSvc::sortTrackSegments(){
 void TrackNTupleSvc::fillTree(){
     int count = 0;
     
-    for ( const auto & [ id, particle ]: m_primaryParticles ){
+    for (auto& [ id, particle ]: m_primaryParticles ){
         count++;
-        m_particlePtr->Clear(); 
-        m_deltaPtr->Clear();
         
-        auto cur_ptr = m_particlePtr;
-        if (particle.getIfDelta()) {
-            cur_ptr = m_deltaPtr;
-        }
-
-        cur_ptr->setIfDelta( particle.getIfDelta() );
-        cur_ptr->setID( particle.getID() );
-        cur_ptr->setPosition( particle.getPosition() );
-        cur_ptr->setMomentum( particle.getFourMomentum() );
-        cur_ptr->clearTrackSegments();
-
         auto segmentIterator = m_trackSegments.find( id );
         if ( segmentIterator != m_trackSegments.end() ){
-            cur_ptr->addTrackSegments( segmentIterator->second );
+           particle.addTrackSegments( segmentIterator->second );
         }
-
-        m_tree->Fill();
+        
+        if (!particle.getIfDelta()) {
+            m_particlesVec.push_back(particle);
+        }else{
+            m_deltasVec.push_back(particle);
+        }
     }
+    
+    m_tree->Fill();
     m_trackSegments.clear();
     m_primaryParticles.clear();
     

@@ -45,8 +45,8 @@ private:
     
     pConstants m_constants;
 
-    TrackedParticle* m_particlePtr{nullptr}; 
-    TrackedParticle* m_deltaPtr{nullptr}; 
+    std::vector<TrackedParticle> m_particlesVec; 
+    std::vector<TrackedParticle> m_deltasVec; 
 
     std::unordered_map< size_t, std::vector<TrackSegment> > m_trackSegments;
     std::unordered_map< size_t, TrackedParticle > m_primaryParticles;
@@ -55,3 +55,4 @@ private:
 } // namespace
 
 #endif 
+

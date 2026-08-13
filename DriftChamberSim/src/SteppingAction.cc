@@ -87,7 +87,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
     }
     
     // Get point particle enters gas volume
-    if (preVol->GetName() != "GasLayerRing" &&g
+    if (preVol->GetName() != "GasLayerRing" &&
         postVol->GetName() == "GasLayerRing"){
 
         fEventAction->SetActualEntry(postStepPoint->GetPosition());

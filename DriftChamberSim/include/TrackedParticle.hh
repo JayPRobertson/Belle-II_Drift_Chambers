@@ -39,7 +39,7 @@ public:
     void setMomentum( const PxPyPzEVector& momentum ){m_momentum = momentum; }
     void setIfDelta( const bool isDelta ) { m_isDelta = isDelta; }
     
-    void addTrackSegments( const std::vector< TrackSegment >& segments ){
+    void addTrackSegments( std::vector< TrackSegment >& segments ){
         m_trackSegments = segments; 
     }
 

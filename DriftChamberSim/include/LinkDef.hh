@@ -9,8 +9,10 @@
 // Simulation 
 #pragma link C++ class DriftChamberSim::TrackedParticle+;
 #pragma link C++ class DriftChamberSim::TrackSegment+;
-#pragma link C++ class std::vector<DriftChamberSim::TrackSegment>+;
 #pragma link C++ class DriftChamberSim::TrackedParticle::ParticleConstants+;
+#pragma link C++ class std::vector<DriftChamberSim::TrackedParticle>+;
+#pragma link C++ class std::vector<DriftChamberSim::TrackSegment>+;
+#pragma link C++ class std::vector<DriftChamberSim::TrackedParticle::ParticleConstants>+;
 
 // Reconstruction
 #pragma link C++ class DriftChamberSim::TrackedParticle::LayerHit+;

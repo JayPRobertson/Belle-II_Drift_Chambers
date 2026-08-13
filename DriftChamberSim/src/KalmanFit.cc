@@ -88,40 +88,42 @@ void KalmanFit::ProcessParticleTracks(){
     }
     
     reader.Restart();
-    TTreeReaderValue<TrackedParticle> particle(reader, "Particle");            
+    TTreeReaderValue<std::vector<TrackedParticle>> particles(reader, "Particle");            
     
     // Process input data
     while (reader.Next()) {
-        int trackID = particle->getID();
-            
-        xyzVector initMom = {particle->getMomentum().X(), 
-                             particle->getMomentum().Y(), 
-                             particle->getMomentum().Z()};
-        momMap[trackID] = initMom;
- 
-        for (const auto& seg : particle->getTrackSegments()) {
-            LayerHit hit;
-            hit.entryPos = {seg.getEntryPosition().X(), 
-                            seg.getEntryPosition().Y(), 
-                            seg.getEntryPosition().Z()};
-            hit.initMom = { seg.getEntryMomentum().X(), 
-                            seg.getEntryMomentum().Y(), 
-                            seg.getEntryMomentum().Z()};
-            hit.exitPos = { seg.getExitPosition().X(), 
-                            seg.getExitPosition().Y(), 
-                            seg.getExitPosition().Z()};
-            hit.postMom = { seg.getExitMomentum().X(), 
-                            seg.getExitMomentum().Y(), 
-                            seg.getExitMomentum().Z()};
-                                
-            hit.entryTime = seg.getEntryTime();
-            hit.exitTime = seg.getExitTime();
-            hit.edep = seg.getEnergyLoss();
-            hit.layerID = seg.getLayerIndex();
-            hit.trackID = trackID;
-            
-            trackMap[trackID].push_back(hit);
-            actualHits.push_back(hit);
+        for (const auto& particle : *particles) {
+          int trackID = particle.getID();
+              
+          xyzVector initMom = {particle.getMomentum().X(), 
+                               particle.getMomentum().Y(), 
+                               particle.getMomentum().Z()};
+          momMap[trackID] = initMom;
+   
+          for (const auto& seg : particle.getTrackSegments()) {
+              LayerHit hit;
+              hit.entryPos = {seg.getEntryPosition().X(), 
+                              seg.getEntryPosition().Y(), 
+                              seg.getEntryPosition().Z()};
+              hit.initMom = { seg.getEntryMomentum().X(), 
+                              seg.getEntryMomentum().Y(), 
+                              seg.getEntryMomentum().Z()};
+              hit.exitPos = { seg.getExitPosition().X(), 
+                              seg.getExitPosition().Y(), 
+                              seg.getExitPosition().Z()};
+              hit.postMom = { seg.getExitMomentum().X(), 
+                              seg.getExitMomentum().Y(), 
+                              seg.getExitMomentum().Z()};
+                                  
+              hit.entryTime = seg.getEntryTime();
+              hit.exitTime = seg.getExitTime();
+              hit.edep = seg.getEnergyLoss();
+              hit.layerID = seg.getLayerIndex();
+              hit.trackID = trackID;
+              
+              trackMap[trackID].push_back(hit);
+              actualHits.push_back(hit);
+          }
         }
     }
     
@@ -134,11 +136,6 @@ void KalmanFit::ProcessParticleTracks(){
     
     IndexMap timeTable = GetLookupTable("drift_times_lookup.csv");
     IndexMap diffusionTable = GetLookupTable("diffusion_lookup.csv");
-    
-    // Setup outfile
-    std::ofstream chiFile("chi2.csv");
-    chiFile << "chi2,ndf\n";
-    chiFile.close();
     
     int count = 0;
     
@@ -396,11 +393,6 @@ void KalmanFit::GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xy
                   << ", chi2 = " << status->getChi2()
                   << ", ndf = " << status->getNdf() 
                   << ", X2v = " << status->getChi2()/status->getNdf() << std::endl;
-        
-        // Write out chi2 data        
-        std::ofstream chiFile("chi2.csv", std::ios_base::app);
-        chiFile << status->getChi2() << "," << status->getNdf() << "\n";
-        chiFile.close();
 
         if (status->isFitConverged()) {
             genfit::MeasuredStateOnPlane state = gfTrack->getFittedState();
