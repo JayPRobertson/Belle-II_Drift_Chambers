@@ -11,7 +11,7 @@ rm *.csv
 rm *.root
 
 make
-echo "i,numWires,r1,r2" > layer_radius.csv
+echo "i,numWires,wireLength,layerType,r1,r2" > layer_radius.csv
 
 cp ../gas_files/*.gas .
 ./DriftTimes
@@ -30,6 +30,7 @@ cp particle_and_track_data.root "$FILEPATH/root/"
 cp libDriftChamberlib.so "$FILEPATH/root/"
 cp drift_times_lookup.csv "$FILEPATH/csv/drifting/"
 cp diffusion_lookup.csv "$FILEPATH/csv/drifting/"
+cp layer_radius.csv "$FILEPATH/csv/drifting/"
 
 # Clean directory
 rm *.so

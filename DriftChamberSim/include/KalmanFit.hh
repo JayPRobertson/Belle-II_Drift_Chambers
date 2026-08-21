@@ -14,64 +14,50 @@ using xyzVector = ROOT::Math::XYZVector;
 using LayerHit = DriftChamberSim::TrackedParticle::LayerHit;
 using KalmanHit = DriftChamberSim::TrackedParticle::KalmanHit;
 using IndexMap = std::vector<std::vector<std::string>>;
+using HitData = std::vector<std::pair<xyzVector, std::pair<xyzVector, xyzVector>>>;
 
 namespace DriftChamberSim {
 
 class KalmanFit {
 public:
-    struct Point {
-        double x, y, z;
-    };
-    
-    struct Intersection {
-        bool valid = false;
-        double t = 0.0;   
-        Point p{0.0, 0.0, 0.0};
-    };
-    
-    struct CellCrossing {
-        bool crossed = false;
-    
-        Point entry{0.0, 0.0, 0.0};
-        Point exit{0.0, 0.0, 0.0};
-    
-        double length = 0.0;
+    struct WireInfo {
+        double wireLength;
+        xyzVector end1;
+        xyzVector end2;
     };
     
     struct CellHit {
         xyzVector wirePos;
         xyzVector initMom;
-        double length;
         int layer;
         int cell;
-        Point entry;
-        Point exit;
         double t1;
         double t2;
+        xyzVector entry;
+        xyzVector exit;
+        WireInfo wireInfo;
     };
     
+    // Helper functions
     IndexMap GetLookupTable(std::string fileName);
-    std::map<int, int> GetWiresPerLayer(); 
-    
+    bool AreVectorsEqual(xyzVector pA, xyzVector pB);
+    double GetDistance(xyzVector pA, xyzVector pB); 
     HelixApproach GetHelix(CellHit cell);
-    bool IsAngleInRange(double theta, double thetaMin, double thetaMax);
-    bool IsPointInRegion(Point p, double rMin, double rMax, 
-                         double thetaMin, double thetaMax);
-    bool OnSegment(Point p, Point q, Point r);
-    Intersection IsIntersect(Point a, Point b, Point c, Point d);
-    std::vector<Intersection> IsIntersectArc(Point p1, Point p2, 
-                         double R, double thetaMin, double thetaMax);
-    CellCrossing IsInCell(LayerHit hit, double rMin, 
-                         double rMax, double thetaMin, double thetaMax);
     
+    // Analysis support functions
+    std::map<int, std::tuple<int, double, std::string>> GetWiresPerLayer();
+    xyzVector GetPointOfClosestApproach(xyzVector p1, xyzVector trackPoint, xyzVector wireVec);
+    HitData GetClosestWire(LayerHit hit);
+    
+    // Analysis functions
     std::vector<CellHit> GetDetectedWires(const std::vector<LayerHit>& sortedHits);
-    void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
+    //void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
     void GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xyzVector initMomentum);
     void ProcessParticleTracks();
 
 private:
     const double avgNumClusters = 109.68 /10.; // clusters per mm
-    std::map<int, int> numWiresPerLayer;
+    std::map<int, std::tuple<int, double, std::string>> numWiresPerLayer;
     
     std::vector<KalmanHit> kalmanHits;
     

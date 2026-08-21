@@ -176,6 +176,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   G4double groundVolume = CLHEP::pi * groundRadius*groundRadius * length;
   
   bool useWireMaterials = dimensions["use_wire_materials"].get<bool>();
+  
+  dimensions = jsonData["super_layers"];
 
   // _____________________ Define World Size _______________________ //
   
@@ -271,8 +273,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
       G4double totalSenseVolume = senseVolume * senseWiresPerLayer;
       G4double totalGroundVolume = groundVolume * groundWiresPerLayer;
       
-      layerFile << i << "," << senseWiresPerLayer 
-                << "," << r1 << "," << r2 << "\n";
+      std::string type = dimensions["layer" + std::to_string(curSuperlayer)]["type"];
+      
+      layerFile << i << "," << senseWiresPerLayer << "," 
+                << thickness*2. << "," << type << ","
+                << r1 << "," << r2 << "\n";
       
       // Calculate the percentage of the volume of each wire type
       G4double cylRingVolume = cylRing->GetCubicVolume();

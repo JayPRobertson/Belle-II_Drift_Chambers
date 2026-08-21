@@ -101,47 +101,56 @@
     "layer0": {
       "num_sublayers": 8,
       "outer_radius_cm": 23.8,
-      "num_sublayer_sense_wires": 160
+      "num_sublayer_sense_wires": 160,
+      "type": "axial"
     },
     "layer1": {
       "num_sublayers": 6,
       "outer_radius_cm": 34.8,
-      "num_sublayer_sense_wires": 160
+      "num_sublayer_sense_wires": 160,
+      "type": "stereo"
     },
     "layer2": {
       "num_sublayers": 6,
       "outer_radius_cm": 45.57,
-      "num_sublayer_sense_wires": 192
+      "num_sublayer_sense_wires": 192,
+      "type": "axial"
     },
     "layer3": {
       "num_sublayers": 6,
       "outer_radius_cm": 56.69,
-      "num_sublayer_sense_wires": 224
+      "num_sublayer_sense_wires": 224,
+      "type": "stereo"
     },
     "layer4": {
       "num_sublayers": 6,
       "outer_radius_cm": 67.41,
-      "num_sublayer_sense_wires": 256
+      "num_sublayer_sense_wires": 256,
+      "type": "axial"
     },
     "layer5": {
       "num_sublayers": 6,
       "outer_radius_cm": 78.53,
-      "num_sublayer_sense_wires": 288
+      "num_sublayer_sense_wires": 288,
+      "type": "stereo"
     },
     "layer6": {
       "num_sublayers": 6,
       "outer_radius_cm": 89.25,
-      "num_sublayer_sense_wires": 320
+      "num_sublayer_sense_wires": 320,
+      "type": "axial"
     },
     "layer7": {
       "num_sublayers": 6,
       "outer_radius_cm": 100.37,
-      "num_sublayer_sense_wires": 352
+      "num_sublayer_sense_wires": 352,
+      "type": "stereo"
     },
     "layer8": {
       "num_sublayers": 6,
       "outer_radius_cm": 111.14,
-      "num_sublayer_sense_wires": 384
+      "num_sublayer_sense_wires": 384,
+      "type": "axial"
     }
   },
   "particle": {

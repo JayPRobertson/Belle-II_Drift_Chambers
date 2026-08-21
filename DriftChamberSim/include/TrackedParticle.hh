@@ -82,9 +82,9 @@ public:
     struct KalmanHit: public TObject {
         XYZVector hitPos;
         XYZVector hitMom;
-        double chi2;
         int trackID;
         double ndf;
+        double chi2;
             
         KalmanHit() : chi2(0), trackID(0), ndf(0) {}
     
