@@ -51,7 +51,7 @@ public:
     
     // Analysis functions
     std::vector<CellHit> GetDetectedWires(const std::vector<LayerHit>& sortedHits);
-    //void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
+    void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
     void GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xyzVector initMomentum);
     void ProcessParticleTracks();
 

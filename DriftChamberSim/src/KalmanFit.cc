@@ -148,9 +148,9 @@ void KalmanFit::ProcessParticleTracks(){
 
         std::vector<CellHit> detectedCells = GetDetectedWires(hits);
         
-        //if (count == 2){
-            //GetClusterInfo(detectedCells, timeTable, diffusionTable);
-        //}
+        if (count == 2){
+            GetClusterInfo(detectedCells, timeTable, diffusionTable);
+        }
         count++;
         
         GetKalmanFit(detectedCells, i, momMap[i]);
@@ -192,11 +192,6 @@ std::vector<CellHit> KalmanFit::GetDetectedWires(const std::vector<LayerHit>& so
             std::pair<xyzVector, xyzVector> wireEnds = wireInfo[0].second;
             
             double exitTime = layerHit.exitTime;
-            if (wireInfo.size() > 1){ 
-                // Find time along the track that the particle
-                // Exits the range of wirePositions[0] and enters that of i=1
-            }
-            
             WireInfo wireData = {wireLength, wireEnds.first, wireEnds.second};
             
             detectedCells.push_back({
@@ -218,50 +213,63 @@ std::vector<CellHit> KalmanFit::GetDetectedWires(const std::vector<LayerHit>& so
     return detectedCells;
 }
 
-//void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
-    //auto ranInstance = RandomGenerator::instance();
+void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
+    auto ranInstance = RandomGenerator::instance();
     
-    //// Look at the track segment through each cell it hits
-    //for (auto cell : detectedCells){
-        //int numClusters = ranInstance.fromPoisson(cell.length * avgNumClusters);
+    // Look at the track segment through each cell it hits
+    for (auto cell : detectedCells){
+        double length = GetDistance(cell.entry, cell.exit);
+        int numClusters = ranInstance.fromPoisson(length * avgNumClusters);
         
-        //HelixApproach helix = GetHelix(cell);
+        HelixApproach helix = GetHelix(cell);
         
-        //// Randomly generate clusters along the track in the cur cell
-        //for (int i=0; i < numClusters; i++){
+        // Randomly generate clusters along the track in the cur cell
+        for (int i=0; i < numClusters; i++){
             
-            //// Find position along helix at time ut
-            //double ut = ranInstance.fromUniform(0., cell.t2-cell.t1); 
-            //G4ThreeVector clusterOrigin = helix.Position(ut);
+            // Find position along helix at time ut
+            double ut = ranInstance.fromUniform(0., cell.t2-cell.t1); 
+            G4ThreeVector clusterOrigin = helix.Position(ut);
             
-            //int curi = static_cast<int>(std::round(clusterOrigin.x()));
-            //int curj = static_cast<int>(std::round(clusterOrigin.y()));
+            int curi = static_cast<int>(std::round(clusterOrigin.x()));
+            int curj = static_cast<int>(std::round(clusterOrigin.y()));
             
-            //// Make positive index starting at 0
-            //curi *= (curi > 0) ? 2 : -1;
-            //curj *= (curj > 0) ? 2 : -1;
+            // Make positive index starting at 0
+            curi *= (curi > 0) ? 2 : -1;
+            curj *= (curj > 0) ? 2 : -1;
             
-            //// Get the two diffusion values stored in the lookup table string
-            //std::string diffusion = diffusionTable[curi][curj];
-            //if (diffusion.empty()) continue;
+            std::string diffusion;
+            
+            // Get the two diffusion values stored in the lookup table string
+            try {
+                diffusion = diffusionTable[curi][curj];
+                if (diffusion.empty()) continue;
+            } catch(const std::exception& e){
+                i--;
+                continue;
+            }
 
-            //std::stringstream ss(diffusion);
-            //std::string token;
-            //std::vector<std::string> diffusions;
+            std::stringstream ss(diffusion);
+            std::string token;
+            std::vector<std::string> diffusions;
 
-            //while (std::getline(ss, token, '|')) {
-                //diffusions.push_back(token);
-            //}
+            while (std::getline(ss, token, '|')) {
+                diffusions.push_back(token);
+            }
             
-            //if (diffusions.size() < 2) continue;
+            if (diffusions.size() < 2) continue;
                 
-            //// Get info about the cur cluster
-            //double driftTime = std::stod(timeTable[curi][curj]);
-            //double longDiffusion = std::stod(diffusions[0]);
-            //double transDiffusion = std::stod(diffusions[1]);
-        //}
-    //}
-//}
+            // Get info about the cur cluster
+            double driftTime = std::stod(timeTable[curi][curj]);
+            double longDiffusion = std::stod(diffusions[0]);
+            double transDiffusion = std::stod(diffusions[1]);
+                
+            std::cout << "\ti = " << curi << ", j = " << curj
+                      << ", Drift time = " << driftTime 
+                      << ", Diffusion (long) = " << longDiffusion
+                      << ", Diffusion (trans) = " << transDiffusion << std::endl;
+        }
+    }
+}
 
 // Gets the Kalman fit of a track based on its layer hits
 void KalmanFit::GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xyzVector initMomentum){
