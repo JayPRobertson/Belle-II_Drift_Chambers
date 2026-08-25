@@ -53,7 +53,7 @@ Following this, the simulation can be run using the Geant4 visualization UI:
 ```
 cd DriftChamberSim/build/
 cmake ../
-chmod +x run_DCSim.sh
+chmod +x *.sh
 ./run_DCSim.sh
 ```
 
@@ -110,13 +110,18 @@ TBrowser b
 ```
 
 ### KalmanFit
-`KalmanFit` is a tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. The project Makefile generates an executable for this tool that can be run using `./kalman`. 
+`KalmanFit` is a tool used to estimate the trajectory of particles using a [Kalman fitting](https://en.wikipedia.org/wiki/Kalman_filter) algorithm built using [GenFit2](https://github.com/GenFit/GenFit), a framework for track reconstruction. A shell script has been provided to run this tool using `./run_kalman_fitter`. 
 
-All reconstructed Kalman fit data will be output to the terminal (a sample output can be found in `SampleData/kalmanFit_output.txt`) and saved to a ROOT file:
+All reconstructed Kalman fit data will be output to the terminal (a sample output can be found in `SampleData/kalmanFit_output.txt`) and saved to a ROOT file. 
 
 `kalman_output.root` - Outputs the position and momentum data of the particle points along its trajectory. Includes two branches: one for the actual simulation data and one for the reconstructed Kalman fitted data. 
 
-This output can be opened in a TBrowser using the same method as above, loading the same library before opening. Sample output can be found in `SampleData`.
+This output can be opened in a TBrowser using the same method as above, loading the same library before opening, or by using the provided Jupyter Notebook. Sample output can be found in `SampleData`.
+
+For a single track from the simulation, the reconstruction also generates clusters along the track segment in each layer and outputs a file `cluster_info.csv` with the drift time and diffusion values.
+
+### Jupyter Notebook
+Plotting options for data output by the KalmanFit tool, such as for comparing the actual and reconstructed trajectories and plotting the signal for cluster counting, are provided in `simulation_analysis.ipynb`.
 
 </details>
 

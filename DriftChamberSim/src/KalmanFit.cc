@@ -135,6 +135,7 @@ void KalmanFit::ProcessParticleTracks(){
     IndexMap diffusionTable = GetLookupTable("diffusion_lookup.csv");
     
     int count = 0;
+    int arbitraryTrackNum = 2;
     
     // Perform fits and write out complete rows
     for (auto& pair : trackMap) {
@@ -148,7 +149,7 @@ void KalmanFit::ProcessParticleTracks(){
 
         std::vector<CellHit> detectedCells = GetDetectedWires(hits);
         
-        if (count == 2){
+        if (count == arbitraryTrackNum){
             GetClusterInfo(detectedCells, timeTable, diffusionTable);
         }
         count++;
@@ -216,6 +217,9 @@ std::vector<CellHit> KalmanFit::GetDetectedWires(const std::vector<LayerHit>& so
 void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
     auto ranInstance = RandomGenerator::instance();
     
+    std::ofstream clusterFile("cluster_info.csv");
+    clusterFile << "gen_time,drift_time,long_diffusion,trans_diffusion\n";
+    
     // Look at the track segment through each cell it hits
     for (auto cell : detectedCells){
         double length = GetDistance(cell.entry, cell.exit);
@@ -262,13 +266,13 @@ void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap time
             double driftTime = std::stod(timeTable[curi][curj]);
             double longDiffusion = std::stod(diffusions[0]);
             double transDiffusion = std::stod(diffusions[1]);
-                
-            std::cout << "\ti = " << curi << ", j = " << curj
-                      << ", Drift time = " << driftTime 
-                      << ", Diffusion (long) = " << longDiffusion
-                      << ", Diffusion (trans) = " << transDiffusion << std::endl;
+                      
+            clusterFile << ut << "," << driftTime << "," << longDiffusion << ","
+                        << transDiffusion << "\n";
         }
     }
+    
+    clusterFile.close();
 }
 
 // Gets the Kalman fit of a track based on its layer hits
@@ -282,7 +286,7 @@ void KalmanFit::GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xy
 
     if(detectedCells.size() > 300 || detectedCells.size() < 5){
         std::cout << "Skipping track " << trackID 
-                  << " too many or too few hits " << detectedCells.size() 
+                  << " too many or too few hits. Number of hits = " << detectedCells.size() 
                   << std::endl;
     
         return;
@@ -445,7 +449,7 @@ xyzVector KalmanFit::GetPointOfClosestApproach(xyzVector wireEnd1, xyzVector tra
     double dotProduct = diff.X()*wireVec.X() + diff.Y()*wireVec.Y() + diff.Z()*wireVec.Z();
     double magSquared = wireVec.X()*wireVec.X() + wireVec.Y()*wireVec.Y() + wireVec.Z()*wireVec.Z();
         
-    if (magSquared == 0.0) magSquared = 1e-9; // Prevent division by 0
+    if (magSquared == 0.0) magSquared = 1e-32; // Prevent division by 0
     
     double constant = dotProduct/magSquared;
         
