@@ -28,9 +28,9 @@ public:
     
     struct CellHit {
         xyzVector wirePos;
-        xyzVector initMom;
-        int layer;
-        int cell;
+        xyzVector entryMom;
+        int layerID;
+        int cellID;
         double t1;
         double t2;
         xyzVector entry;
@@ -51,7 +51,7 @@ public:
     
     // Analysis functions
     std::vector<CellHit> GetDetectedWires(const std::vector<LayerHit>& sortedHits);
-    void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable);
+    void GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable, std::map<int, xyzVector> momMap);
     void GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xyzVector initMomentum);
     void ProcessParticleTracks();
 

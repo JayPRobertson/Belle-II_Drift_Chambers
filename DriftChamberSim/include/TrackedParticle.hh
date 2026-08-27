@@ -55,12 +55,13 @@ public:
            
     struct LayerHit: public TObject {
         XYZVector entryPos;
-        XYZVector initMom;
+        XYZVector entryMom;
         XYZVector exitPos;
-        XYZVector postMom;
+        XYZVector exitMom;
         double entryTime;
         double exitTime;
         double edep;
+        double initMomMag;
         int layerID;
         int trackID;
         
@@ -68,11 +69,12 @@ public:
     
         XYZVector getEntryPosition() const { return entryPos; }
         XYZVector getExitPosition() const { return exitPos; }
-        XYZVector getEntryMomentum() const { return initMom; }
-        XYZVector getExitMomentum() const { return postMom; }
+        XYZVector getEntryMomentum() const { return entryMom; }
+        XYZVector getExitMomentum() const { return exitMom; }
         double getEntryTime() const { return entryTime; }
         double getExitTime() const { return exitTime; }
         double getEnergyDeposition() const { return edep; }
+        double getInitialMomentum() const { return initMomMag; }
         int getLayerID() const { return layerID; } 
         int getTrackID() const { return trackID; } 
         
@@ -85,14 +87,16 @@ public:
         int trackID;
         double ndf;
         double chi2;
+        double initMomMag;
             
         KalmanHit() : chi2(0), trackID(0), ndf(0) {}
-    
+        
         XYZVector getPosition() const { return hitPos; }
         XYZVector getMomentum() const { return hitMom; }
-        double getChi2() const { return chi2; }
         int getTrackID() const { return trackID; }
+        double getChi2() const { return chi2; }
         double getDegFreedom() const { return ndf; }
+        double getInitialMomentum() const { return initMomMag; }
         
         ClassDefNV(KalmanHit, 1);   
     };

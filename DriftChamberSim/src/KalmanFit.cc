@@ -66,6 +66,7 @@ void KalmanFit::ProcessParticleTracks(){
         outFile->Close();
         delete file;
         delete outFile;
+        std::cout << "Error: No wires in numWiresPerLayer" << std::endl;
         return;
     }
     
@@ -102,13 +103,13 @@ void KalmanFit::ProcessParticleTracks(){
               hit.entryPos = {seg.getEntryPosition().X(), 
                               seg.getEntryPosition().Y(), 
                               seg.getEntryPosition().Z()};
-              hit.initMom = { seg.getEntryMomentum().X(), 
+              hit.entryMom = { seg.getEntryMomentum().X(), 
                               seg.getEntryMomentum().Y(), 
                               seg.getEntryMomentum().Z()};
               hit.exitPos = { seg.getExitPosition().X(), 
                               seg.getExitPosition().Y(), 
                               seg.getExitPosition().Z()};
-              hit.postMom = { seg.getExitMomentum().X(), 
+              hit.exitMom = { seg.getExitMomentum().X(), 
                               seg.getExitMomentum().Y(), 
                               seg.getExitMomentum().Z()};
                                   
@@ -117,12 +118,19 @@ void KalmanFit::ProcessParticleTracks(){
               hit.edep = seg.getEnergyLoss();
               hit.layerID = seg.getLayerIndex();
               hit.trackID = trackID;
+              hit.initMomMag = std::sqrt(initMom.X()*initMom.X() + initMom.Y()*initMom.Y());
               
               trackMap[trackID].push_back(hit);
               actualHits.push_back(hit);
           }
         }
     }
+    
+    // Sort actual hits by trackID
+    std::sort(actualHits.begin(), actualHits.end(), 
+           [](const LayerHit& a, const LayerHit& b) {
+                return a.trackID < b.trackID;
+    });
     
     // Initialize GenFit
     std::cout << "Initializing GenFit field" << std::endl;
@@ -150,7 +158,7 @@ void KalmanFit::ProcessParticleTracks(){
         std::vector<CellHit> detectedCells = GetDetectedWires(hits);
         
         if (count == arbitraryTrackNum){
-            GetClusterInfo(detectedCells, timeTable, diffusionTable);
+            GetClusterInfo(detectedCells, timeTable, diffusionTable, momMap);
         }
         count++;
         
@@ -197,7 +205,7 @@ std::vector<CellHit> KalmanFit::GetDetectedWires(const std::vector<LayerHit>& so
             
             detectedCells.push_back({
                 wirePosition,
-                layerHit.initMom,
+                layerHit.entryMom,
                 layerIndex,
                 i,
                 layerHit.entryTime,
@@ -214,7 +222,7 @@ std::vector<CellHit> KalmanFit::GetDetectedWires(const std::vector<LayerHit>& so
     return detectedCells;
 }
 
-void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable){
+void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap timeTable, IndexMap diffusionTable, std::map<int, xyzVector> momMap){
     auto ranInstance = RandomGenerator::instance();
     
     std::ofstream clusterFile("cluster_info.csv");
@@ -222,16 +230,73 @@ void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap time
     
     // Look at the track segment through each cell it hits
     for (auto cell : detectedCells){
-        double length = GetDistance(cell.entry, cell.exit);
-        int numClusters = ranInstance.fromPoisson(length * avgNumClusters);
+        int layerIndex = cell.layerID;
+        int wireID = cell.cellID;
+        int totalWires = std::get<0>(numWiresPerLayer[layerIndex]);
+        double deltaPhi = TWOPI / static_cast<double>(totalWires);
+
+        // Wire endpoints
+        xyzVector wEnd1 = cell.wireInfo.end1;
+        xyzVector wEnd2 = cell.wireInfo.end2;
         
+        double phiW1 = std::atan2(wEnd1.Y(), wEnd1.X());
+        double phiW2 = std::atan2(wEnd2.Y(), wEnd2.X());
+        if (phiW2 - phiW1 > M_PI)  phiW1 += TWOPI;
+        if (phiW1 - phiW2 > M_PI)  phiW2 += TWOPI;
+
+        double dPhidZ = (phiW2 - phiW1) / (wEnd2.Z() - wEnd1.Z());
+
+        // Function to check if point in this cell
+        auto IsInsideCell = [&](const G4ThreeVector& pos) {
+            double pPhi = std::atan2(pos.y(), pos.x());
+            double expectedWirePhi = phiW1 + dPhidZ * (pos.z() - wEnd1.Z());
+            
+            // Normalize angular difference to (-PI, PI]
+            double dPhi = pPhi - expectedWirePhi;
+            while (dPhi > M_PI)  dPhi -= TWOPI;
+            while (dPhi <= -M_PI) dPhi += TWOPI;
+
+            // Cell boundaries are halfway to the next wires
+            return std::abs(dPhi) <= (deltaPhi / 2.0);
+        };
+
         HelixApproach helix = GetHelix(cell);
+        double totalTime = cell.t2 - cell.t1;
+        
+        double cellT1 = cell.t1;
+        double cellT2 = cell.t2;
+        int steps = 100;
+        
+        bool foundEntry = false;
+        for (int step = 0; step <= steps; ++step) {
+            double frac = static_cast<double>(step) / steps;
+            double ut = frac * totalTime;
+            G4ThreeVector pos = helix.Position(ut);
+            
+            if (IsInsideCell(pos)) {
+                if (!foundEntry) {
+                    cellT1 = cell.t1 + ut; // First time inside cell
+                    foundEntry = true;
+                }
+                cellT2 = cell.t1 + ut;     // Last time inside cell
+            }
+        }
+
+        // Calculate the actual path length inside the cell
+        G4ThreeVector cellEntryPos = helix.Position(cellT1 - cell.t1);
+        G4ThreeVector cellExitPos = helix.Position(cellT2 - cell.t1);
+        
+        double cellLength = std::sqrt(std::pow(cellExitPos.x() - cellEntryPos.x(), 2) +
+                                      std::pow(cellExitPos.y() - cellEntryPos.y(), 2) +
+                                      std::pow(cellExitPos.z() - cellEntryPos.z(), 2));
+
+        int numClusters = ranInstance.fromPoisson(cellLength * avgNumClusters);
         
         // Randomly generate clusters along the track in the cur cell
         for (int i=0; i < numClusters; i++){
             
             // Find position along helix at time ut
-            double ut = ranInstance.fromUniform(0., cell.t2-cell.t1); 
+            double ut = ranInstance.fromUniform(cellT1 - cell.t1, cellT2 - cell.t1); 
             G4ThreeVector clusterOrigin = helix.Position(ut);
             
             int curi = static_cast<int>(std::round(clusterOrigin.x()));
@@ -242,7 +307,7 @@ void KalmanFit::GetClusterInfo(std::vector<CellHit> detectedCells, IndexMap time
             curj *= (curj > 0) ? 2 : -1;
             
             std::string diffusion;
-            
+           
             // Get the two diffusion values stored in the lookup table string
             try {
                 diffusion = diffusionTable[curi][curj];
@@ -311,9 +376,19 @@ void KalmanFit::GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xy
     // Create genfit track
     auto* rep = new genfit::RKTrackRep(13);
     auto* gfTrack = new genfit::Track(rep, initPos, initMom);
+    
+    // Set covariance seed
+    TMatrixDSym covSeed(6); 
+    covSeed(0,0) = 1; 
+    covSeed(1,1) = 1; 
+    covSeed(2,2) = 2*2; 
+    covSeed(3,3) = 0.1*0.1; 
+    covSeed(4,4) = 0.1*0.1; 
+    covSeed(5,5) = 0.2*0.2; 
+    gfTrack->setCovSeed( covSeed );
 
     int hitID = 0;
-    const double wireHalfLength = 1000.; //Arbitrary length
+    const double wireHalfLength = 1000.; // Arbitrary length
 
     for (const auto& cell : detectedCells) {
         double tmid = 0.75 * (cell.t1 + cell.t2);
@@ -603,7 +678,7 @@ HelixApproach KalmanFit::GetHelix(CellHit cell){
                                 cell.entry.Y() - origin.Y(),
                                 cell.entry.Z() - origin.Z()};  
                                     
-    G4ThreeVector entryMom = {cell.initMom.X(), cell.initMom.Y(), cell.initMom.Z()};
+    G4ThreeVector entryMom = {cell.entryMom.X(), cell.entryMom.Y(), cell.entryMom.Z()};
     G4ThreeVector magField = {BField.X(), BField.Y(), BField.Z()};
         
     HelixApproach helix(entryPoint, entryMom, magField, particleMass, particleCharge);
