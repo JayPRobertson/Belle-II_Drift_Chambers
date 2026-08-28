@@ -7,12 +7,12 @@
 #include "Math/Vector3D.h"
 #include "TObject.h"
 
-#include "TrackedParticle.hh"
+#include "ReconstructedParticle.hh"
 #include "HelixApproach.hh"
 
 using xyzVector = ROOT::Math::XYZVector;
-using LayerHit = DriftChamberSim::TrackedParticle::LayerHit;
-using KalmanHit = DriftChamberSim::TrackedParticle::KalmanHit;
+using LayerHit = DriftChamberSim::ReconstructedParticle::LayerHit;
+using KalmanHit = DriftChamberSim::ReconstructedParticle::KalmanHit;
 using IndexMap = std::vector<std::vector<std::string>>;
 using HitData = std::vector<std::pair<xyzVector, std::pair<xyzVector, xyzVector>>>;
 
@@ -59,7 +59,8 @@ private:
     const double avgNumClusters = 109.68 /10.; // clusters per mm
     std::map<int, std::tuple<int, double, std::string>> numWiresPerLayer;
     
-    std::vector<KalmanHit> kalmanHits;
+    std::map<int, std::vector<KalmanHit>> kalmanHits;
+    std::map<int, std::vector<LayerHit>> actualHits;
     
     xyzVector BField;
     double particleCharge;

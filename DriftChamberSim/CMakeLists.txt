@@ -13,7 +13,7 @@ include(${Geant4_USE_FILE})
 #----------------------------------------------------------------------------
 # ROOT
 #----------------------------------------------------------------------------
-set(ROOT_DIR "/opt/homebrew/Cellar/root/6.38.04_1")
+set(ROOT_DIR "/opt/homebrew/Cellar/root/6.40.02_1")
 find_package(ROOT REQUIRED)
 include(${ROOT_USE_FILE})
 
@@ -61,8 +61,8 @@ message(STATUS "GenFit2 library: ${GENFIT2_LIBRARY}")
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.hh)
 
-#list(REMOVE_ITEM SOURCES "${PROJECT_SOURCE_DIR}/src/KalmanFit.cc")
-#list(REMOVE_ITEM HEADERS "${PROJECT_SOURCE_DIR}/include/KalmanFit.hh")
+list(REMOVE_ITEM SOURCES "${PROJECT_SOURCE_DIR}/src/KalmanFit.cc")
+list(REMOVE_ITEM HEADERS "${PROJECT_SOURCE_DIR}/include/KalmanFit.hh")
 
 #----------------------------------------------------------------------------
 # ROOT dictionary
@@ -71,6 +71,7 @@ root_generate_dictionary(
   G__TrackedParticle
   ${PROJECT_SOURCE_DIR}/include/TrackedParticle.hh
   ${PROJECT_SOURCE_DIR}/include/TrackSegment.hh
+  ${PROJECT_SOURCE_DIR}/include/ReconstructedParticle.hh
   MODULE DriftChamberSim
   LINKDEF ${PROJECT_SOURCE_DIR}/include/LinkDef.hh
 )
@@ -88,7 +89,7 @@ set(COMMON_INCLUDES
 #----------------------------------------------------------------------------
 set(COMMON_LIBRARIES
     ${Geant4_LIBRARIES}
-    ${GENFIT2_LIBRARY}   # GenFit2 linked before ROOT on macOS
+    ${GENFIT2_LIBRARY} 
     ${ROOT_LIBRARIES}
 )
 

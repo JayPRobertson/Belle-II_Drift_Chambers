@@ -31,7 +31,8 @@ source ../install/share/Garfield/setupGarfield.sh
 ```
 In this version, the path to `libomp` is broken. This can be fixed by directly copying the file from your installation location to the correct library. Example command:
 ```
-cp /opt/homebrew/Cellar/libomp/22.1.5/libomp.dylib ../install/lib/
+brew install libomp
+cp /opt/homebrew/Cellar/libomp/22.1.8/lib/libomp.dylib ../install/lib/
 ```
 ### JSON Parser
 This simulation uses the [nlohmann C++ json parser](https://github.com/nlohmann/json) to read in its geometry. On macOS, this can be installed using: ```brew install nlohmann-json```. 
@@ -46,7 +47,7 @@ Once the directory is replaced, set up the environmental variables for Garfield+
 ```
 source ~/garfieldpp/install/share/Garfield/setupGarfield.sh
 source ~/geant4/source/bin/geant4.sh
-source /opt/homebrew/Cellar/root/6.38.04_1/bin/thisroot.sh
+source /opt/homebrew/Cellar/root/6.40.02_1/bin/thisroot.sh
 ```
 Following this, the simulation can be run using the Geant4 visualization UI:
 
@@ -90,7 +91,6 @@ The simulation outputs a ROOT file of simulation data, as well as four helper fi
 - `drift_times_lookup.csv` - a lookup table of sample drift times (in ns) of electrons originating at various positions in a drift cell; each cell of the csv file correponds to a 1mm x 1mm section of the drift cell
 - `diffusion_lookup.csv` - a lookup table of sample diffusion coefficients (in sqrt(cm)) of electrons originating at various positions in a drift cell; each cell of the csv file contains two values separated by a bar ( *longitudinal diffusion*|*transverse diffusion* ) correponds to a 1mm x 1mm section of the drift cell 
 - `layer_radius.csv` - a list of details about each sublayer of the detector, including inner and outer radii and wire dimensional information
-- `libDriftChamberlib.so` - record of the necessary ROOT libraries
 
 Sample output can be found in `SampleData`.
 

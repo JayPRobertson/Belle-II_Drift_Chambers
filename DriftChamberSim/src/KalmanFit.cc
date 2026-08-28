@@ -27,6 +27,7 @@
 #include "G4ThreeVector.hh"
 #include "TVector3.h"
 
+#include "TrackedParticle.hh"
 #include "KalmanFit.hh"
 #include "RandomGenerator.hh"
 
@@ -54,10 +55,9 @@ void KalmanFit::ProcessParticleTracks(){
     
     TTree* outTree = new TTree("Particles", "Particles");
     
-    // Set up ROOT tree branches
-    std::vector<LayerHit> actualHits;
-    outTree->Branch("KalmanFitted", &kalmanHits); 
-    outTree->Branch("Actual", &actualHits);
+    // Set up ROOT tree branch
+    std::vector<ReconstructedParticle> recParticles;
+    outTree->Branch("Particles", &recParticles); 
     
     // Get number of wires in each layer of detector
     numWiresPerLayer = GetWiresPerLayer();
@@ -73,8 +73,8 @@ void KalmanFit::ProcessParticleTracks(){
     TTree* rootTree = (TTree*)file->Get("Particles");
     TTreeReader reader(rootTree);
     
-    std::map<int, std::vector<LayerHit>> trackMap;
     std::map<int, xyzVector> momMap;
+    std::map<int, xyzVector> posMap;
     
     TTreeReaderValue<ParticleConstants> constants(reader, "Constants");
     
@@ -92,11 +92,17 @@ void KalmanFit::ProcessParticleTracks(){
     while (reader.Next()) {
         for (const auto& particle : *particles) {
           int trackID = particle.getID();
-              
+          
+          xyzVector initPos =  {particle.getPosition().X(), 
+                                particle.getPosition().Y(), 
+                                particle.getPosition().Z()};
+                               
           xyzVector initMom = {particle.getMomentum().X(), 
-                               particle.getMomentum().Y(), 
-                               particle.getMomentum().Z()};
+                                  particle.getMomentum().Y(), 
+                                  particle.getMomentum().Z()};
+          
           momMap[trackID] = initMom;
+          posMap[trackID] = initPos;
    
           for (const auto& seg : particle.getTrackSegments()) {
               LayerHit hit;
@@ -117,20 +123,12 @@ void KalmanFit::ProcessParticleTracks(){
               hit.exitTime = seg.getExitTime();
               hit.edep = seg.getEnergyLoss();
               hit.layerID = seg.getLayerIndex();
-              hit.trackID = trackID;
               hit.initMomMag = std::sqrt(initMom.X()*initMom.X() + initMom.Y()*initMom.Y());
               
-              trackMap[trackID].push_back(hit);
-              actualHits.push_back(hit);
+              actualHits[trackID].push_back(hit);
           }
         }
     }
-    
-    // Sort actual hits by trackID
-    std::sort(actualHits.begin(), actualHits.end(), 
-           [](const LayerHit& a, const LayerHit& b) {
-                return a.trackID < b.trackID;
-    });
     
     // Initialize GenFit
     std::cout << "Initializing GenFit field" << std::endl;
@@ -146,7 +144,7 @@ void KalmanFit::ProcessParticleTracks(){
     int arbitraryTrackNum = 2;
     
     // Perform fits and write out complete rows
-    for (auto& pair : trackMap) {
+    for (auto& pair : actualHits) {
         int i = pair.first;
         auto& hits = pair.second;
 
@@ -163,6 +161,27 @@ void KalmanFit::ProcessParticleTracks(){
         count++;
         
         GetKalmanFit(detectedCells, i, momMap[i]);
+    }
+    
+    // Write data to ROOT file
+    for (int i=0; i < std::max(actualHits.size(), kalmanHits.size()); i++){
+        try {
+            std::vector<LayerHit> actualHit = actualHits[i];
+            std::vector<KalmanHit> kalmanHit = kalmanHits[i];
+            xyzVector initMom = momMap[i];
+            xyzVector initPos = posMap[i];
+            
+            // Add layer hits to a particle object
+            ReconstructedParticle curParticle{i, initPos, initMom};
+            curParticle.setActualHits(actualHit);
+            curParticle.setKalmanHits(kalmanHit);
+            
+            // Write particle object to list of tracks
+            recParticles.push_back(curParticle);
+            
+        } catch (std::exception& e) {
+            std::cerr << "Standard exception: " << e.what() << std::endl;
+        }
     }
 
     outTree->Fill();
@@ -487,15 +506,14 @@ void KalmanFit::GetKalmanFit(std::vector<CellHit> detectedCells, int trackID, xy
 
                     kHit.chi2 = status->getChi2();
                     kHit.ndf = status->getNdf();
-                    kHit.trackID = trackID;
 
-                    kalmanHits.push_back(kHit);
+                    kalmanHits[trackID].push_back(kHit);
                     
                 } catch (genfit::Exception& e) {
-                   G4cerr << "GenFit exception: " << e.what() << G4endl;
+                   std::cerr << "GenFit exception: " << e.what() << std::endl;
                    break;
                 } catch (std::exception& e) {
-                   G4cerr << "Standard exception: " << e.what() << G4endl;
+                   std::cerr << "Standard exception: " << e.what() << std::endl;
                    break;
                 } 
 

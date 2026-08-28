@@ -28,6 +28,7 @@ ln -s libDriftChamberlib.dylib libDriftChamberlib.so
 # Copy data to storage location
 cp particle_and_track_data.root "$FILEPATH/"
 cp libDriftChamberlib.so "$FILEPATH/"
+cp libDriftChamberSim_rdict.pcm "$FILEPATH"
 cp drift_times_lookup.csv "$FILEPATH/"
 cp diffusion_lookup.csv "$FILEPATH/"
 cp layer_radius.csv "$FILEPATH/"
